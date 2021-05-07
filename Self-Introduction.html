@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J.H.Aeschylus</title>
+    <title>瞭解更多</title>
     <link rel="Shortcut Icon" type="image/x-icon" href="./img/favicon.ico" />
 
     <link rel="stylesheet" href ="style.css">
@@ -19,23 +19,15 @@
 
 
 <body id="body" data-bs-target="#navbar-example2" data-bs-spy="scroll" style="background-color: rgba(144, 156, 209, 0.548);">
-  <script>
-      var x;
-      var person;
-      while(person==null || person==""){
-      person=prompt("請輸入你的名字","");
-      }
-          x=person + " 你好 " + "! \n歡迎您來查看我的履歷！";
-          alert(x + "\n現在時間 " + Date());
-    </script>
-  <nav id="navbar-example2" class="navbar navbar-light bg-info px-3 fixed-top">
+    
+  <nav id="navbar-example2" class="navbar navbar-light px-3 fixed-top" style="background-color: lightpink;">
       <ul class="nav">
         <li class="nav-item mx-1">
           <button class="btn" onclick="light()" type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Turn on/off the light">
             <img  id="bulb" src="./img/lightbulbon.svg" alt="...">
           </button>
         </li>
-          <a href="#" class="navbar-brand">首頁</a>
+          <a href="#" class="navbar-brand">瞭解更多</a>
       </ul>
         <ul class="nav nav-pills justfied-content-end">
           <li class="nav-item">
@@ -64,8 +56,8 @@
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <div class="list-group list-group-flush ms-3">
-                <button disabled type="button" onclick="location.href='Self-introduction.html'" class="list-group-item list-group-item-action py-3">
-                  瞭解更多(施工中)
+                <button type="button" aria-current="true" onclick="location.href='Self-introduction.html'" class="list-group-item-secondary active list-group-item list-group-item-action py-3">
+                  瞭解更多
                 </button>
                 <button type="button" onclick="location.href='Contact-me.html'" class="list-group-item list-group-item-action py-3">
                   與我聯絡
@@ -77,10 +69,9 @@
     </nav>
 
     <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" class="scrollspy-example" tabindex="0">
-        <div id="backpic" class="p-5" style="background-image: url(./img/DSC_0719.JPG); background-position:center; background-size:100%;">
-            <div class=" fs-3 text-center text-white mx-auto p-5 mb-3 rounded">
-              Hi! I'm Aeschylus
-                <p class="mt-4">Welcome to My Resume!</p>
+        <div id="backpic" class="p-3" style="background-color: rgb(226, 138, 104); background-position:center; background-size:100%;">
+            <div class="container shadow fs-3 text-center bg-light w-50 mt-5 mx-auto p-5 mb-3 rounded">
+              關於我
             </div>
         </div>
 
@@ -270,8 +261,11 @@
 
   <div id="placeholder"></div>
   <ul class="nav justify-content-end me-3" style="padding-bottom: 3rem;">
+    <li class="nav-item me-auto ms-3">
+      <button id="botbot1" type="button" onclick="location.href='index.html'" class="btn btn-outline-dark me-3">回首頁</button>
+    </li>
     <li class="nav-item">
-      <button id="botbot1" type="button" onclick="location.href='Self-introduction.html'" class="btn btn-outline-dark me-3" disabled>瞭解更多(施工中)</button>
+      <button type="button" onclick="location.href='Self-introduction.html'" class="btn btn-outline-dark me-3 active" aria-current="true">瞭解更多</button>
     </li>
     <li class="nav-item">
       <button id="botbot2" type="button" onclick="location.href='Contact-me.html'" class="btn btn-outline-dark">與我聯絡</button>

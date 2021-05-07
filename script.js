@@ -6,12 +6,22 @@ function light()
         element.src="./img/lightbulboff.svg";
         document.getElementById('body').style.backgroundColor="black";
         document.getElementById('body').style.opacity="0.7";
+        document.getElementById('botbot1').style.borderColor="white";
+        document.getElementById('botbot1').style.color="white";
+        document.getElementById('botbot2').style.borderColor="white";
+        document.getElementById('botbot2').style.color="white";
+        document.getElementById('botsc').style.color="white";
     }
     else
     {
         element.src="./img/lightbulbon.svg";
         document.getElementById('body').style.backgroundColor="rgba(144, 156, 209, 0.548)";
         document.getElementById('body').style.opacity="1";
+        document.getElementById('botbot1').style.borderColor="black";
+        document.getElementById('botbot1').style.color="black";
+        document.getElementById('botbot2').style.borderColor="black";
+        document.getElementById('botbot2').style.color="black";
+        document.getElementById('botsc').style.color="black";
     }
 }
 //宣告預設表單內容為空 （你想要的話也可以加東西）
@@ -19,7 +29,7 @@ var initSubject='',initBody='';
  
 //按下傳送按鈕後執行
 function submitHandler(){
-    var to = "contact@example.com";//寫死的傳送對象 就是公司的信箱 不會顯示在網頁上
+    var to = "b08505030@ntu.edu.tw";//寫死的傳送對象 就是公司的信箱 不會顯示在網頁上
     var name = nameText.value;//讀取ID為 nameTextuser 物件中的值
     var email = emailText.value;
     var tel = telText.value;
