@@ -1,0 +1,13 @@
+body{
+    position: relative;
+    padding-top: 0px;
+}
+
+.carousel .carousel-item img {
+    min-height:max-content;
+    max-height:fit-content;
+}
+
+#placeholder{
+    height: 15rem;
+}
