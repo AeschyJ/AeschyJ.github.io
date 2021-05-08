@@ -1,3 +1,13 @@
+var person;
+function greet(){
+      var x;
+      person=prompt("請輸入你的名字","");
+      if(person!=null && person!=""){
+        x=person + "  你好 " + "! \n歡迎您來查看我的履歷！";
+        alert(x);
+      }
+}
+
 function light()
 {
     element=document.getElementById('bulb')
@@ -48,4 +58,17 @@ function init(){
     subText.value=initSubject;
     toText.value=initTo;
     bodyText.value=initBody;
+}
+
+function exp(){
+    var expText = document.getElementById('exp').innerHTML;
+
+    document.getElementById('bagr').innerHTML=expText;
+    
+}
+
+function edu(){
+    var eduText = document.getElementById('edu').innerHTML;
+
+    document.getElementById('bagr').innerHTML=eduText;
 }
