@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lodash Demo</title>
+    <script src='https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js'></script>
+</head>
+<body>
+    <h1>Library: Lodash</h1>
+    <p>使用: script src = 'https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js'   </p>
+    <p>主要功能: 各種物件的常用函式</p>
+    <h2>String常用功能</h2>
+    <h3>LowerCase, UpperCase: 改變大小寫並移除多餘字元</h3>
+    <div>String = --FOOTBall..</div>
+    <div>*會在大小寫連接處加入空格</div>
+    <div id='lu'>結果</div>
+    <button onclick="lc()">
+        lowerCase
+    </button>
+    <button onclick="uc()">
+        upperCase
+    </button>
+    <script>
+        let string = "--FOOTBall..";
+        function lc(){
+            document.getElementById('lu').innerHTML=_.lowerCase(string);
+        }
+        function uc(){
+            document.getElementById('lu').innerHTML=_.upperCase(string);
+        }
+    </script>
+    <h3>Pad, PadStart, PadEnd: 以指定字元擴充string</h3>
+    <div>String1 = abc, pad length = 9</div>
+    <div>*pad自動置中，超過指定長度自動停止</div>
+    <div id='p'>結果</div>
+    <button onclick="p()">
+        pad with +-
+    </button>
+    <button onclick="ps()">
+        padStart with #*
+    </button>
+    <button onclick="pe()">
+        padEnd with $^
+    </button>
+    <script>
+        let string1 = "abc";
+        function p(){
+            document.getElementById('p').innerHTML=_.pad(string1,9,'+-');
+        }
+        function ps(){
+            document.getElementById('p').innerHTML=_.padStart(string1,9,'#*');
+        }
+        function pe(){
+            document.getElementById('p').innerHTML=_.padEnd(string1,9,'$^');
+        }
+    </script>
+    <h2>Array常用功能</h2>
+    <h3>Compact: 去除array中無效值</h3>
+    <div>arr = [1,2,false,3,null,4,'']</div>
+    <div id='com'>結果</div>
+    <button onclick="arrCom()">
+        compact it
+    </button>
+    <script>
+        let arr=[1,2,false,3,null,4,''];
+        function arrCom(){
+        arr = _.compact(arr);
+            document.getElementById('com').innerHTML="["+arr+"]";
+        }
+    </script>
+    <h3>Reverse: 反轉array</h3>
+    <div>反轉arr</div>
+    <div id='rev'>結果</div>
+    <button onclick="rev()">
+        reverse it
+    </button>
+    <script>
+        function rev(){
+            document.getElementById('rev').innerHTML="["+_.reverse(arr)+"]";
+        }
+    </script>
+    <h3>Remove: 移除比對條件為true的值</h3>
+    <div>移除偶數</div>
+    <div id='remove'>結果</div>
+    <button onclick="remove()">
+        remove even numbers
+    </button>
+    <script>
+        function remove(){
+        let newArr = _.remove(arr,function(i) {
+                return i%2==0;
+            });
+            document.getElementById('remove').innerHTML="new arr = ["+arr + "], new array = ["+ newArr + "]";
+        }
+    </script>
+    <h3>Join: 將array轉為以特定字元連接的字串</h3>
+    <div>以不同的符號連接</div>
+    <div id='join'>結果</div>
+    <button onclick="join1()">
+        Connent by !
+    </button><button onclick="join2()">
+        Connent by @
+    </button><button onclick="join3()">
+        Connent by ?
+    </button>
+    <script>
+        function join1(){
+            document.getElementById('join').innerHTML=_.join(arr,'!');
+        }
+        function join2(){
+            document.getElementById('join').innerHTML=_.join(arr,'@');
+        }
+        function join3(){
+            document.getElementById('join').innerHTML=_.join(arr,'?');
+        }
+    </script>
+    <h3>Uniq: 去除重複</h3>
+    <div>arr0 = [2,1,2,3,1,2]</div>
+    <div id='uniq'>結果</div>
+    <button onclick="uniq()">
+        unique
+    </button>
+    <script>
+        let arr0 = [2,1,2,3,1,2];
+        function uniq(){
+            document.getElementById('uniq').innerHTML="["+_.uniq(arr0)+"]";
+        }
+    </script>
+    <h3>Union: 將不同array中不重複的元素連結成新的array</h3>
+    <div>arr1 = [1,2,3,2,1]</div>
+    <div>arr2 = [s.sun]</div>
+    <div>arr3 = [s,sunglass]</div>
+    <div id='union'>結果</div>
+    <button onclick="union()">
+        Union
+    </button>
+    <script>
+        let arr1 = [1,2,3,2,1];
+        let arr2 = ['s','sun'];
+        let arr3 = ['s','sunglass'];
+        function union(){
+            document.getElementById('union').innerHTML="["+_.union(arr1,arr2,arr3)+"]";
+        }
+    </script>
+    <h2>Object常用功能</h2>
+    <div>*Object相關功能輸出至console</div>
+    <h3>Pick, Omit: 創建指定的object</h3>
+    <div>object = { 'a': 1, 'b': '2', 'c': 3 }</div>
+    <div>Pick選取指定值, omit則相反</div>
+    <button onclick="pick()">
+        pick a,c
+    </button>
+    <button onclick="omit()">
+        omit a,c
+    </button>
+    <script>
+        var object = { 'a': 1, 'b': '2', 'c': 3 };
+        function pick(){
+        var picko = _.pick(object, ['a', 'c']);
+            console.log(picko);
+        }
+        function omit(){
+        var omito = _.omit(object, ['a', 'c']);
+            console.log(omito);
+        }
+    </script>
+    <h3>PickBy, OmitBy: 選取比對條件為true值創建新的object</h3>
+    <div>條件：value為數字</div>
+    <button onclick="pb()">
+        pickby number
+    </button>
+    <button onclick="ob()">
+        omitby number
+    </button>
+    <script>
+        function pb(){
+            var pbo = _.pickBy(object,value =>{return _.isNumber(value);});
+            console.log(pbo);
+        }
+        function ob(){
+            var obo = _.omitBy(object,value =>{return _.isNumber(value);});
+            console.log(obo);
+        }
+    </script>
+    <h3>MapKeys, MapValues: 遍歷並回傳處理後的值</h3>
+    <div>users = {<br>
+        'fred':    { 'user': 'fred',    'age': 40 },<br>
+        'pebbles': {'user': 'pebbles', 'age': 1   }}</div>
+    <div>將value改為留下age</div>
+    <button onclick="mv()">
+        value = age
+    </button>
+    <div>object = { 'a': 1, 'b': '2', 'c': 3 }</div>
+    <div>將key加上value</div>
+    <button onclick="mk()">
+        key + value
+    </button>
+    <script>
+        var users = {
+            'fred':    { 'user': 'fred',    'age': 40 },
+            'pebbles': { 'user': 'pebbles', 'age': 1 }
+        };
+        function mv(){
+            var newmv = _.mapValues(users, value => { return value.age; });
+            console.log(newmv);
+        }
+        function mk(){
+            var newob = _.mapKeys(object, function(value,key){
+                return key+value;
+            })
+            console.log(newob);
+        }
+    </script>
+    <h3>Has: 確認object是否含有指定路徑</h3>
+    <div>object1 = { 'a': { 'b': 2 } }</div>
+    <button onclick="hasa()">
+        has a?
+    </button>
+    <button onclick="hasab()">
+        has a.b?
+    </button>
+    <button onclick="hasaab()">
+        has [a, b]?
+    </button>
+    <button onclick="hasb()">
+        has b?
+    </button>
+    <button onclick="has2()">
+        has 2?
+    </button>
+    <script>
+        var object1 = { 'a': { 'b': 2 } };
+        function hasa(){
+            console.log(_.has(object1,'a'));
+        }
+        function hasab(){
+            console.log(_.has(object1,'a.b'));
+        }
+        function hasaab(){
+            console.log(_.has(object1,['a','b']));
+        }
+        function hasb(){
+            console.log(_.has(object1,'b'));
+        }
+        function has2(){
+            console.log(_.has(object1,2));
+        }
+    </script>
+    <h2>Collection常用功能</h2>
+    <div>Collection 可同時用於array及object，有部分可用於string上</div>
+    <div>*Collection相關功能輸出至console</div>
+    <h3>Size: 計算內容個數</h3>
+    <button onclick="sa()">
+        size of [1,2,3]
+    </button>
+    <button onclick="so()">
+        size of {'a':1,'b':2}
+    </button>
+    <button onclick="ss()">
+        size of "string"
+    </button>
+    <script>
+        function sa(){
+            console.log(_.size([1,2,3]));
+        }
+        function so(){
+            console.log(_.size({'a':1,'b':2}));
+        }
+        function ss(){
+            console.log(_.size("string"));
+        }
+    </script>
+    <h3>Map: 遍歷內容後回傳一處理過的array</h3>
+    <div>*順序無法保證</div>
+    <button onclick="ma()">
+        square [2,5]
+    </button>
+    <button onclick="mb()">
+        square {'a':4,'b':6,'c':8}
+    </button>
+    <div>obj = [{'user':'aaa'},{'user':'abc'}]</div>
+    <button onclick="mu()">
+        get 'user'
+    </button>
+    <script>
+        function square(n){
+            return n*n;
+        }
+        var obj = [{'user':'aaa'},{'user':'abc'}];
+        function ma(){
+            console.log(_.map([2,5],square));
+        }
+        function mb(){
+            console.log(_.map({'a':4,'b':6,'c':8},square));
+        }
+        function mu(){
+            console.log(_.map(obj,'user'));
+        }
+    </script>
+</body>
+</html>
