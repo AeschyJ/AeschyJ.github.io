@@ -1,5 +1,7 @@
 # AeschyJ.github.io/109-2Frontend/HW2/
 
+## 參考資料:https://lodash.com/docs/4.17.15
+
 ## 使用的library: Lodash
 
 ## 介紹的功能:
