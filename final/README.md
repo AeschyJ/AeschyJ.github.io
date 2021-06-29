@@ -1,5 +1,5 @@
-# [網頁連結](AeschyJ.github.io/final)
-# [影片連結]
+# [網頁連結 (AeschyJ.github.io/final)](AeschyJ.github.io/final)
+# [影片連結 (https://drive.google.com/file/d/16SldM9GhzA7JElkyYTAyDHoHTGtgvi_w/view?usp=sharing)](https://drive.google.com/file/d/16SldM9GhzA7JElkyYTAyDHoHTGtgvi_w/view?usp=sharing)
 
 ## 專題主題：
 
