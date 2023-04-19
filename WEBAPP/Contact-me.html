@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>與我聯絡</title>
+    <link rel="Shortcut Icon" type="image/x-icon" href="./img/favicon.ico" />
+
+    <link rel="stylesheet" href ="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="script.js"></script>
+ </head>
+
+
+<body onload="init()" id="body" data-bs-target="#navbar-example2" data-bs-spy="scroll" style="background-color: rgba(144, 156, 209, 0.548);">
+    
+    <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" class="scrollspy-example" tabindex="0">
+        <div id="backpic" class="p-5" style="background-color: rgb(171, 180, 84); background-position:center; background-size:100%;">
+            <div class="shadow bg-body fs-3 text-center mx-auto p-5 mb-3 rounded w-50">
+              與我聯絡
+            </div>
+        </div>
+    </div>
+
+  <nav id="navbar-example2" class="navbar navbar-light px-3 sticky-top" style="background-color: lightgreen;">
+      <ul class="nav">
+        <li class="nav-item mx-1">
+          <button class="btn" onclick="light()" type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Turn on/off the light">
+            <img  id="bulb" src="./img/lightbulbon.svg" alt="...">
+          </button>
+        </li>
+          <a href="#" class="navbar-brand">與我聯絡</a>
+      </ul>
+        <ul class="nav nav-pills justfied-content-end">
+
+          <li class="nav-item">
+            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                <img src="./img/three-bars.svg">
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+              <div class="offcanvas-header">
+                <h4 id="offcanvasRightLabel">
+                  <button type="button" class="btn" onclick="location.href='index.html'">
+                    <h4 style="color: rgb(216, 97, 137);">
+                      首頁
+                    </h4>
+                  </button>
+                </h4>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div class="list-group list-group-flush ms-3">
+                <button type="button" onclick="location.href='Self-Introduction.html'" class="list-group-item list-group-item-action py-3">
+                  瞭解更多
+                </button>
+                <button type="button" onclick="location.href='Contact-me.html'" class="list-group-item list-group-item-action py-3" disabled>
+                  作品集(設計中)
+                </button>   
+                <button type="button" onclick="location.href='Contact-me.html'" class="list-group-item list-group-item-secondary list-group-item-action py-3 active" aria-current="true">
+                  與我聯絡
+                </button>
+              </div>
+            </div>
+          </li>
+        </ul>
+    </nav>
+
+    <div class="container mt-5 rounded p-3" style="background-color: rgba(108, 206, 125, 0.616);" data-aos="zoom-in" data-aos-duration="750" data-aos-delay="100">
+    <form  class="row g-4 justify-content-evenly" enctype="text/plain" accept-charset="utf-8">
+        <div class="col-md-6">
+            <label for="nameText" class="form-label">Name: </label>
+         <input id="nameText" class="form-control" type="text" placeholder="姓名(name)" required>  
+        </div>
+        <div class="col-md-6">
+            <label for="emailText" class="form-label">Email: </label>
+         <input id="emailText" type="email" class="form-control" name="Email" placeholder="Email" required>
+        </div>
+        <div class="col-md-6">
+            <label for="telText" class="form-label">Phone: </label>
+         <input id="telText"type="tel" class="form-control" name="Phone"  aria-invalid="false" placeholder="電話(phone)" required>
+        </div>
+        <div class="col-md-6">
+            <label for="subText" class="form-label">Subject: </label>
+         <input  id="subText" type="text" class="form-control" name="Subject"  aria-invalid="false" placeholder="主旨(subject)" required>
+        </div>
+        <div class="col-12">
+            <label for="bodyText" class="form-label">Your Text: </label>
+         <textarea class="col-12 form-control" id="bodyText" name="your-message" aria-required="true" aria-invalid="false" placeholder="你的訊息(Your Message)" required></textarea>
+        </div>
+         <div>
+             <input class="btn btn-success" type="button" value="送出訊息" onclick="submitHandler();">
+             <a id="mailTo"></a>
+         </div>
+     </form>
+    </div>
+
+  <div id="placeholder"></div>
+  <ul class="nav justify-content-end pt-3 pe-3" style="background-color: rgba(255, 255, 255, 0.349); padding-bottom: 3rem;">
+    <li class="nav-item me-auto ms-3">
+        <button id="botbot1" type="button" onclick="location.href='index.html'" class="btn btn-outline-dark me-3">回首頁</button>
+      </li>
+    <li class="nav-item">
+      <button id="botbot2" type="button" onclick="location.href='Self-Introduction.html'" class="btn btn-outline-dark me-3">瞭解更多</button>
+    </li>
+    <li class="nav-item">
+      <button disabled id="botbot1" type="button" onclick="location.href='Self-Introduction.html'" class="btn btn-outline-dark me-3">作品集(設計中)</button>
+    </li>
+    <li class="nav-item">
+      <button type="button" onclick="location.href='Contact-me.html'" class="btn btn-outline-dark active" aria-current="true">與我聯絡</button>
+    </li>
+  </ul>
+  <div id="botsc" class="ps-3 pb-3 text-center" style="background-color: rgba(255, 255, 255, 0.349); font-size: x-small;">© Copyright © 2021 All rights reserved
+  <div class="text-center mt-3">
+    <script>
+      var time = Date();
+      document.write("進站時間： "+time);
+    </script>
+  </div>
+</div>
+  <script>
+    AOS.init();
+  </script>
+</body>
+</html>

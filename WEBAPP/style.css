@@ -1,0 +1,21 @@
+body{
+    position: relative;
+    padding-top: 0px;
+}
+
+.carousel-inner {
+    height: 100%;
+    width: 100%;
+}
+
+.carousel-item img {
+    object-fit: cover;
+    object-position: center;
+    height: 50vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+#placeholder{
+    height: 50vh;
+}

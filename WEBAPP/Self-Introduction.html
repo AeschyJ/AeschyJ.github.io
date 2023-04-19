@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>瞭解更多</title>
+    <link rel="Shortcut Icon" type="image/x-icon" href="./img/favicon.ico" />
+
+    <link rel="stylesheet" href ="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="script.js"></script>
+ </head>
+
+
+<body id="body" data-bs-target="#navbar-example2" data-bs-spy="scroll" style="background-color: rgba(144, 156, 209, 0.548);">
+  
+  <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="" class="scrollspy-example" tabindex="0">
+    <div id="backpic" class="p-3" style="background-color: rgb(226, 138, 104); background-position:center; background-size:100%;">
+        <div class="container shadow fs-3 text-center bg-light w-50 mt-5 mx-auto p-5 mb-3 rounded">
+          關於我
+        </div>
+    </div>  
+
+  <nav id="navbar-example2" class="navbar navbar-light px-3 sticky-top" style="background-color: lightpink;">
+      <ul class="nav">
+        <li class="nav-item mx-1">
+          <button class="btn" onclick="light()" type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Turn on/off the light">
+            <img  id="bulb" src="./img/lightbulbon.svg" alt="...">
+          </button>
+        </li>
+          <a href="#" class="navbar-brand">瞭解更多</a>
+      </ul>
+        <ul class="nav nav-pills justfied-content-end">
+          <li class="nav-item">
+            <a class="nav-link" href="#scrollspyHeading01">背景</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#scrollspyHeading02">能力</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#scrollspyHeading03">個人特質</a>
+          </li>
+
+          <li class="nav-item">
+            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                <img src="./img/three-bars.svg">
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+              <div class="offcanvas-header">
+                <h4 id="offcanvasRightLabel">
+                  <button type="button" class="btn" onclick="location.href='index.html'">
+                    <h4 style="color: rgb(216, 97, 137);">
+                      首頁
+                    </h4>
+                  </button>
+                </h4>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div class="list-group list-group-flush ms-3">
+                <button type="button" aria-current="true" onclick="location.href='Self-Introduction.html'" class="list-group-item-secondary active list-group-item list-group-item-action py-3">
+                  瞭解更多
+                </button>
+                <button type="button" onclick="location.href='Contact-me.html'" class="list-group-item list-group-item-action py-3" disabled>
+                  作品集(設計中)
+                </button>   
+                <button type="button" onclick="location.href='Contact-me.html'" class="list-group-item list-group-item-action py-3">
+                  與我聯絡
+                </button>
+              </div>
+            </div>
+          </li>
+        </ul>
+    </nav>
+
+
+        <div id="scrollspyHeading01" style="margin-bottom: 5rem;"></div>
+        <div class="btn-group">
+          <button type="button" class="p-3 btn bg-danger text-white fs-3" style="width: 66vw;" disabled>背景</button>
+          <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><button class="dropdown-item" onclick="edu()">教育</button></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><button class="dropdown-item" onclick="exp()">經歷</button></li>
+          </ul>
+        </div>
+
+
+        <div class="container-fluid" id="bagr" data-aos="fade-up" data-aos-duration="750" data-aos-delay="100">
+            <h3 class="container text-center w-25 bg-warning rounded-circle p-4 my-5">
+            教育
+            </h3>
+            <div class="container p-4 bg-body shadow mb-3" data-aos="fade-up" data-aos-duration="750" data-aos-delay="200">
+              <div class="row ">
+                <div class="col-md-3 bg-light p-3">
+                  <div id="testo">
+                    <div style="color: rgb(154, 118, 224);">
+                        2007-2013
+                    </div>
+                    <strong>
+                      和平國小</strong>
+                    <br>
+                    <small>
+                      屏東
+                  </small>
+                  </div>
+                </div>
+                
+                <div class="col-md-6 offset-md-3 mb-3" id="test">
+                  這是我最快樂的求學時期，也是我最早開始對數理感興趣的時間點
+                  <div class="mt-3">
+                    <strong>
+                      童年啊...
+                    </strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container p-4 bg-body shadow mb-3" data-aos="fade-up" data-aos-duration="750" data-aos-delay="300">
+              <div class="row ">
+                <div class="col-md-3 bg-light p-3">
+                  <div>
+                    <div style="color: rgb(154, 118, 224);">
+                        2013-2016
+                    </div>
+                    <strong>
+                      美和國中</strong>
+                    <br>
+                    <small>
+                      屏東
+                  </small>
+                  </div>
+                </div>
+                <div class="col-md-6 offset-md-3 mb-3">
+                  私立國中雖然比公立的有著更多規範，但也讓我能加強學習時的專注度，提升自己學業的基礎
+                  <div class="mt-3 text-muted">
+                    <small>
+                      <del>
+                        福利社蛋餅好吃
+                      </del>
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container p-4 bg-body shadow mb-3" data-aos="fade-up" data-aos-duration="750" data-aos-delay="300">
+              <div class="row ">
+                <div class="col-md-3 bg-light p-3">
+                  <div>
+                    <div style="color: rgb(154, 118, 224);">
+                        2016-2019
+                    </div>
+                    <strong>
+                      美和高中</strong>
+                    <br>
+                    <small>
+                      屏東
+                  </small>
+                  </div>
+                </div>
+                <div class="col-md-6 offset-md-3 mb-3">
+                  直升上高中，在我已習慣的環境下繼續念書，也慢慢增加花在課外活動的時間
+                </div>
+              </div>
+            </div>
+            <div class="container p-4 bg-body shadow mb-3" data-aos="fade-up" data-aos-duration="750" data-aos-delay="300">
+              <div class="row ">
+                <div class="col-md-3 bg-light p-3">
+                  <div>
+                    <div style="color: rgb(154, 118, 224);">
+                        2019-
+                    </div>
+                    <strong>
+                      台灣大學</strong>
+                    <br>
+                    <small>
+                      台北
+                  </small>
+                  </div>
+                </div>
+                <div class="col-md-6 offset-md-3 mb-3">
+                  全新的環境令人難以適應，但我對於台北這大城市的速度感已越來越拿手
+                  <div class="mt-3 text-warning">
+                    這燈紅酒綠的地方真令人著迷...
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <span style="display: none;">
+          <div id="exp">
+            <h3 class="container text-center w-25 bg-success text-white rounded-circle p-4 my-5" data-aos="fade-up" data-aos-duration="750" data-aos-delay="100">
+              經歷
+            </h3>
+              <div class="container p-4 bg-body shadow mb-3" data-aos="fade-up" data-aos-duration="750" data-aos-delay="200">
+                <div class="row ">
+                  <div class="col-md-3 bg-light p-3">
+                    <div>
+                      <div style="color: rgb(154, 118, 224);">
+                          2021
+                      </div>
+                      <h4>會長</h4>
+                      <small>
+                        台大屏友會
+                    </small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 offset-md-3 mb-3">
+                    來台北後發現家鄉的美好，也發覺同鄉稀少，期許為家鄉的學弟妹們帶來一個溫暖的避風港
+                  </div>
+                </div>
+              </div>
+              <div class="container p-4 bg-body shadow mb-3" data-aos="fade-up" data-aos-duration="750" data-aos-delay="300">
+                <div class="row ">
+                  <div class="col-md-3 bg-light p-3">
+                    <div>
+                      <div style="color: rgb(154, 118, 224);">
+                          2021
+                      </div>
+                      <h4>
+                        負責人
+                      </h4>
+                      <small>
+                        雄桃之夜 晚會劇
+                    </small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 offset-md-3 mb-3">
+                    負責劇中角色的演技指導及劇情監修，是我第一次有機會在大舞台、大型表演擔任負責人
+                    ，並且演出成果令我非常驚喜之好。
+                    <br><br>
+                      這次演出不只帶給我許多表演上的經驗，更讓我能磨練我的社交技巧，還交到一群志同道合的朋友們
+                      ，意料之外的收穫讓人驚奇！
+                  </div>
+                </div>
+              </div>
+              <div class="container p-4 bg-body shadow mb-3" data-aos="fade-up" data-aos-duration="750" data-aos-delay="300">
+                <div class="row ">
+                  <div class="col-md-3 bg-light p-3">
+                    <div>
+                      <div style="color: rgb(154, 118, 224);">
+                          2020
+                      </div>
+                      <h4>公關長</h4>
+                      <small>
+                        台大雄友會
+                    </small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 offset-md-3 mb-3">
+                    雖然缺乏相關經驗，但努力去試著當了公關，發現並沒有我想像的那麼難，
+                    儘管有時會遇到障礙，但只要多嘗試，並且不害怕詢問他人，最後總能迎刃而解
+                    <br><br>
+                    這難得的經驗使我發覺自己的社交天分，並且得知了許多外人難以曉得的做事方式！
+                  </div>
+                </div>
+              </div>
+          </div>
+
+
+          <div id="edu">
+            <h3 class="container text-center w-25 bg-warning rounded-circle p-4 my-5">
+            教育
+            </h3>
+            <div class="container p-4 bg-body shadow mb-3" data-aos="fade-up" data-aos-duration="750" data-aos-delay="200">
+              <div class="row ">
+                <div class="col-md-3 bg-light p-3">
+                  <div id="testo">
+                    <div style="color: rgb(154, 118, 224);">
+                        2007-2013
+                    </div>
+                    <strong>
+                      和平國小</strong>
+                    <br>
+                    <small>
+                      屏東
+                  </small>
+                  </div>
+                </div>
+                
+                <div class="col-md-6 offset-md-3 mb-3" id="test">
+                  這是我最快樂的求學時期，也是我最早開始對數理感興趣的時間點
+                  <div class="mt-3">
+                    <strong>
+                      童年啊...
+                    </strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container p-4 bg-body shadow mb-3" data-aos="fade-up" data-aos-duration="750" data-aos-delay="300">
+              <div class="row ">
+                <div class="col-md-3 bg-light p-3">
+                  <div>
+                    <div style="color: rgb(154, 118, 224);">
+                        2013-2016
+                    </div>
+                    <strong>
+                      美和國中</strong>
+                    <br>
+                    <small>
+                      屏東
+                  </small>
+                  </div>
+                </div>
+                <div class="col-md-6 offset-md-3 mb-3">
+                  私立國中雖然比公立的有著更多規範，但也讓我能加強學習時的專注度，提升自己學業的基礎
+                  <div class="mt-3 text-muted">
+                    <small>
+                      <del>
+                        福利社蛋餅好吃
+                      </del>
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container p-4 bg-body shadow mb-3" data-aos="fade-up" data-aos-duration="750" data-aos-delay="300">
+              <div class="row ">
+                <div class="col-md-3 bg-light p-3">
+                  <div>
+                    <div style="color: rgb(154, 118, 224);">
+                        2016-2019
+                    </div>
+                    <strong>
+                      美和高中</strong>
+                    <br>
+                    <small>
+                      屏東
+                  </small>
+                  </div>
+                </div>
+                <div class="col-md-6 offset-md-3 mb-3">
+                  直升上高中，在我已習慣的環境下繼續念書，也慢慢增加花在課外活動的時間
+                </div>
+              </div>
+            </div>
+            <div class="container p-4 bg-body shadow mb-3" data-aos="fade-up" data-aos-duration="750" data-aos-delay="300">
+              <div class="row ">
+                <div class="col-md-3 bg-light p-3">
+                  <div>
+                    <div style="color: rgb(154, 118, 224);">
+                        2019-
+                    </div>
+                    <strong>
+                      台灣大學</strong>
+                    <br>
+                    <small>
+                      台北
+                  </small>
+                  </div>
+                </div>
+                <div class="col-md-6 offset-md-3 mb-3">
+                  全新的環境令人難以適應，但我對於台北這大城市的速度感已越來越拿手
+                  <div class="mt-3 text-warning">
+                    這燈紅酒綠的地方真令人著迷...
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </span>
+
+        <div id="scrollspyHeading02" ></div>
+        <div id="placeholder"></div>
+        <div data-aos="fade-left" data-aos-duration="750" data-aos-delay="100" class="rounded-pill h3 col ms-auto p-4 mb-4" style="background-color: orange; width: 53vw; ">
+能力
+        </div>
+        <div data-aos="flip-down" data-aos-duration="750" data-aos-delay="400" class="container p-4 shadow mb-3" style="background-color: rgb(248, 231, 231);">
+          <div class="row">
+            <div class="col-6 p-3">
+              <ul><h4>英文</h4>
+                <br>
+                <li>多益925分</li>
+                <li>全民英檢中高級初試</li>
+                <li>全民英檢中級</li>
+              </ul>
+            </div>
+            <div class="col-6 bg-light p-3">
+              <ul><h4>程式語言</h4>
+                <li>C</li>
+                <li>C++</li>
+                <li>Python</li>
+                <li>Java</li>
+                <li>html</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="scrollspyHeading03"></div>
+        <div id="placeholder"></div>
+        <div data-aos="fade-right" data-aos-duration="750" data-aos-delay="100" class="h3 col p-4 mb-4 text-end rounded" style="background-color: rgb(230, 100, 68); width: 71vw; ">
+          個人特質
+                  </div>
+                  <div data-aos="flip-up" data-aos-duration="750" data-aos-delay="400" class="container p-4 shadow mb-3" style="background-color: rgb(243, 211, 122);">
+                    <div class="row">
+                      <div class="col-6 p-3">
+                        <ul><h4>興趣</h4><br>
+                          <li>羽球</li>
+                          <li>電玩</li>
+                          <li>上網</li>
+                        </ul>
+                      </div>
+                      <div class="col-6 bg-light p-3">
+                        <ul><h4>人格特質</h4>
+                          <li>健談</li>
+                          <li>外向</li>
+                          <li>善於溝通</li>
+                          <li>邏輯能力</li>
+                          <li>喜愛蒐集資料</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+  <div id="placeholder"></div>
+  <ul class="nav justify-content-end pt-3 pe-3" style="background-color: rgba(255, 255, 255, 0.349); padding-bottom: 3rem;">
+    <li class="nav-item me-auto ms-3">
+      <button id="botbot1" type="button" onclick="location.href='index.html'" class="btn btn-outline-dark me-3">回首頁</button>
+    </li>
+    <li class="nav-item">
+      <button type="button" onclick="location.href='Self-Introduction.html'" class="btn btn-outline-dark me-3 active" aria-current="true">瞭解更多</button>
+    </li>
+    <li class="nav-item">
+      <button disabled id="botbot1" type="button" onclick="location.href='Self-introduction.html'" class="btn btn-outline-dark me-3">作品集(設計中)</button>
+    </li>
+    <li class="nav-item">
+      <button id="botbot2" type="button" onclick="location.href='Contact-me.html'" class="btn btn-outline-dark">與我聯絡</button>
+    </li>
+  </ul>
+  <div id="botsc" class="ps-3 pb-3 text-center" style="background-color: rgba(255, 255, 255, 0.349); font-size: x-small;">© Copyright © 2021 All rights reserved
+  <div class="text-center mt-3">
+    <script>
+      var time = Date();
+      document.write("進站時間： "+time);
+    </script>
+  </div>
+</div>
+  <script>
+    AOS.init();
+  </script>
+</body>
+</html>
