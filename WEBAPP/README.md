@@ -1,1 +1,1 @@
-WWBAPP
+WEBAPP
