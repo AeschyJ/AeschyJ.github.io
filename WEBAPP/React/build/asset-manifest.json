@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/WEBAPP/React/build/static/css/main.36d5f78f.css",
-    "main.js": "/WEBAPP/React/build/static/js/main.0d01874e.js",
+    "main.js": "/WEBAPP/React/build/static/js/main.a9c20745.js",
     "static/js/787.994511a4.chunk.js": "/WEBAPP/React/build/static/js/787.994511a4.chunk.js",
     "static/media/dog-shetland-sheepdog-collie-sheltie-royalty-free-image-491206081-1565123992.jpg": "/WEBAPP/React/build/static/media/dog-shetland-sheepdog-collie-sheltie-royalty-free-image-491206081-1565123992.0ace8e53b21dec0e250d.jpg",
     "static/media/samoyed-royalty-free-image-1581005065.jpg": "/WEBAPP/React/build/static/media/samoyed-royalty-free-image-1581005065.e1ff3ee1bd1b0a2b3cc4.jpg",
@@ -9,11 +9,11 @@
     "static/media/member icon.svg": "/WEBAPP/React/build/static/media/member icon.cbb56200b4f1e662526638ceca66730f.svg",
     "index.html": "/WEBAPP/React/build/index.html",
     "main.36d5f78f.css.map": "/WEBAPP/React/build/static/css/main.36d5f78f.css.map",
-    "main.0d01874e.js.map": "/WEBAPP/React/build/static/js/main.0d01874e.js.map",
+    "main.a9c20745.js.map": "/WEBAPP/React/build/static/js/main.a9c20745.js.map",
     "787.994511a4.chunk.js.map": "/WEBAPP/React/build/static/js/787.994511a4.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.36d5f78f.css",
-    "static/js/main.0d01874e.js"
+    "static/js/main.a9c20745.js"
   ]
 }
