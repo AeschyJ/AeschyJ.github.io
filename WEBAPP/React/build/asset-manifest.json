@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.2cdfa935.css",
-    "main.js": "/static/js/main.ce3191e8.js",
-    "static/js/787.994511a4.chunk.js": "/static/js/787.994511a4.chunk.js",
-    "static/media/dog-shetland-sheepdog-collie-sheltie-royalty-free-image-491206081-1565123992.jpg": "/static/media/dog-shetland-sheepdog-collie-sheltie-royalty-free-image-491206081-1565123992.0ace8e53b21dec0e250d.jpg",
-    "static/media/samoyed-royalty-free-image-1581005065.jpg": "/static/media/samoyed-royalty-free-image-1581005065.e1ff3ee1bd1b0a2b3cc4.jpg",
-    "static/media/golden-retriever-royalty-free-image-506756303-1560962726.jpg": "/static/media/golden-retriever-royalty-free-image-506756303-1560962726.3d574772af6e6750864a.jpg",
-    "static/media/member icon.svg": "/static/media/member icon.cbb56200b4f1e662526638ceca66730f.svg",
-    "index.html": "/index.html",
-    "main.2cdfa935.css.map": "/static/css/main.2cdfa935.css.map",
-    "main.ce3191e8.js.map": "/static/js/main.ce3191e8.js.map",
-    "787.994511a4.chunk.js.map": "/static/js/787.994511a4.chunk.js.map"
+    "main.css": "./static/css/main.2cdfa935.css",
+    "main.js": "./static/js/main.a4e9e88a.js",
+    "static/js/787.994511a4.chunk.js": "./static/js/787.994511a4.chunk.js",
+    "static/media/dog-shetland-sheepdog-collie-sheltie-royalty-free-image-491206081-1565123992.jpg": "./static/media/dog-shetland-sheepdog-collie-sheltie-royalty-free-image-491206081-1565123992.0ace8e53b21dec0e250d.jpg",
+    "static/media/samoyed-royalty-free-image-1581005065.jpg": "./static/media/samoyed-royalty-free-image-1581005065.e1ff3ee1bd1b0a2b3cc4.jpg",
+    "static/media/golden-retriever-royalty-free-image-506756303-1560962726.jpg": "./static/media/golden-retriever-royalty-free-image-506756303-1560962726.3d574772af6e6750864a.jpg",
+    "static/media/member icon.svg": "./static/media/member icon.cbb56200b4f1e662526638ceca66730f.svg",
+    "index.html": "./index.html",
+    "main.2cdfa935.css.map": "./static/css/main.2cdfa935.css.map",
+    "main.a4e9e88a.js.map": "./static/js/main.a4e9e88a.js.map",
+    "787.994511a4.chunk.js.map": "./static/js/787.994511a4.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.2cdfa935.css",
-    "static/js/main.ce3191e8.js"
+    "static/js/main.a4e9e88a.js"
   ]
 }
