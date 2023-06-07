@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/WEBAPP/React/build/static/css/main.fd62e5cf.css",
-    "main.js": "/WEBAPP/React/build/static/js/main.1385df30.js",
+    "main.css": "/WEBAPP/React/build/static/css/main.ba0744ec.css",
+    "main.js": "/WEBAPP/React/build/static/js/main.baec931b.js",
     "static/js/787.994511a4.chunk.js": "/WEBAPP/React/build/static/js/787.994511a4.chunk.js",
     "static/media/pigeons.jpg": "/WEBAPP/React/build/static/media/pigeons.21d09e50bcf578cd3ef6.jpg",
     "static/media/Kitten.png": "/WEBAPP/React/build/static/media/Kitten.ce1a8df78bf77d1e6613.png",
@@ -16,16 +16,17 @@
     "static/media/adult_dog.jpg": "/WEBAPP/React/build/static/media/adult_dog.49e243c1a71c81123e37.jpg",
     "static/media/bird.jpg": "/WEBAPP/React/build/static/media/bird.e80af78495eeea551f6b.jpg",
     "static/media/puppy.jpg": "/WEBAPP/React/build/static/media/puppy.84e3be7718d18abc608a.jpg",
+    "static/media/donate.jpg": "/WEBAPP/React/build/static/media/donate.9ef67c6f1f7db17246d2.jpg",
     "static/media/special_cat.jpg": "/WEBAPP/React/build/static/media/special_cat.ca348faa0ae3aa3d3442.jpg",
     "static/media/special_dog.jpg": "/WEBAPP/React/build/static/media/special_dog.28e31dfc9779236ad80f.jpg",
     "static/media/member icon.svg": "/WEBAPP/React/build/static/media/member icon.b103a06209e87e196f39752c40fd9fb7.svg",
     "index.html": "/WEBAPP/React/build/index.html",
-    "main.fd62e5cf.css.map": "/WEBAPP/React/build/static/css/main.fd62e5cf.css.map",
-    "main.1385df30.js.map": "/WEBAPP/React/build/static/js/main.1385df30.js.map",
+    "main.ba0744ec.css.map": "/WEBAPP/React/build/static/css/main.ba0744ec.css.map",
+    "main.baec931b.js.map": "/WEBAPP/React/build/static/js/main.baec931b.js.map",
     "787.994511a4.chunk.js.map": "/WEBAPP/React/build/static/js/787.994511a4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fd62e5cf.css",
-    "static/js/main.1385df30.js"
+    "static/css/main.ba0744ec.css",
+    "static/js/main.baec931b.js"
   ]
 }
