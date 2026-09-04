@@ -1,0 +1,1507 @@
+/* ==========================================================================
+   📖 行旅手記 (Travel Journal & Planner) 專屬樣式表
+   Modern Kyoto Wabi-Sabi ✕ Morandi Palette ✕ Authentic Washi Craftsmanship
+   ========================================================================== */
+
+/* 0. 手記模式全域滾動解除與 22px 手帳點陣方眼全螢幕底紋 */
+html.journal-mode-active,
+body.journal-mode-active {
+  height: auto !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  background-color: #F7F4EC !important;
+  background-image: 
+    radial-gradient(#B8ACA0 1.5px, transparent 1.5px),
+    var(--washi-hosho) !important;
+  background-size: 22px 22px, auto !important;
+  background-attachment: fixed !important;
+}
+
+body.journal-mode-active header.glass-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* 1. 主手記工作區容器 */
+.journal-workspace {
+  display: none !important;
+  flex-direction: column !important;
+  width: 100%;
+  max-width: 900px;
+  margin: 1rem auto 6rem auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  gap: 1.2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.journal-workspace.active {
+  display: flex !important;
+  animation: fadeInJournal 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInJournal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ⛩️ 風土名所水墨插畫浮水印 (位於 900px 工作區兩側外部背景，不遮擋卡片) */
+.journal-bg-decorations {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bg-sketch {
+  position: absolute;
+  color: var(--ink-sumi, #1F2429);
+  opacity: 0.07;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+  transition: opacity 0.3s ease;
+  user-select: none;
+}
+
+.sketch-top-left {
+  top: 90px;
+  left: max(10px, calc(50vw - 460px - 145px));
+  width: 140px;
+  height: 140px;
+}
+
+.sketch-top-right {
+  top: 280px;
+  right: max(10px, calc(50vw - 460px - 150px));
+  width: 150px;
+  height: 130px;
+}
+
+.sketch-bottom-right {
+  bottom: 80px;
+  left: max(10px, calc(50vw - 460px - 140px));
+  width: 135px;
+  height: 135px;
+}
+
+@media (max-width: 1200px) {
+  .bg-sketch {
+    opacity: 0.04;
+  }
+}
+
+/* 2. 頂部旅人視角與工具狀態條 (Header 頂部列專屬膠囊風格 - 單行不換行) */
+.journal-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 0.45rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  position: relative;
+  white-space: nowrap;
+}
+
+.journal-peer-selector-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 📜 和風侘寂視角切換銘牌按鈕 */
+.journal-peer-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.7rem;
+  background-color: var(--washi-cream, #FAF7F0);
+  background-image: var(--washi-hosho);
+  border: 1.2px solid var(--ink-border, #CFC5B2);
+  border-radius: var(--radius-xs, 3px);
+  color: var(--ink-sumi, #1F2429);
+  font-family: var(--font-handwriting);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.journal-peer-trigger:hover {
+  background-color: #FFFFFF;
+  border-color: var(--theme-primary, var(--shuin-red, #B83B3B));
+  color: var(--theme-primary, var(--shuin-red, #B83B3B));
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.peer-trigger-icon {
+  font-size: 0.95rem;
+}
+
+.peer-trigger-prefix {
+  color: var(--ink-muted, #73695C);
+  font-weight: 600;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.peer-trigger-current {
+  color: var(--ink-sumi, #1F2429);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.peer-trigger-arrow {
+  font-size: 0.75rem;
+  color: var(--ink-muted, #73695C);
+  transition: transform 0.25s ease;
+  margin-left: 0.15rem;
+}
+
+.journal-peer-custom-dropdown.open .peer-trigger-arrow {
+  transform: rotate(180deg);
+  color: var(--theme-primary, var(--shuin-red));
+}
+
+/* ⛩️ 和風懸浮視角選單浮層 */
+.journal-peer-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 230px;
+  background-color: var(--paper-hosho, #FAF8F5);
+  background-image: var(--washi-hosho);
+  border: 1.5px solid var(--ink-border, #CFC5B2);
+  border-radius: var(--radius-sm, 4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), var(--shadow-paper-sheet);
+  z-index: 1050;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  animation: dropdownIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.journal-peer-custom-dropdown.open .journal-peer-menu {
+  display: flex;
+}
+
+.peer-menu-header {
+  padding: 0.65rem 0.85rem;
+  background: rgba(184, 59, 59, 0.05);
+  border-bottom: 1px solid var(--ink-border-light, #E2D9CE);
+  font-family: var(--font-mincho);
+  font-weight: 800;
+  font-size: 0.78rem;
+  color: var(--theme-primary, var(--shuin-red));
+  letter-spacing: 0.05em;
+}
+
+.peer-menu-list {
+  display: flex;
+  flex-direction: column;
+  padding: 0.35rem 0;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.peer-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.85rem;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  color: var(--ink-sumi);
+  position: relative;
+}
+
+.peer-menu-item:hover {
+  background-color: var(--washi-warm, #EFE6D5);
+}
+
+.peer-menu-item.active {
+  background-color: rgba(184, 59, 59, 0.08);
+  font-weight: bold;
+}
+
+.peer-item-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.peer-item-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.peer-item-name {
+  font-family: var(--font-handwriting);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink-sumi);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.peer-item-desc {
+  font-family: var(--font-maru);
+  font-size: 0.68rem;
+  color: var(--ink-muted);
+  margin-top: 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.peer-item-check {
+  font-size: 0.85rem;
+  color: var(--theme-primary, var(--shuin-red));
+  font-weight: bold;
+}
+
+.journal-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.btn-journal-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.7rem;
+  font-family: var(--font-handwriting);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: var(--radius-xs, 0px);
+  border: 1.2px solid var(--ink-border, #CFC5B2);
+  background: var(--washi-cream, #FBF8F2);
+  color: var(--ink-sumi);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-paper-tab);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-journal-top:hover {
+  background: var(--washi-warm, #EFE6D5);
+  border-color: var(--theme-primary, var(--shuin-red));
+  color: var(--theme-primary, var(--shuin-red));
+  transform: translateY(-1px);
+}
+
+.btn-journal-top.primary {
+  background: var(--shuin-red, #B83B3B);
+  color: #FFFFFF;
+  border-color: var(--shuin-red-dark, #8F2222);
+  box-shadow: var(--shadow-shuin);
+}
+
+.btn-journal-top.primary:hover {
+  background: var(--shuin-red-dark, #8F2222);
+  color: #FFFFFF;
+}
+
+/* 📱 手機端專屬手記控制列 (Mobile Journal Control Bar - 100% 防溢出 Grid) */
+.journal-mobile-control-bar {
+  display: none;
+  flex-direction: column;
+  gap: 0.45rem;
+  background-color: var(--paper-hosho, #FBF8F2);
+  background-image: var(--washi-hosho);
+  border: 1.5px solid var(--ink-border, #CFC5B2);
+  border-radius: var(--radius-sm, 3px);
+  padding: 0.55rem 0.65rem;
+  box-shadow: var(--shadow-paper-sheet);
+  box-sizing: border-box;
+  margin-bottom: 0.75rem;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.journal-mobile-control-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.journal-mobile-control-row > * {
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.journal-mobile-control-row .journal-peer-custom-dropdown {
+  width: 100%;
+  min-width: 0;
+}
+
+.journal-mobile-control-row .journal-peer-trigger,
+.journal-mobile-control-row .btn-journal-top {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0.38rem 0.45rem;
+  font-size: 0.76rem;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 3. 11 天和風栞籤日期導航 (Shiori Bookmark Pills) */
+.journal-days-nav {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.4rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-border-dashed) transparent;
+}
+
+.journal-days-nav::-webkit-scrollbar {
+  height: 4px;
+}
+.journal-days-nav::-webkit-scrollbar-thumb {
+  background: var(--ink-border-dashed);
+  border-radius: 2px;
+}
+
+.journal-day-pill {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.9rem 0.45rem;
+  border: 1.2px solid var(--ink-border, #CFC5B2);
+  background: var(--washi-cream, #FBF8F2);
+  color: var(--ink-sumi);
+  border-radius: var(--radius-xs, 0px);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-paper-tab);
+  position: relative;
+  min-width: 68px;
+}
+
+/* 栞籤頂部地域色帶 (與首頁保持100%一致) */
+.journal-day-pill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--ink-border-dashed);
+  transition: height 0.2s ease;
+}
+
+.journal-day-pill:hover {
+  background: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-paper-active);
+}
+
+.journal-day-pill.out-of-range {
+  opacity: 0.55;
+  background: var(--paper-torinoko, #F4EFE6);
+  border-style: dashed;
+}
+
+.journal-day-pill.out-of-range .journal-day-pill-sub {
+  font-size: 0.65rem;
+  color: var(--ink-muted);
+}
+
+.journal-day-pill.out-of-range:hover {
+  opacity: 0.9;
+}
+
+.journal-day-pill.active {
+  background: #FFFFFF !important;
+  border-color: var(--theme-primary, var(--shuin-red)) !important;
+  color: var(--theme-primary, var(--shuin-red)) !important;
+  box-shadow: var(--shadow-shuin);
+  font-weight: 700;
+  transform: translateY(-2px);
+}
+
+.journal-day-pill.active::before {
+  height: 4px;
+}
+
+.journal-day-pill-title {
+  font-family: var(--font-mincho);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.journal-day-pill-sub {
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+  margin-top: 2px;
+}
+
+/* 地域特色頂線色帶 */
+.region-pill-nagoya::before { background: #D97706 !important; }
+.region-pill-inuyama::before { background: #0D9488 !important; }
+.region-pill-osaka::before { background: #E11D48 !important; }
+.region-pill-hyogo::before { background: #2563EB !important; }
+.region-pill-nara::before { background: #16A34A !important; }
+.region-pill-kyoto::before { background: #9333EA !important; }
+.journal-day-pill.btn-add-day {
+  border-style: dashed;
+  background: var(--washi-warm, #EFE6D5);
+  color: var(--ink-muted);
+  cursor: pointer;
+  min-width: 60px;
+}
+.journal-day-pill.btn-add-day:hover {
+  background: #FFFFFF;
+  color: var(--theme-primary, var(--shuin-red));
+  border-color: var(--theme-primary, var(--shuin-red));
+}
+
+
+/* 4. 當日主題手帖大卡片 (Kintsugi Black Ceramic Hero Edition) */
+.journal-day-hero {
+  background-color: #1A1A1E;
+  background-image: 
+    linear-gradient(rgba(18, 18, 22, 0.48), rgba(18, 18, 22, 0.48)),
+    url('../assets/images/kintsugi_black_ceramic.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(198, 146, 52, 0.35);
+  border-radius: 4px;
+  padding: 1.35rem 1.65rem;
+  /* 深邃立體陰影，無多餘外發光光斑 */
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+  transform: translateY(-2px);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.journal-hero-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.journal-hero-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.journal-hero-header-left {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* 獨立日期與地域和風膠囊 (水平並排) */
+.journal-hero-date-badge,
+.journal-hero-location-badge {
+  font-family: var(--font-handwriting);
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #FAF5EE;
+  background: rgba(18, 18, 22, 0.75);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.journal-hero-location-badge.clickable {
+  cursor: pointer;
+  color: #F3E5AB;
+  transition: all 0.2s ease;
+}
+
+.journal-hero-location-badge.clickable:hover {
+  background: rgba(212, 175, 55, 0.25);
+  border-color: #F5D77F;
+  color: #FFFFFF;
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.35);
+}
+
+.journal-hero-title {
+  font-family: var(--font-mincho);
+  font-size: 1.38rem;
+  font-weight: 800;
+  color: #F5D77F;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.85), 0 0 16px rgba(212,175,55,0.45);
+  margin: 0.15rem 0 0.05rem 0;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+  /* 保底 2 行尺寸高度，確保 1-2 行標題時卡片尺寸完全一致無跳動 */
+  min-height: calc(1.45em * 2);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 0.15rem 0.25rem;
+}
+
+/* 景點名稱防折斷，確保單一名稱完整在同一行 */
+.hero-day-tag {
+  display: inline-block;
+  white-space: nowrap;
+  font-weight: 800;
+}
+
+.hero-spot-name {
+  display: inline-block;
+  white-space: nowrap; /* 景點名稱永遠保持在同一行，不被斷字拆開 */
+}
+
+.hero-sep {
+  display: inline-block;
+  opacity: 0.75;
+  padding: 0 0.08rem;
+}
+
+/* 🏮 和風金繕膠囊按鈕 (放置於頂部 Header) */
+.btn-hero-action {
+  background: rgba(22, 22, 26, 0.82);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: #F3E5AB;
+  font-family: var(--font-handwriting);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+}
+
+.btn-hero-action:hover {
+  background: rgba(212, 175, 55, 0.25);
+  border-color: #F5D77F;
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
+}
+
+.btn-hero-action.danger {
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #FCA5A5;
+}
+
+.btn-hero-action.danger:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: #EF4444;
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+}
+
+.journal-hero-peer-banner {
+  background: rgba(20, 20, 24, 0.85);
+  border: 1px dashed rgba(212, 175, 55, 0.6);
+  border-radius: 4px;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.82rem;
+  color: #F5D77F;
+  margin-top: 0.25rem;
+  backdrop-filter: blur(6px);
+}
+
+.journal-hero-range-banner {
+  background: var(--paper-torinoko, #F4EFE6);
+  border: 1px dashed var(--ink-border-dashed, #B5A893);
+  border-radius: 2px;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  margin-top: 0.35rem;
+}
+
+/* 5. 行程區塊小標題 */
+.journal-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  border-bottom: 1.5px solid var(--ink-sumi);
+  padding-bottom: 0.35rem;
+}
+
+.journal-section-title {
+  font-family: var(--font-mincho);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink-sumi);
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+/* 6. 行程評鑑清單容器 */
+.journal-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  width: 100%;
+}
+
+.journal-empty-state {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  background: var(--paper-hosho, #FBF8F2);
+  border: 1.5px dashed var(--ink-border-dashed, #B5A893);
+  border-radius: 2px;
+  color: var(--ink-muted);
+}
+
+.journal-empty-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* 7. 拍立得手帳行程卡片 (Polaroid Style Card) */
+.journal-item-card {
+  background-color: var(--paper-hosho, #FBF8F2);
+  background-image: var(--washi-hosho);
+  border: 1.2px solid var(--ink-border, #CFC5B2);
+  border-radius: var(--radius-sm, 2px);
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-paper-tab);
+  transition: var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-sizing: border-box;
+  position: relative;
+  overflow: visible !important;
+  z-index: 2;
+}
+
+.journal-item-card:hover {
+  box-shadow: var(--shadow-paper-sheet);
+  border-color: var(--theme-primary, var(--shuin-red));
+}
+
+/* 隨行散策行程卡片和紙膠帶貼痕 (從背景自然貼上卡片) */
+.washi-tape-sticker {
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  width: 65px;
+  height: 19px;
+  background: rgba(226, 216, 200, 0.85);
+  background-image: repeating-linear-gradient(135deg, transparent, transparent 4px, rgba(184, 59, 59, 0.06) 4px, rgba(184, 59, 59, 0.06) 8px);
+  box-shadow: 0 1px 4px rgba(60, 50, 40, 0.14);
+  border-left: 2px dashed rgba(165, 150, 130, 0.7);
+  border-right: 2px dashed rgba(165, 150, 130, 0.7);
+  transform: rotate(-2.5deg);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.journal-item-card:nth-child(even) .washi-tape-sticker {
+  left: auto;
+  right: 24px;
+  transform: rotate(2deg);
+  background: rgba(235, 226, 210, 0.85);
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(37, 99, 235, 0.05) 4px, rgba(37, 99, 235, 0.05) 8px);
+}
+
+.journal-item-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.journal-item-info {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex: 1;
+  min-width: 0;
+}
+
+/* 拍立得縮圖相框 (嚴格拘束 56px，100% 防爆版) */
+.journal-polaroid-frame {
+  width: 56px !important;
+  height: 56px !important;
+  min-width: 56px !important;
+  max-width: 56px !important;
+  flex-shrink: 0 !important;
+  background: #FFFFFF;
+  padding: 3px;
+  box-sizing: border-box;
+  border: 1px solid var(--ink-border, #CFC5B2);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transform: rotate(-1.5deg);
+  transition: transform 0.2s ease;
+}
+
+.journal-item-card:hover .journal-polaroid-frame {
+  transform: rotate(0deg) scale(1.05);
+}
+
+.journal-item-thumb {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block;
+}
+
+.journal-polaroid-icon {
+  font-size: 1.5rem;
+  color: var(--ink-muted);
+}
+
+.journal-item-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.journal-item-name-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.journal-item-name {
+  font-family: var(--font-mincho);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink-sumi);
+  line-height: 1.25;
+}
+
+.journal-item-tag-pill {
+  font-family: var(--font-handwriting);
+  font-size: 0.72rem;
+  color: var(--theme-primary, var(--shuin-red));
+  background: var(--washi-warm, #EFE6D5);
+  padding: 0.1rem 0.45rem;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+.journal-item-time-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-handwriting);
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+
+.journal-item-time-input {
+  border: 1.2px solid var(--ink-border, #CFC5B2);
+  background: #FFFFFF;
+  border-radius: 2px;
+  padding: 0.2rem 0.5rem;
+  font-family: var(--font-handwriting);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-sumi);
+  max-width: 140px;
+  transition: var(--transition-fast);
+}
+
+.journal-item-time-input:focus {
+  outline: none;
+  border-color: var(--theme-primary, var(--shuin-red));
+  background: #FFFFFF;
+}
+
+/* 排序與管理按鈕 */
+.journal-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.btn-item-ctrl {
+  background: var(--washi-cream, #FBF8F2);
+  border: 1.2px solid var(--ink-border, #CFC5B2);
+  width: 30px;
+  height: 30px;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-paper-tab);
+}
+
+.btn-item-ctrl:hover:not(:disabled) {
+  background: var(--washi-warm, #EFE6D5);
+  color: var(--ink-sumi);
+  border-color: var(--ink-sumi);
+  transform: translateY(-1px);
+}
+
+.btn-item-ctrl.danger:hover {
+  background: #FEE2E2;
+  color: #DC2626;
+  border-color: #DC2626;
+}
+
+.btn-item-ctrl:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ⭐ 泥金箔星芒評鑑 */
+.journal-item-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.2rem 0;
+}
+
+.journal-rating-label {
+  font-family: var(--font-handwriting);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ink-sumi);
+}
+
+.journal-stars-box {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.star-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.15rem;
+  color: var(--ink-border, #CFC5B2);
+  cursor: pointer;
+  transition: transform 0.15s ease, color 0.15s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.star-btn:hover {
+  transform: scale(1.25);
+  color: var(--gold-leaf, #C69234);
+}
+
+.star-btn.filled {
+  color: var(--gold-leaf, #C69234) !important;
+  text-shadow: 0 1px 3px rgba(198, 146, 52, 0.35);
+}
+
+/* 🏷️ 和色標籤膠囊 */
+.journal-item-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.journal-tag-chip {
+  background: var(--washi-warm, #EFE6D5);
+  border: 1px solid var(--ink-border, #CFC5B2);
+  color: var(--ink-muted);
+  font-family: var(--font-handwriting);
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-paper-tab);
+}
+
+.journal-tag-chip:hover {
+  background: #FFFFFF;
+  border-color: var(--theme-primary, var(--shuin-red));
+  color: var(--theme-primary, var(--shuin-red));
+}
+
+.journal-tag-chip.active {
+  background: var(--theme-primary, var(--shuin-red)) !important;
+  color: #FFFFFF !important;
+  border-color: var(--theme-primary, var(--shuin-red)) !important;
+  box-shadow: var(--shadow-shuin);
+  font-weight: 700;
+}
+
+.journal-tag-chip.btn-add-custom-tag {
+  background: transparent;
+  border: 1px dashed var(--ink-border-dashed, #B5A893);
+  color: var(--ink-muted);
+}
+
+.journal-tag-chip.btn-add-custom-tag:hover {
+  background: var(--washi-warm, #EFE6D5);
+  border-color: var(--theme-primary, var(--shuin-red));
+  color: var(--theme-primary, var(--shuin-red));
+}
+
+/* 📝 手帖隨行筆記輸入框 */
+.journal-item-note-row {
+  display: flex;
+  width: 100%;
+}
+
+.journal-item-note-input {
+  width: 100%;
+  border: 1.2px dashed var(--ink-border-dashed, #B5A893);
+  background: var(--washi-cream, #FBF8F2);
+  border-radius: 2px;
+  padding: 0.55rem 0.85rem;
+  font-family: var(--font-handwriting);
+  font-size: 0.85rem;
+  color: var(--ink-sumi);
+  resize: vertical;
+  min-height: 52px;
+  line-height: 1.45;
+  box-sizing: border-box;
+  transition: var(--transition-fast);
+}
+
+.journal-item-note-input:focus {
+  outline: none;
+  background: #FFFFFF;
+  border-style: solid;
+  border-color: var(--theme-primary, var(--shuin-red));
+}
+
+/* 添入行程按鈕條 */
+.btn-add-spot-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: var(--paper-hosho, #FBF8F2);
+  border: 1.5px dashed var(--ink-border-dashed, #B5A893);
+  border-radius: 2px;
+  font-family: var(--font-mincho);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink-sumi);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-add-spot-bar:hover {
+  background: #FFFFFF;
+  border-color: var(--theme-primary, var(--shuin-red));
+  color: var(--theme-primary, var(--shuin-red));
+  transform: translateY(-1px);
+}
+
+/* 8. 今日結算手札卷軸 (Wabi-Sabi Washi Summary Card) */
+.journal-summary-card {
+  background-color: var(--paper-hosho, #FBF8F2);
+  background-image: var(--washi-hosho);
+  border: 1.5px solid var(--ink-border, #CFC5B2);
+  border-radius: var(--radius-sm, 2px);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-paper-sheet);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-sizing: border-box;
+  margin-top: 0.85rem;
+  position: relative;
+  overflow: visible !important;
+  z-index: 2;
+}
+
+.journal-summary-card .washi-tape-sticker {
+  position: absolute;
+  top: -10px;
+  left: 28px;
+  width: 72px;
+  height: 20px;
+  background: rgba(228, 218, 202, 0.88);
+  background-image: repeating-linear-gradient(135deg, transparent, transparent 5px, rgba(184, 59, 59, 0.06) 5px, rgba(184, 59, 59, 0.06) 10px);
+  box-shadow: 0 2px 5px rgba(60, 50, 40, 0.15);
+  border-left: 2px dashed rgba(165, 150, 130, 0.7);
+  border-right: 2px dashed rgba(165, 150, 130, 0.7);
+  transform: rotate(-2deg);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.journal-summary-title {
+  font-family: var(--font-mincho);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--ink-sumi);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-bottom: 1.2px dashed var(--ink-border-dashed, #B5A893);
+  padding-bottom: 0.45rem;
+}
+
+.summary-field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .summary-field-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.summary-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.summary-label {
+  font-family: var(--font-handwriting);
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--ink-sumi);
+}
+
+.summary-pace-group {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.pace-chip {
+  padding: 0.3rem 0.75rem;
+  font-family: var(--font-handwriting);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1.2px solid var(--ink-border, #CFC5B2);
+  background: var(--washi-warm, #EFE6D5);
+  color: var(--ink-sumi);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.pace-chip:hover {
+  background: #FFFFFF;
+  border-color: var(--ink-sumi);
+}
+
+.pace-chip.active {
+  background: var(--ink-sumi) !important;
+  color: #FFFFFF !important;
+  border-color: var(--ink-sumi) !important;
+}
+
+.summary-input {
+  border: 1.2px solid var(--ink-border, #CFC5B2);
+  background: #FFFFFF;
+  border-radius: 2px;
+  padding: 0.45rem 0.75rem;
+  font-family: var(--font-handwriting);
+  font-size: 0.85rem;
+  color: var(--ink-sumi);
+  box-sizing: border-box;
+  transition: var(--transition-fast);
+}
+
+.summary-input:focus {
+  outline: none;
+  border-color: var(--theme-primary, var(--shuin-red));
+}
+
+.summary-textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+
+/* 9. 底部匯出與分享操作區 */
+#journal-bottom-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+/* 🈴 完稿鈐印・御旅印朱印章 (落款於一日結語卡片右上角) */
+.hanko-completed-stamp {
+  position: absolute;
+  top: 10px;
+  right: 18px;
+  width: 82px;
+  height: 82px;
+  border: 2.5px solid #B83B3B;
+  border-radius: 50%;
+  color: #B83B3B;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  box-sizing: border-box;
+  box-shadow: inset 0 0 0 1.5px #B83B3B, 0 3px 10px rgba(184, 59, 59, 0.2);
+  transform: rotate(-8deg);
+  user-select: none;
+  pointer-events: none;
+  z-index: 10;
+  background: radial-gradient(circle, rgba(253, 238, 235, 0.95) 0%, rgba(250, 247, 240, 0.85) 100%);
+}
+
+.hanko-completed-stamp.stamping-active {
+  animation: hankoStampAnimation 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes hankoStampAnimation {
+  0% {
+    opacity: 0;
+    transform: scale(2.8) rotate(-28deg);
+    filter: blur(4px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.92) rotate(-5deg);
+    filter: blur(0);
+  }
+  80% {
+    transform: scale(1.06) rotate(-9deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-8deg);
+  }
+}
+
+.hanko-stamp-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.05;
+}
+
+.hanko-stamp-top {
+  font-family: var(--font-mincho);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  border-bottom: 1px dashed #B83B3B;
+  padding-bottom: 1px;
+  margin-bottom: 1px;
+}
+
+.hanko-stamp-main {
+  font-family: var(--font-mincho);
+  font-size: 1.12rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: #B83B3B;
+  text-shadow: 0 0 1px rgba(184, 59, 59, 0.4);
+}
+
+.hanko-stamp-bottom {
+  font-family: var(--font-mincho);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-top: 1px dashed #B83B3B;
+  padding-top: 1px;
+  margin-top: 1px;
+}
+
+/* ⛩️ 底部完結儀式感按鈕與已完結操作區 */
+.journal-bottom-ceremony-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 0.5rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.btn-ceremony-complete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.85rem 2.2rem;
+  font-family: var(--font-mincho);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #C23B3B 0%, #941E1E 100%);
+  border: 1.5px solid #781515;
+  border-radius: var(--radius-sm, 3px);
+  box-shadow: 0 6px 20px rgba(184, 59, 59, 0.35), var(--shadow-shuin);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.1em;
+}
+
+.btn-ceremony-complete:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 28px rgba(184, 59, 59, 0.45), var(--shadow-shuin);
+}
+
+.btn-ceremony-complete:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.ceremony-btn-icon {
+  font-size: 1.25rem;
+}
+
+.journal-bottom-completed-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  width: 100%;
+}
+
+.completed-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  gap: 0.45rem;
+  padding: 0.35rem 1rem;
+  background: rgba(184, 59, 59, 0.08);
+  border: 1.2px solid rgba(184, 59, 59, 0.25);
+  border-radius: 20px;
+  font-family: var(--font-mincho);
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: var(--theme-primary, var(--shuin-red));
+}
+
+.journal-completed-actions-grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.btn-journal-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.15rem;
+  font-family: var(--font-mincho);
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: var(--radius-xs, 0px);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-paper-tab);
+  border: 1.2px solid var(--ink-border, #CFC5B2);
+}
+
+.btn-journal-action.share {
+  background: var(--shuin-red, #B83B3B);
+  color: #FFFFFF;
+  border-color: var(--shuin-red-dark, #8F2222);
+  box-shadow: var(--shadow-shuin);
+}
+
+.btn-journal-action.share:hover {
+  background: var(--shuin-red-dark, #8F2222);
+  transform: translateY(-2px);
+}
+
+.btn-journal-action.secondary {
+  background: var(--washi-cream, #FBF8F2);
+  color: var(--ink-sumi);
+}
+
+.btn-journal-action.secondary:hover {
+  background: #FFFFFF;
+  border-color: var(--ink-sumi);
+  transform: translateY(-2px);
+}
+
+.btn-journal-action.re-stamp {
+  background: var(--washi-warm, #EFE6D5);
+  color: var(--shuin-red, #B83B3B);
+  border-color: rgba(184, 59, 59, 0.35);
+}
+
+.btn-journal-action.re-stamp:hover {
+  background: #FFFFFF;
+  border-color: var(--shuin-red);
+  transform: translateY(-2px);
+}
+
+/* 10. 名所挑選抽屜內部細節 */
+.spot-picker-tabs {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.spot-picker-tab-btn {
+  padding: 0.35rem 0.75rem;
+  font-family: var(--font-handwriting);
+  font-size: 0.8rem;
+  border: 1.2px solid var(--ink-border, #CFC5B2);
+  background: var(--washi-cream, #FBF8F2);
+  color: var(--ink-sumi);
+  border-radius: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition-fast);
+}
+
+.spot-picker-tab-btn.active {
+  background: var(--theme-primary, var(--shuin-red));
+  color: #FFFFFF;
+  border-color: var(--theme-primary, var(--shuin-red));
+}
+
+.spot-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.65rem;
+  max-height: 48vh;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.spot-picker-card {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem;
+  background: #FFFFFF;
+  border: 1.2px solid var(--ink-border, #CFC5B2);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.spot-picker-card:hover {
+  border-color: var(--theme-primary, var(--shuin-red));
+  background: var(--washi-cream, #FBF8F2);
+  transform: translateY(-1px);
+}
+
+.spot-picker-img {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.spot-picker-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.spot-picker-name {
+  font-family: var(--font-mincho);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ink-sumi);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.spot-picker-tag {
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+}
+
+/* 11. 手帳分享卡彈窗專屬美學與防溢出滾動條 (Journal Share Card Modal) */
+#journal-card-modal .modal-scrollable-body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-border, #CFC5B2) transparent;
+}
+
+#journal-card-modal .modal-scrollable-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+#journal-card-modal .modal-scrollable-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#journal-card-modal .modal-scrollable-body::-webkit-scrollbar-thumb {
+  background: var(--ink-border, #CFC5B2);
+  border-radius: 4px;
+}
+
+#journal-card-modal .modal-scrollable-body::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-primary, #B83B3B);
+}

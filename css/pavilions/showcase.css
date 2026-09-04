@@ -1,0 +1,525 @@
+/**
+ * Pavilion 03: Modern Showcase (當代藏品藝廊)
+ * Visual Style: Bauhaus Contemporary Gallery, Blueprint Grid, 3D Float Glass, Aurora Meteor Beam
+ * Scope: Strict encapsulation under .pavilion-show
+ */
+
+/* ==========================================================================
+   1. Showcase Root Scope & CSS Variables
+   ========================================================================== */
+.pavilion-show {
+  --show-ice: #60a5fa;
+  --show-cyan: #38bdf8;
+  --show-slate-dark: #0f172a;
+  --show-deep-bg: #070b12;
+  --show-glass-surface: rgba(15, 23, 42, 0.75);
+  --show-glass-border: rgba(96, 165, 250, 0.22);
+  --show-grid-line: rgba(96, 165, 250, 0.08);
+  --show-grid-bold: rgba(96, 165, 250, 0.16);
+  --show-meteor-glow: rgba(96, 165, 250, 0.85);
+
+  position: relative;
+  width: 100%;
+  perspective: 1200px;
+}
+
+/* ==========================================================================
+   2. Dual-Layer Architectural Blueprint Grid Background
+   ========================================================================== */
+.pavilion-show .showcase-blueprint-layer {
+  position: absolute;
+  inset: -20px;
+  border-radius: var(--radius-lg, 24px);
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  opacity: 0.85;
+  transition: opacity 0.4s ease;
+}
+
+/* Base Blueprint Grid: Fine 12px grid + Primary 60px bold grid */
+.pavilion-show .showcase-grid-mesh {
+  position: absolute;
+  inset: 0;
+  background-size: 60px 60px, 60px 60px, 12px 12px, 12px 12px;
+  background-image: 
+    linear-gradient(to right, var(--show-grid-bold) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--show-grid-bold) 1px, transparent 1px),
+    linear-gradient(to right, var(--show-grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--show-grid-line) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 80%);
+}
+
+/* Engineering Crosshairs and Scale Rulers */
+.pavilion-show .showcase-ruler-top {
+  position: absolute;
+  top: 8px;
+  left: 30px;
+  right: 30px;
+  height: 6px;
+  display: flex;
+  justify-content: space-between;
+  opacity: 0.35;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 9px;
+  color: var(--show-ice);
+  letter-spacing: 0.2em;
+}
+
+/* ==========================================================================
+   3. Aurora Meteor Beam Frame (極光流星流光邊框)
+   ========================================================================== */
+.pavilion-show .showcase-card-wrapper {
+  position: relative;
+  border-radius: var(--radius-lg, 24px);
+  padding: 2px;
+  background: transparent;
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.35s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.pavilion-show .showcase-aurora-stream {
+  position: absolute;
+  inset: -1px;
+  border-radius: calc(var(--radius-lg, 24px) + 1px);
+  background: conic-gradient(
+    from var(--aurora-angle, 0deg) at 50% 50%,
+    transparent 0deg,
+    rgba(96, 165, 250, 0.05) 90deg,
+    var(--show-cyan) 180deg,
+    #ffffff 190deg,
+    var(--show-ice) 200deg,
+    rgba(96, 165, 250, 0.2) 230deg,
+    transparent 360deg
+  );
+  z-index: 2;
+  opacity: 0.85;
+  filter: blur(2px);
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+@property --aurora-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes aurora-meteor-spin {
+  0% {
+    --aurora-angle: 0deg;
+  }
+  100% {
+    --aurora-angle: 360deg;
+  }
+}
+
+.pavilion-show .showcase-aurora-stream {
+  animation: aurora-meteor-spin 8s linear infinite;
+}
+
+/* Glow Halo Behind Card */
+.pavilion-show .showcase-glow-halo {
+  position: absolute;
+  inset: -10px;
+  border-radius: var(--radius-lg, 24px);
+  background: radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.15) 0%, transparent 70%);
+  filter: blur(24px);
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+/* ==========================================================================
+   4. 3D Floating Glass Card Main Shell (微晶琉璃卡片主體)
+   ========================================================================== */
+.pavilion-show .showcase-card {
+  position: relative;
+  z-index: 3;
+  border-radius: var(--radius-lg, 24px);
+  background: linear-gradient(
+    145deg,
+    rgba(15, 23, 42, 0.88) 0%,
+    rgba(10, 16, 30, 0.82) 50%,
+    rgba(7, 11, 20, 0.94) 100%
+  );
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--show-glass-border);
+  padding: 36px;
+  overflow: hidden;
+  box-shadow: 
+    0 24px 48px -12px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+/* Dynamic Specular Sheen (鏡面動態反光層) */
+.pavilion-show .showcase-specular-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle 380px at var(--sheen-x, 50%) var(--sheen-y, 50%),
+    rgba(255, 255, 255, 0.14) 0%,
+    rgba(96, 165, 250, 0.08) 35%,
+    transparent 70%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 4;
+}
+
+.pavilion-show .showcase-card-wrapper:hover .showcase-specular-sheen {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   5. Card Header, Identity & Bauhaus Badges
+   ========================================================================== */
+.pavilion-show .showcase-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.pavilion-show .showcase-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pavilion-show .showcase-order-tag {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill, 9999px);
+  background: rgba(96, 165, 250, 0.12);
+  color: var(--show-ice);
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  text-shadow: 0 0 10px rgba(96, 165, 250, 0.4);
+}
+
+.pavilion-show .showcase-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--show-cyan);
+  background: rgba(56, 189, 248, 0.08);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill, 9999px);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.pavilion-show .pulse-dot-ice {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--show-ice);
+  box-shadow: 0 0 8px var(--show-ice);
+  animation: pulse-ice 2s ease-in-out infinite;
+}
+
+@keyframes pulse-ice {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+.pavilion-show .showcase-pin-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-secondary, #9ca3af);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pavilion-show .showcase-pin-btn:hover {
+  background: rgba(96, 165, 250, 0.15);
+  border-color: var(--show-ice);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.pavilion-show .showcase-pin-btn.is-pinned {
+  background: var(--show-ice);
+  color: #070b12;
+  border-color: var(--show-ice);
+  box-shadow: 0 0 16px rgba(96, 165, 250, 0.6);
+}
+
+/* ==========================================================================
+   6. Card Body & Bauhaus Blueprint Content Grid
+   ========================================================================== */
+.pavilion-show .showcase-content-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 32px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.pavilion-show .showcase-info-pane {
+  display: flex;
+  flex-direction: column;
+}
+
+.pavilion-show .showcase-pre-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--show-cyan);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pavilion-show .showcase-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.pavilion-show .showcase-title {
+  font-size: clamp(1.8rem, 3.8vw, 2.3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.pavilion-show .showcase-title-zh {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #93c5fd;
+  letter-spacing: 0.02em;
+}
+
+.pavilion-show .showcase-desc {
+  font-size: 0.95rem;
+  line-height: 1.72;
+  color: #cbd5e1;
+  margin-bottom: 20px;
+}
+
+.pavilion-show .showcase-tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.pavilion-show .showcase-tag {
+  font-size: 0.74rem;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill, 9999px);
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  color: #bfdbfe;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   7. Bauhaus Architectural Isometric Pedestal (右側幾何展台與藍圖數值)
+   ========================================================================== */
+.pavilion-show .showcase-pedestal-card {
+  position: relative;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(96, 165, 250, 0.24);
+  border-radius: var(--radius-md, 16px);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3) inset;
+  overflow: hidden;
+}
+
+.pavilion-show .pedestal-wireframe-svg {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 90px;
+  height: 90px;
+  opacity: 0.25;
+  color: var(--show-ice);
+  pointer-events: none;
+}
+
+.pavilion-show .pedestal-metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(96, 165, 250, 0.15);
+}
+
+.pavilion-show .pedestal-metric-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.pavilion-show .metric-key {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.76rem;
+  color: #94a3b8;
+  letter-spacing: 0.04em;
+}
+
+.pavilion-show .metric-val {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pavilion-show .metric-val .val-highlight {
+  color: var(--show-cyan);
+}
+
+/* ==========================================================================
+   8. Footer Actions & Tracing Aurora Button
+   ========================================================================== */
+.pavilion-show .showcase-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(96, 165, 250, 0.15);
+  padding-top: 22px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.pavilion-show .showcase-action-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pavilion-show .showcase-launch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 26px;
+  border-radius: var(--radius-pill, 9999px);
+  background: linear-gradient(135deg, #3b82f6 0%, #0284c7 100%);
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 18px rgba(59, 130, 246, 0.4);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.pavilion-show .showcase-launch-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.6), 0 0 12px var(--show-cyan);
+  border-color: #ffffff;
+}
+
+.pavilion-show .showcase-launch-btn svg {
+  transition: transform 0.2s ease;
+}
+
+.pavilion-show .showcase-launch-btn:hover svg {
+  transform: translateX(3px);
+}
+
+.pavilion-show .showcase-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: var(--radius-pill, 9999px);
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(96, 165, 250, 0.25);
+  color: #cbd5e1;
+  font-size: 0.86rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.pavilion-show .showcase-secondary-btn:hover {
+  background: rgba(96, 165, 250, 0.12);
+  color: #ffffff;
+  border-color: var(--show-ice);
+}
+
+.pavilion-show .showcase-curator-signature {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.72rem;
+  color: #64748b;
+  letter-spacing: 0.08em;
+}
+
+/* ==========================================================================
+   9. Mobile Responsive Layout Rules
+   ========================================================================== */
+@media (max-width: 860px) {
+  .pavilion-show .showcase-content-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .pavilion-show .showcase-card {
+    padding: 24px 20px;
+  }
+
+  .pavilion-show .showcase-title-row {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pavilion-show .showcase-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pavilion-show .showcase-action-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .pavilion-show .showcase-launch-btn,
+  .pavilion-show .showcase-secondary-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pavilion-show .showcase-curator-signature {
+    text-align: center;
+    margin-top: 4px;
+  }
+}

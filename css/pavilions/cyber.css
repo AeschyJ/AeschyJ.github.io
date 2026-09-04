@@ -1,0 +1,458 @@
+/**
+ * Pavilion 05: Cyber-Routine (賽博習慣矩陣)
+ * Visual Style: Cyberpunk HUD, Matrix Dot Grid, Neon Cyber Green, Alert Amber, Geek Terminal
+ * Scope: Strict encapsulation under .pavilion-cyb
+ */
+
+/* ==========================================================================
+   1. Cyber Root Scope & Variables
+   ========================================================================== */
+.pavilion-cyb {
+  --cyb-neon-green: #00ff9d;
+  --cyb-neon-green-glow: rgba(0, 255, 157, 0.45);
+  --cyb-alert-gold: #ffb700;
+  --cyb-cyber-pink: #ff0055;
+  --cyb-terminal-bg: #070a0f;
+  --cyb-surface: #0c111a;
+  --cyb-surface-glass: rgba(12, 17, 26, 0.85);
+  --cyb-border-neon: rgba(0, 255, 157, 0.28);
+  --cyb-dot-grid: rgba(0, 255, 157, 0.08);
+
+  position: relative;
+  width: 100%;
+}
+
+/* ==========================================================================
+   2. Main HUD Console Frame & Matrix Dot Matrix Background
+   ========================================================================== */
+.pavilion-cyb .cyber-hud-card {
+  position: relative;
+  border-radius: var(--radius-lg, 24px);
+  background: linear-gradient(155deg, #0d121c 0%, #070a0f 100%);
+  border: 1px solid var(--cyb-border-neon);
+  box-shadow: 
+    0 24px 50px rgba(0, 0, 0, 0.75),
+    0 0 35px rgba(0, 255, 157, 0.08) inset;
+  padding: 34px;
+  overflow: hidden;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* Cyber Matrix Dot Grid Pattern */
+.pavilion-cyb .cyber-dot-matrix-layer {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--cyb-dot-grid) 1.5px, transparent 1.5px);
+  background-size: 18px 18px;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* HUD Tech Corner Accents [ + ] */
+.pavilion-cyb .hud-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  z-index: 6;
+  border-color: var(--cyb-neon-green);
+  opacity: 0.7;
+}
+
+.pavilion-cyb .hud-corner-tl {
+  top: 12px;
+  left: 12px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+
+.pavilion-cyb .hud-corner-tr {
+  top: 12px;
+  right: 12px;
+  border-top: 2px solid;
+  border-right: 2px solid;
+}
+
+.pavilion-cyb .hud-corner-bl {
+  bottom: 12px;
+  left: 12px;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+}
+
+.pavilion-cyb .hud-corner-br {
+  bottom: 12px;
+  right: 12px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
+/* ==========================================================================
+   3. Header Bar & Cyber Neon Indicators
+   ========================================================================== */
+.pavilion-cyb .cyber-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(0, 255, 157, 0.16);
+  padding-bottom: 16px;
+  position: relative;
+  z-index: 5;
+}
+
+.pavilion-cyb .cyber-identity-cluster {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pavilion-cyb .cyber-order-tag {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill, 9999px);
+  background: rgba(0, 255, 157, 0.1);
+  color: var(--cyb-neon-green);
+  border: 1px solid rgba(0, 255, 157, 0.3);
+  text-shadow: 0 0 10px var(--cyb-neon-green-glow);
+}
+
+.pavilion-cyb .cyber-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  font-family: 'SF Mono', monospace;
+  letter-spacing: 0.08em;
+  color: #070a0f;
+  background: var(--cyb-neon-green);
+  padding: 3px 10px;
+  border-radius: 4px;
+  box-shadow: 0 0 12px var(--cyb-neon-green-glow);
+}
+
+.pavilion-cyb .cyber-pin-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-secondary, #9ca3af);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pavilion-cyb .cyber-pin-btn:hover {
+  background: rgba(0, 255, 157, 0.15);
+  border-color: var(--cyb-neon-green);
+  color: #ffffff;
+}
+
+.pavilion-cyb .cyber-pin-btn.is-pinned {
+  background: var(--cyb-neon-green);
+  color: #070a0f;
+  border-color: var(--cyb-neon-green);
+  box-shadow: 0 0 16px var(--cyb-neon-green-glow);
+}
+
+/* ==========================================================================
+   4. Dual Content Grid: Overview & Typewriter CRT Screen
+   ========================================================================== */
+.pavilion-cyb .cyber-content-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 28px;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 5;
+}
+
+.pavilion-cyb .cyber-overview-pane {
+  display: flex;
+  flex-direction: column;
+}
+
+.pavilion-cyb .cyber-pre-label {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--cyb-alert-gold);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pavilion-cyb .cyber-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.pavilion-cyb .cyber-title {
+  font-size: clamp(1.8rem, 3.8vw, 2.3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.pavilion-cyb .cyber-title-zh {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #6ee7b7;
+}
+
+.pavilion-cyb .cyber-desc {
+  font-size: 0.94rem;
+  line-height: 1.72;
+  color: #cbd5e1;
+  margin-bottom: 20px;
+}
+
+.pavilion-cyb .cyber-tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.pavilion-cyb .cyber-tag {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.74rem;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: rgba(0, 255, 157, 0.08);
+  border: 1px solid rgba(0, 255, 157, 0.22);
+  color: #a7f3d0;
+}
+
+/* Combo Streak Showcase HUD Box */
+.pavilion-cyb .cyber-combo-badge-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 183, 0, 0.1);
+  border: 1px solid rgba(255, 183, 0, 0.35);
+  border-radius: 8px;
+  padding: 8px 16px;
+  width: fit-content;
+}
+
+.pavilion-cyb .combo-label {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.75rem;
+  color: var(--cyb-alert-gold);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.pavilion-cyb .combo-counter-val {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 0 10px var(--cyb-alert-gold);
+  transition: transform 0.15s ease;
+}
+
+.pavilion-cyb .combo-counter-val.pop-animate {
+  transform: scale(1.35);
+  color: var(--cyb-alert-gold);
+}
+
+/* CRT Typewriter Simulation Terminal */
+.pavilion-cyb .cyber-terminal-screen {
+  position: relative;
+  background: #05070a;
+  border: 1px solid rgba(0, 255, 157, 0.3);
+  border-radius: var(--radius-md, 14px);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7) inset;
+  height: 290px;
+  overflow: hidden;
+  font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+}
+
+.pavilion-cyb .terminal-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(0, 255, 157, 0.15);
+}
+
+.pavilion-cyb .terminal-sys-title {
+  font-size: 0.72rem;
+  color: var(--cyb-neon-green);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.pavilion-cyb .terminal-live-tag {
+  font-size: 0.68rem;
+  color: var(--cyb-alert-gold);
+}
+
+.pavilion-cyb .terminal-output-body {
+  flex: 1;
+  overflow-y: auto;
+  font-size: 0.78rem;
+  line-height: 1.65;
+  color: #a7f3d0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.pavilion-cyb .terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: var(--cyb-neon-green);
+  vertical-align: middle;
+  margin-left: 3px;
+  animation: cursor-blink-green 0.9s step-start infinite;
+  box-shadow: 0 0 6px var(--cyb-neon-green);
+}
+
+@keyframes cursor-blink-green {
+  50% { opacity: 0; }
+}
+
+/* ==========================================================================
+   5. Interactive Actions & Floating Particles Canvas
+   ========================================================================== */
+.pavilion-cyb .cyber-footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(0, 255, 157, 0.16);
+  padding-top: 22px;
+  flex-wrap: wrap;
+  gap: 16px;
+  position: relative;
+  z-index: 5;
+}
+
+.pavilion-cyb .cyber-action-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.pavilion-cyb .cyber-combo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-pill, 9999px);
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--cyb-neon-green);
+  box-shadow: 0 4px 18px rgba(0, 255, 157, 0.35);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.pavilion-cyb .cyber-combo-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px var(--cyb-neon-green-glow);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.pavilion-cyb .cyber-combo-btn:active {
+  transform: scale(0.97);
+}
+
+.pavilion-cyb .cyber-launch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: var(--radius-pill, 9999px);
+  background: rgba(12, 17, 26, 0.7);
+  border: 1px solid rgba(0, 255, 157, 0.3);
+  color: #e2e8f0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.pavilion-cyb .cyber-launch-btn:hover {
+  background: rgba(0, 255, 157, 0.12);
+  color: var(--cyb-neon-green);
+  border-color: var(--cyb-neon-green);
+}
+
+.pavilion-cyb .cyber-geek-meta {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.72rem;
+  color: #64748b;
+  letter-spacing: 0.06em;
+}
+
+/* Particle Blast Canvas (Positioned absolute over the card) */
+.pavilion-cyb .cyber-particle-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ==========================================================================
+   6. Mobile Responsive Rules
+   ========================================================================== */
+@media (max-width: 860px) {
+  .pavilion-cyb .cyber-content-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .pavilion-cyb .cyber-hud-card {
+    padding: 22px 18px;
+  }
+
+  .pavilion-cyb .cyber-footer-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pavilion-cyb .cyber-action-left {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .pavilion-cyb .cyber-combo-btn,
+  .pavilion-cyb .cyber-launch-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pavilion-cyb .cyber-geek-meta {
+    text-align: center;
+  }
+}

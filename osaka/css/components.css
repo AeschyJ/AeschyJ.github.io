@@ -1,0 +1,2386 @@
+/* ==========================================================================
+   Components Stylesheet - Japan Travel Companion PWA (3-Column Interactive Edition v3.4)
+   ========================================================================== */
+
+/* 1. Header & Navigation */
+/* 1. Header & Navigation (Wabi-Sabi Stationery & Techo Edition) */
+.glass-header {
+  position: relative;
+  z-index: 100;
+  background: var(--washi-base);
+  background-image: 
+    radial-gradient(var(--ink-border) 0.65px, transparent 0.65px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.75) 0%, rgba(248, 244, 236, 0.94) 100%);
+  background-size: 16px 16px, 100% 100%;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 2px solid var(--ink-border);
+  box-shadow: 0 3px 12px rgba(60, 48, 36, 0.06), inset 0 -1px 0 rgba(255, 255, 255, 0.8);
+  height: 64px;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  transition: var(--transition-fast);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 1rem;
+  gap: 0.75rem;
+}
+
+/* 品牌題字區：朱印落款 ✕ 木版明朝題字 */
+.brand-box {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+/* 朱砂紅 / 地域動態雙色落款印章 (Dynamic Two-Tone Region Seal - 乾淨套印不混濁) */
+.brand-seal {
+  width: 32px;
+  height: 32px;
+  background: var(--theme-seal-bg, var(--shuin-red-light));
+  border: 1.8px solid var(--theme-seal-border, var(--theme-primary, var(--shuin-red)));
+  border-radius: var(--radius-hanko);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-shuin);
+  transform: rotate(-3deg);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.35s ease, background 0.35s ease;
+  flex-shrink: 0;
+}
+.brand-seal span {
+  color: var(--theme-seal-text, var(--theme-primary, var(--shuin-red)));
+  font-family: var(--font-mincho);
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1;
+  display: inline-block;
+  transition: color 0.35s ease;
+}
+.brand-box:hover .brand-seal {
+  transform: rotate(0deg) scale(1.08);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.brand-main-wrapper {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.brand-main {
+  font-family: var(--font-mincho);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--ink-sumi);
+  letter-spacing: 0.08em;
+}
+
+/* TabiSync 英文品牌副標：動態混色漸變手寫字 */
+.brand-accent {
+  font-family: var(--font-handwriting);
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.03em;
+  background: var(--theme-gradient, linear-gradient(135deg, var(--shuin-red) 0%, var(--shuin-red) 100%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  transition: all 0.35s ease;
+}
+
+.brand-badge {
+  font-family: var(--font-handwriting);
+  font-size: 0.65rem;
+  color: var(--ink-muted);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background: var(--washi-warm);
+  padding: 0.05rem 0.4rem;
+  border-radius: var(--radius-xs);
+  border: 1px dashed var(--ink-border-dashed);
+  width: fit-content;
+}
+
+.days-nav-wrapper {
+  flex: 1;
+  max-width: 680px;
+  overflow: hidden;
+}
+
+.days-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* 翻頁捲動按鈕：質樸竹木手作印章感 */
+.days-scroll-btn {
+  background: var(--washi-cream);
+  border: 1.2px solid var(--ink-border);
+  border-radius: var(--radius-xs);
+  width: 24px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mincho);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink-muted);
+  cursor: pointer;
+  box-shadow: var(--shadow-paper-tab);
+  transition: var(--transition-fast);
+  flex-shrink: 0;
+}
+.days-scroll-btn:hover {
+  background: var(--washi-warm);
+  color: var(--theme-primary, var(--ink-sumi));
+  border-color: var(--theme-primary, var(--ink-muted));
+  transform: translateY(-1px);
+}
+
+.days-scroll-container {
+  display: flex;
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding: 0.25rem 0.2rem;
+  scroll-behavior: smooth;
+}
+.days-scroll-container::-webkit-scrollbar {
+  height: 4px;
+}
+.days-scroll-container::-webkit-scrollbar-thumb {
+  background: var(--ink-border);
+  border-radius: var(--radius-full);
+}
+
+/* 和紙栞籤 / 木札籤條 (Shiori Bookmark Tags) */
+.day-pill {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.7rem 0.35rem;
+  border-radius: var(--radius-shiori);
+  background: var(--washi-cream);
+  border: 1.2px solid var(--ink-border) !important;
+  box-shadow: var(--shadow-paper-tab);
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  user-select: none;
+  min-width: 68px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 頂部和紙栞籤專屬色帶 (3.5px 純頂部彩帶) */
+.day-pill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3.5px;
+  background: var(--ink-border-dashed);
+  transition: all 0.22s ease;
+  z-index: 2;
+}
+
+.day-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-paper-active);
+  background: #FFFFFF;
+}
+
+/* 地域專屬單色栞籤頂帶 (Single-Region Top Ribbons) */
+.day-pill.region-pill-nagoya::before { background: var(--region-nagoya-primary); }
+.day-pill.region-pill-inuyama::before { background: var(--region-inuyama-primary); }
+.day-pill.region-pill-osaka::before { background: var(--region-osaka-primary); }
+.day-pill.region-pill-hyogo::before { background: var(--region-hyogo-primary); }
+.day-pill.region-pill-nara::before { background: var(--region-nara-primary); }
+.day-pill.region-pill-kyoto::before { background: var(--region-kyoto-primary); }
+
+/* 跨區雙色雙拼混色栞籤頂帶 (Cross-Region Split Ribbons) */
+.day-pill.region-pill-split-nagoya-inuyama::before {
+  background: linear-gradient(90deg, var(--region-nagoya-primary) 50%, var(--region-inuyama-primary) 50%);
+}
+.day-pill.region-pill-split-nagoya-osaka::before {
+  background: linear-gradient(90deg, var(--region-nagoya-primary) 50%, var(--region-osaka-primary) 50%);
+}
+.day-pill.region-pill-split-osaka-hyogo::before {
+  background: linear-gradient(90deg, var(--region-osaka-primary) 50%, var(--region-hyogo-primary) 50%);
+}
+.day-pill.region-pill-split-osaka-nara::before {
+  background: linear-gradient(90deg, var(--region-osaka-primary) 50%, var(--region-nara-primary) 50%);
+}
+
+/* 啟用中的栞籤：深染和紙與朱印固定效果 */
+.day-pill.active {
+  background: #FFFFFF !important;
+  border-color: var(--theme-primary, var(--shuin-red)) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: var(--shadow-paper-active), 0 0 0 1.5px var(--theme-light, var(--shuin-red-light)) !important;
+}
+.day-pill.active::before {
+  height: 4.5px;
+}
+
+/* 跨區選中時的雙色漸變外框 (Active Split Gradient Borders) */
+.day-pill.active.region-pill-split-nagoya-inuyama {
+  border-color: transparent !important;
+  border-image: linear-gradient(135deg, var(--region-nagoya-primary) 0%, var(--region-inuyama-primary) 100%) 1 !important;
+}
+.day-pill.active.region-pill-split-nagoya-osaka {
+  border-color: transparent !important;
+  border-image: linear-gradient(135deg, var(--region-nagoya-primary) 0%, var(--region-osaka-primary) 100%) 1 !important;
+}
+.day-pill.active.region-pill-split-osaka-hyogo {
+  border-color: transparent !important;
+  border-image: linear-gradient(135deg, var(--region-osaka-primary) 0%, var(--region-hyogo-primary) 100%) 1 !important;
+}
+.day-pill.active.region-pill-split-osaka-nara {
+  border-color: transparent !important;
+  border-image: linear-gradient(135deg, var(--region-osaka-primary) 0%, var(--region-nara-primary) 100%) 1 !important;
+}
+
+/* Day 標號：Klee One 溫潤鉛筆手寫字 ✕ 選中動態漸變 */
+.day-pill-number {
+  font-family: var(--font-handwriting);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--ink-sumi);
+  line-height: 1.15;
+}
+.day-pill.active .day-pill-number {
+  background: var(--theme-gradient, linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-primary) 100%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  font-weight: 700;
+}
+
+/* 日期與星期：Zen 丸體手寫註記 */
+.day-pill-date {
+  font-family: var(--font-maru);
+  font-size: 0.66rem;
+  font-weight: 500;
+  color: var(--ink-muted);
+  opacity: 0.92;
+  margin-top: 0.1rem;
+}
+.day-pill.active .day-pill-date {
+  color: var(--ink-sumi);
+  font-weight: 600;
+}
+
+/* 地區印章標籤：手刻方框印記與地域色彩混色 */
+.day-pill-location {
+  font-family: var(--font-handwriting);
+  font-size: 0.62rem;
+  font-weight: 600;
+  padding: 0.05rem 0.35rem;
+  margin-top: 0.18rem;
+  border-radius: var(--radius-xs);
+  background: var(--washi-warm);
+  color: var(--ink-muted);
+  border: 1px dashed var(--ink-border-dashed);
+  transition: all 0.2s ease;
+}
+
+/* 單區 location 標籤 */
+.day-pill.region-pill-nagoya .day-pill-location { background: var(--region-nagoya-light); color: var(--region-nagoya-primary); border: 1px solid var(--region-nagoya-border); }
+.day-pill.region-pill-inuyama .day-pill-location { background: var(--region-inuyama-light); color: var(--region-inuyama-primary); border: 1px solid var(--region-inuyama-border); }
+.day-pill.region-pill-osaka .day-pill-location { background: var(--region-osaka-light); color: var(--region-osaka-primary); border: 1px solid var(--region-osaka-border); }
+.day-pill.region-pill-hyogo .day-pill-location { background: var(--region-hyogo-light); color: var(--region-hyogo-primary); border: 1px solid var(--region-hyogo-border); }
+.day-pill.region-pill-nara .day-pill-location { background: var(--region-nara-light); color: var(--region-nara-primary); border: 1px solid var(--region-nara-border); }
+.day-pill.region-pill-kyoto .day-pill-location { background: var(--region-kyoto-light); color: var(--region-kyoto-primary); border: 1px solid var(--region-kyoto-border); }
+
+/* 跨區雙色 location 標籤 (雙色柔和漸層底色) */
+.day-pill.region-pill-split-nagoya-inuyama .day-pill-location {
+  background: linear-gradient(90deg, var(--region-nagoya-light) 0%, var(--region-nagoya-light) 50%, var(--region-inuyama-light) 50%, var(--region-inuyama-light) 100%);
+  color: #24201D;
+  border: 1px solid #C4C4B4;
+}
+.day-pill.region-pill-split-nagoya-osaka .day-pill-location {
+  background: linear-gradient(90deg, var(--region-nagoya-light) 0%, var(--region-nagoya-light) 50%, var(--region-osaka-light) 50%, var(--region-osaka-light) 100%);
+  color: #24201D;
+  border: 1px solid #C4C4B4;
+}
+.day-pill.region-pill-split-osaka-hyogo .day-pill-location {
+  background: linear-gradient(90deg, var(--region-osaka-light) 0%, var(--region-osaka-light) 50%, var(--region-hyogo-light) 50%, var(--region-hyogo-light) 100%);
+  color: #24201D;
+  border: 1px solid #C4C4B4;
+}
+.day-pill.region-pill-split-osaka-nara .day-pill-location {
+  background: linear-gradient(90deg, var(--region-osaka-light) 0%, var(--region-osaka-light) 50%, var(--region-nara-light) 50%, var(--region-nara-light) 100%);
+  color: #24201D;
+  border: 1px solid #C4C4B4;
+}
+
+/* 啟用中的 location 標籤 (單區) */
+.day-pill.active .day-pill-location {
+  background: var(--theme-light, var(--shuin-red-light)) !important;
+  color: var(--theme-primary, var(--shuin-red)) !important;
+  border-color: var(--theme-border, var(--shuin-red-border)) !important;
+  border-style: solid !important;
+}
+
+/* 啟用中的 location 標籤 (跨區雙色雙拼) */
+.day-pill.active.region-pill-split-nagoya-inuyama .day-pill-location {
+  background: linear-gradient(90deg, var(--region-nagoya-light) 0%, var(--region-nagoya-light) 50%, var(--region-inuyama-light) 50%, var(--region-inuyama-light) 100%) !important;
+  border-image: linear-gradient(90deg, var(--region-nagoya-primary) 50%, var(--region-inuyama-primary) 50%) 1 !important;
+  border-color: transparent !important;
+  color: #1F2429 !important;
+  font-weight: 700 !important;
+}
+.day-pill.active.region-pill-split-nagoya-osaka .day-pill-location {
+  background: linear-gradient(90deg, var(--region-nagoya-light) 0%, var(--region-nagoya-light) 50%, var(--region-osaka-light) 50%, var(--region-osaka-light) 100%) !important;
+  border-image: linear-gradient(90deg, var(--region-nagoya-primary) 50%, var(--region-osaka-primary) 50%) 1 !important;
+  border-color: transparent !important;
+  color: #1F2429 !important;
+  font-weight: 700 !important;
+}
+.day-pill.active.region-pill-split-osaka-hyogo .day-pill-location {
+  background: linear-gradient(90deg, var(--region-osaka-light) 0%, var(--region-osaka-light) 50%, var(--region-hyogo-light) 50%, var(--region-hyogo-light) 100%) !important;
+  border-image: linear-gradient(90deg, var(--region-osaka-primary) 50%, var(--region-hyogo-primary) 50%) 1 !important;
+  border-color: transparent !important;
+  color: #1F2429 !important;
+  font-weight: 700 !important;
+}
+.day-pill.active.region-pill-split-osaka-nara .day-pill-location {
+  background: linear-gradient(90deg, var(--region-osaka-light) 0%, var(--region-osaka-light) 50%, var(--region-nara-light) 50%, var(--region-nara-light) 100%) !important;
+  border-image: linear-gradient(90deg, var(--region-osaka-primary) 50%, var(--region-nara-primary) 50%) 1 !important;
+  border-color: transparent !important;
+  color: #1F2429 !important;
+  font-weight: 700 !important;
+}
+
+/* 頂部操作按鈕群 (和風標籤貼風格) */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+/* NotebookLM 標籤按鈕：藍染和紙書籤籤條 */
+.btn-header-nlm {
+  background: #F0F5FA;
+  border: 1.2px solid #A8C2DC;
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.75rem;
+  font-family: var(--font-handwriting);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #23476E;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: var(--shadow-paper-tab);
+  transition: var(--transition-fast);
+}
+.btn-header-nlm:hover {
+  background: #E2EDF7;
+  border-color: #7B9FB8;
+  color: #173554;
+  transform: translateY(-1px) rotate(-0.5deg);
+  box-shadow: var(--shadow-paper-active);
+}
+
+/* 隨身道具箱按鈕：竹木便籤風格 */
+.btn-header-tool {
+  background: var(--washi-cream);
+  border: 1.2px solid var(--ink-border);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.75rem;
+  font-family: var(--font-handwriting);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-sumi);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: var(--shadow-paper-tab);
+  transition: var(--transition-fast);
+}
+.btn-header-tool:hover {
+  background: var(--washi-warm);
+  border-color: var(--theme-primary, var(--ink-muted));
+  color: var(--theme-primary, var(--ink-sumi));
+  transform: translateY(-1px) rotate(0.5deg);
+  box-shadow: var(--shadow-paper-active);
+}
+
+/* 設定印章鈕：圓形木刻印章 */
+.btn-header-icon {
+  background: var(--washi-cream);
+  border: 1.2px solid var(--ink-border);
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-muted);
+  cursor: pointer;
+  box-shadow: var(--shadow-paper-tab);
+  transition: var(--transition-fast);
+}
+.btn-header-icon:hover {
+  color: var(--ink-sumi);
+  border-color: var(--theme-primary, var(--ink-sumi));
+  transform: translateY(-1px) scale(1.06);
+}
+
+/* Mobile Header Elements (Hidden on Desktop >960px by default) */
+.mobile-day-selector-wrapper {
+  display: none;
+}
+
+.mobile-day-select-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.mobile-day-select-icon {
+  position: absolute;
+  left: 0.6rem;
+  font-size: 0.85rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* 和風自訂手機端天數選擇器 (Mobile Custom Day Dropdown) */
+.mobile-day-custom-dropdown {
+  position: relative;
+  width: 100%;
+  max-width: 180px;
+}
+
+.mobile-day-trigger {
+  width: 100%;
+  height: 36px;
+  padding: 0 0.5rem;
+  background: var(--washi-cream, #FAF7F0);
+  background-image: var(--washi-hosho);
+  border: 1.5px solid var(--ink-border, #CFC5B2);
+  color: var(--ink-sumi, #1F2429);
+  border-radius: var(--radius-sm, 3px);
+  font-family: var(--font-handwriting);
+  font-size: 0.84rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-paper-tab);
+  transition: var(--transition-fast);
+  box-sizing: border-box;
+}
+
+.mobile-day-trigger:hover,
+.mobile-day-custom-dropdown.open .mobile-day-trigger {
+  background: var(--washi-warm, #EFE6D5);
+  border-color: var(--theme-primary, var(--shuin-red, #B83B3B));
+  color: var(--theme-primary, var(--shuin-red, #B83B3B));
+}
+
+.mobile-day-trigger-text {
+  flex: 1;
+  text-align: center;
+  white-space: nowrap;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.mobile-day-custom-dropdown.open .mobile-day-select-arrow {
+  transform: rotate(180deg);
+  color: var(--theme-primary, var(--shuin-red));
+}
+
+.mobile-day-menu-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px) scale(0.96);
+  width: 270px;
+  max-width: 88vw;
+  background-color: var(--paper-hosho, #FAF8F5);
+  background-image: var(--washi-hosho);
+  border: 1.5px solid var(--ink-border, #CFC5B2);
+  border-radius: var(--radius-sm, 4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18), var(--shadow-paper-sheet);
+  z-index: 1060;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s;
+  pointer-events: none;
+}
+
+.mobile-day-custom-dropdown.open .mobile-day-menu-panel {
+  display: flex;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.mobile-day-menu-header {
+  padding: 0.55rem 0.75rem;
+  background: rgba(184, 59, 59, 0.05);
+  border-bottom: 1px solid var(--ink-border-light, #E2D9CE);
+  font-family: var(--font-mincho);
+  font-weight: 800;
+  font-size: 0.76rem;
+  color: var(--theme-primary, var(--shuin-red));
+  letter-spacing: 0.05em;
+}
+
+.mobile-day-menu-list {
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem 0;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.mobile-day-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  background: none;
+  border: none;
+  border-bottom: 1px dashed rgba(207, 197, 178, 0.4);
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  color: var(--ink-sumi);
+  box-sizing: border-box;
+}
+
+.mobile-day-menu-item:last-child {
+  border-bottom: none;
+}
+
+.mobile-day-menu-item:hover {
+  background-color: var(--washi-warm, #EFE6D5);
+}
+
+.mobile-day-menu-item.active {
+  background-color: rgba(184, 59, 59, 0.08);
+  font-weight: bold;
+}
+
+.mobile-day-menu-item.active .day-item-tag {
+  color: var(--shuin-red, #B83B3B);
+  font-weight: 800;
+}
+
+.day-item-tag {
+  font-family: var(--font-handwriting);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink-sumi);
+  min-width: 48px;
+}
+
+.day-item-date {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+}
+
+.day-item-loc {
+  font-family: var(--font-maru);
+  font-size: 0.72rem;
+  color: var(--ink-sumi);
+  background: rgba(0, 0, 0, 0.04);
+  padding: 0.15rem 0.35rem;
+  border-radius: 2px;
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Mobile Tools Dropdown */
+.header-tools-dropdown {
+  position: relative;
+  display: none;
+}
+
+.btn-mobile-tools-toggle {
+  background: var(--washi-cream);
+  border: 1.5px solid var(--ink-border);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.65rem;
+  font-family: var(--font-handwriting);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-sumi);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  height: 36px;
+  box-shadow: var(--shadow-paper-tab);
+}
+
+.btn-mobile-tools-toggle:hover,
+.header-tools-dropdown.open .btn-mobile-tools-toggle {
+  background: var(--washi-warm);
+  border-color: var(--theme-primary, var(--ink-muted));
+  color: var(--theme-primary, var(--ink-sumi));
+}
+
+.tools-btn-arrow {
+  font-size: 0.68rem;
+  transition: transform var(--transition-fast);
+  color: var(--ink-muted);
+}
+
+.header-tools-dropdown.open .tools-btn-arrow {
+  transform: rotate(180deg);
+  color: var(--theme-primary, var(--shuin-red));
+}
+
+/* 桌面端「更多 ▾」下拉選單 (Desktop More Dropdown) */
+.header-more-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.btn-more-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.header-more-dropdown.open .btn-more-toggle {
+  background: var(--washi-warm);
+  border-color: var(--theme-primary, var(--shuin-red));
+  color: var(--theme-primary, var(--shuin-red));
+}
+
+.more-dropdown-menu,
+.tools-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 250px;
+  background: var(--washi-cream);
+  border: 1.5px solid var(--ink-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-paper-active);
+  padding: 0.5rem;
+  font-family: var(--font-handwriting);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  z-index: 150;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scale(0.96);
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s;
+  pointer-events: none;
+}
+
+.header-more-dropdown.open .more-dropdown-menu,
+.header-tools-dropdown.open .tools-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.tools-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: none;
+  text-decoration: none;
+  color: var(--ink-sumi);
+  text-align: left;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tools-dropdown-item:hover,
+.tools-dropdown-item:active {
+  background: var(--washi-warm);
+}
+
+.dropdown-item-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+}
+
+.dropdown-item-text {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dropdown-item-title {
+  font-family: var(--font-handwriting);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--ink-sumi);
+  white-space: nowrap;
+}
+
+.dropdown-item-desc {
+  font-family: var(--font-maru);
+  font-size: 0.68rem;
+  color: var(--ink-muted);
+  margin-top: 0.1rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* =========================================================================
+   Header 模式置換控制容器 (Header Center Elements Swap)
+   ========================================================================= */
+.header-journal-wrapper {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+  max-width: none;
+  overflow: visible;
+}
+
+.mobile-journal-day-wrapper {
+  display: none;
+}
+
+/* 地圖模式 vs 手記模式中央元素切換規則 */
+body:not(.journal-mode-active) .journal-header-element {
+  display: none !important;
+}
+
+body.journal-mode-active .map-header-element {
+  display: none !important;
+}
+
+body.journal-mode-active .journal-header-element {
+  display: flex !important;
+}
+
+/* 模式切換時的平滑進場動畫 (Smooth Workspace Mode Transitions) */
+@keyframes fadeInMap {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.map-entering-animation {
+  animation: fadeInMap 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes headerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header-inner .map-header-element,
+.header-inner .journal-header-element {
+  animation: headerFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 2. Mobile View Switcher - Washi Tab Index Style */
+@media (min-width: 961px) {
+  .mobile-view-tabs {
+    display: none !important;
+  }
+}
+
+/* 3. Three-Column Interactive Layout - LOCK-TIGHT FULL HEIGHT */
+.app-workspace-3col {
+  display: grid;
+  grid-template-columns: 340px minmax(360px, 1fr) 390px;
+  height: calc(100vh - 62px);
+  height: calc(100dvh - 62px);
+  flex: 1;
+  overflow: hidden;
+  background: var(--bg-primary);
+  margin: 0;
+  padding: 0;
+}
+
+.panel-column {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid var(--color-border);
+  background: var(--bg-primary);
+  margin: 0;
+  padding: 0;
+  min-width: 0; /* 關鍵：防範 Grid Column 被子元素內容撐大導致中欄地圖壓縮 */
+}
+.panel-column:last-child {
+  border-right: none;
+}
+
+.panel-header {
+  padding: 0.85rem 1rem 0.5rem;
+  flex-shrink: 0;
+  background: var(--bg-primary);
+}
+
+.panel-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.85rem 1rem 1.5rem;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+/* 4. Left Panel (Itinerary Timeline & List) */
+/* 雜誌級沉浸式背景圖卡片 (Hero Glass Theme Card) - 日系手帖卷首卡質感 */
+.day-theme-card {
+  position: relative;
+  border-radius: 12px;
+  padding: 1.15rem 1.1rem 1rem;
+  margin-bottom: 0.85rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-polaroid);
+  color: #FFFFFF;
+  border: 1.5px solid var(--color-border-dark);
+  background-color: #141C24;
+  transition: all 0.35s ease;
+  box-sizing: border-box;
+}
+
+/* 卷首右上角和紙膠帶斜貼 */
+.day-theme-card::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: 20px;
+  width: 68px;
+  height: 20px;
+  background: var(--tape-yamabuki, rgba(245, 220, 160, 0.85));
+  background-image: var(--tape-strip-pattern);
+  box-shadow: var(--tape-shadow);
+  transform: rotate(3.5deg);
+  opacity: 0.9;
+  z-index: 10;
+  pointer-events: none;
+  clip-path: polygon(3% 0%, 97% 0%, 100% 100%, 0% 100%);
+}
+
+.day-theme-bg-img {
+  position: absolute;
+  inset: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  object-fit: cover;
+  z-index: 1;
+  transform: scale(1.02);
+  transition: transform 0.5s ease;
+}
+.day-theme-card:hover .day-theme-bg-img {
+  transform: scale(1.05);
+}
+
+/* 高通透微光漸層遮罩 */
+.day-theme-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--theme-card-overlay, linear-gradient(180deg, 
+    rgba(15, 23, 42, 0.18) 0%, 
+    rgba(15, 23, 42, 0.42) 42%, 
+    rgba(15, 23, 42, 0.85) 100%
+  ));
+  z-index: 2;
+  pointer-events: none;
+}
+
+.day-theme-content {
+  position: relative;
+  z-index: 3;
+}
+
+.itinerary-section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mincho);
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: var(--ink-sumi);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.65rem;
+}
+
+.itinerary-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* 垂直手作裝訂縫線貫穿所有排定行程節點 (Sashiko Timeline Spine) */
+#scheduled-list-target::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  bottom: 20px;
+  left: 20px;
+  width: 2px;
+  background-image: var(--stitch-line-style);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Straight-Edge Cut ✕ Coarse Washi Paper (直角裁切 ✕ 粗糙和紙行腳卡片)
+   ========================================================================== */
+
+/* 基礎直角裁切和紙卡片共通規範 */
+.itinerary-card {
+  position: relative;
+  background-color: var(--paper-hosho);
+  background-image: var(--washi-hosho);
+  background-repeat: repeat;
+  border: var(--border-ink-soft);
+  border-radius: 0px !important; /* 純粹手作直角裁切 */
+  padding: 0.82rem 0.95rem;
+  box-shadow: var(--shadow-paper-sheet);
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              box-shadow 0.2s ease, 
+              border-color 0.18s ease;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  user-select: none;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: visible;
+  z-index: 2;
+}
+
+/* 懸浮物理紙張直角微掀 */
+.itinerary-card:hover {
+  border-color: var(--theme-primary, rgba(160, 125, 90, 0.85));
+  transform: translateY(-2.5px);
+  box-shadow: var(--shadow-paper-lift);
+}
+
+/* 選中狀態：活版鉛字深度壓凹 ✕ 硃砂外框 */
+.itinerary-card.active-selected {
+  background-color: #FFFDF9;
+  border-color: var(--theme-primary, var(--shuin-red)) !important;
+  box-shadow: var(--shadow-paper-pressed), 0 0 0 1px var(--theme-primary, var(--shuin-red)) !important;
+  transform: translateY(-1px);
+}
+
+/* 選中側邊直角水引金箔標記 */
+.itinerary-card.active-selected::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4.5px;
+  background: var(--theme-gradient, linear-gradient(180deg, var(--theme-primary, var(--shuin-red)) 0%, var(--gold-leaf) 100%));
+  border-radius: 0px !important;
+  z-index: 5;
+}
+
+/* --- 1. 排定行腳正選卡片 (厚磅粗面白奉書紙) --- */
+.itinerary-card.scheduled {
+  background-color: var(--paper-hosho);
+  background-image: var(--washi-hosho);
+  border: var(--border-ink-soft);
+}
+
+/* --- 2. 備選私房便籤卡片 (粗糲手撕原色牛皮短冊 ✕ 直角膠帶) --- */
+.itinerary-card.washi-memo,
+.itinerary-card.optional {
+  background-color: var(--paper-kraft);
+  background-image: var(--washi-kraft);
+  border: var(--border-ink-dashed);
+  border-radius: 0px !important;
+  transform: rotate(-0.5deg);
+  margin-top: 0.35rem;
+}
+.itinerary-card.washi-memo:hover,
+.itinerary-card.optional:hover {
+  transform: rotate(0deg) translateY(-2px);
+  border-color: rgba(140, 105, 70, 0.9);
+  box-shadow: var(--shadow-paper-lift);
+}
+
+/* 備選便籤右上角直角手撕和紙膠帶 */
+.itinerary-card.washi-memo::after,
+.itinerary-card.optional::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  right: 16px;
+  width: 44px;
+  height: 13px;
+  background: rgba(215, 195, 165, 0.85);
+  background-image: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 50%, rgba(0,0,0,0.04) 100%);
+  box-shadow: 0 1px 3px rgba(60, 45, 30, 0.18);
+  transform: rotate(-2.5deg);
+  border-left: 1.5px dashed rgba(140, 110, 80, 0.5);
+  border-right: 1.5px dashed rgba(140, 110, 80, 0.5);
+  border-radius: 0px !important;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* --- 3. 旬味名店卡片 (竹簾粗糙壓紋木札) --- */
+.itinerary-card.gourmet {
+  background-color: var(--paper-bamboo);
+  background-image: var(--washi-bamboo);
+  border: 1px solid rgba(185, 140, 75, 0.7);
+  border-left: 4.5px solid #D97706;
+  border-radius: 0px !important;
+}
+
+/* --- 4. 下榻旅宿卡片 (琉璃勝色御宿札) --- */
+.itinerary-card.hotel {
+  background-color: var(--paper-hosho);
+  border: var(--border-ink-soft);
+  border-left: 4.5px solid #1E3A8A;
+  border-radius: 0px !important;
+}
+
+/* --- 5. 直角實木序號牌 (Straight-Edge Mokufuda Badge) --- */
+.itinerary-order-badge,
+.itinerary-wood-badge {
+  width: 24px;
+  height: 30px;
+  border-radius: 0px !important; /* 純直角木牌 */
+  background: var(--wood-grain-bg);
+  border: 1.2px solid var(--wood-border);
+  color: var(--wood-text);
+  font-family: var(--font-mincho);
+  font-size: 0.82rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--wood-shadow);
+  position: relative;
+  letter-spacing: -0.02em;
+}
+
+/* 木札頂部繫繩孔 */
+.itinerary-order-badge::before,
+.itinerary-wood-badge::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2.5px;
+  height: 2.5px;
+  border-radius: 50%;
+  background: #3D2B19;
+}
+
+.itinerary-card.optional .itinerary-order-badge,
+.itinerary-wood-badge.optional-badge {
+  background: #78716C;
+  border-color: #44403C;
+  color: #FFFFFF;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+  font-size: 0.72rem;
+}
+.itinerary-card.gourmet .itinerary-order-badge,
+.itinerary-wood-badge.gourmet-badge {
+  background: linear-gradient(180deg, #FEF3C7 0%, #FDE68A 50%, #F59E0B 100%);
+  border-color: #B45309;
+  color: #78350F;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.2), 0 2px 5px rgba(217,119,6,0.3);
+}
+.itinerary-card.hotel .itinerary-order-badge,
+.itinerary-wood-badge.hotel-badge {
+  background: linear-gradient(180deg, #EFF6FF 0%, #DBEAFE 50%, #93C5FD 100%);
+  border-color: #1E40AF;
+  color: #1E3A8A;
+  box-shadow: 0 2px 6px rgba(30, 58, 138, 0.35);
+}
+
+/* --- 6. 景點縮圖：直角昭和紀念郵票齒孔相框 (Straight Stamp Frame) --- */
+.itinerary-card-thumb {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  flex-shrink: 0;
+  padding: 2.5px;
+  background: #FAF8F5;
+  border: 1px solid rgba(170, 145, 120, 0.6);
+  border-radius: 0px !important; /* 移除圓角 */
+  box-shadow: 
+    0 1px 0 rgba(255, 255, 255, 0.95),
+    0 2px 5px rgba(50, 35, 20, 0.12);
+  outline: 2px dashed rgba(200, 180, 155, 0.7);
+  outline-offset: -2px;
+  transition: transform 0.2s ease;
+}
+
+.itinerary-card:hover .itinerary-card-thumb {
+  transform: rotate(-1.5deg) scale(1.03);
+}
+
+.itinerary-card-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.itinerary-card-time-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.3rem;
+}
+
+.itinerary-card-time {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--theme-primary, var(--shuin-red));
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+.itinerary-card.gourmet .itinerary-card-time {
+  color: #D97706 !important;
+}
+.itinerary-card.optional .itinerary-card-time {
+  color: #57534E !important;
+}
+
+/* 地域專屬微標籤 */
+.region-badge {
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 0.05rem 0.35rem;
+  border-radius: var(--radius-xs);
+  flex-shrink: 0;
+}
+.region-badge-nagoya { background: var(--region-nagoya-light); color: var(--region-nagoya-primary); border: 1px solid var(--region-nagoya-border); }
+.region-badge-inuyama { background: var(--region-inuyama-light); color: var(--region-inuyama-primary); border: 1px solid var(--region-inuyama-border); }
+.region-badge-osaka { background: var(--region-osaka-light); color: var(--region-osaka-primary); border: 1px solid var(--region-osaka-border); }
+.region-badge-hyogo { background: var(--region-hyogo-light); color: var(--region-hyogo-primary); border: 1px solid var(--region-hyogo-border); }
+.region-badge-nara { background: var(--region-nara-light); color: var(--region-nara-primary); border: 1px solid var(--region-nara-border); }
+.region-badge-kyoto { background: var(--region-kyoto-light); color: var(--region-kyoto-primary); border: 1px solid var(--region-kyoto-border); }
+
+/* 跨區日樣式 */
+.itinerary-card.scheduled.region-card-nagoya .itinerary-card-time { color: var(--region-nagoya-primary); }
+.itinerary-card.region-card-nagoya:hover { border-color: var(--region-nagoya-primary); }
+.itinerary-card.region-card-nagoya.active-selected {
+  border-color: var(--region-nagoya-primary) !important;
+  background: var(--region-nagoya-light);
+}
+
+.itinerary-card.scheduled.region-card-inuyama .itinerary-card-time { color: var(--region-inuyama-primary); }
+.itinerary-card.region-card-inuyama:hover { border-color: var(--region-inuyama-primary); }
+.itinerary-card.region-card-inuyama.active-selected {
+  border-color: var(--region-inuyama-primary) !important;
+  background: var(--region-inuyama-light);
+}
+
+.itinerary-card.scheduled.region-card-osaka .itinerary-card-time { color: var(--region-osaka-primary); }
+.itinerary-card.region-card-osaka:hover { border-color: var(--region-osaka-primary); }
+.itinerary-card.region-card-osaka.active-selected {
+  border-color: var(--region-osaka-primary) !important;
+  background: var(--region-osaka-light);
+}
+
+.itinerary-card.scheduled.region-card-hyogo .itinerary-card-time { color: var(--region-hyogo-primary); }
+.itinerary-card.region-card-hyogo:hover { border-color: var(--region-hyogo-primary); }
+.itinerary-card.region-card-hyogo.active-selected {
+  border-color: var(--region-hyogo-primary) !important;
+  background: var(--region-hyogo-light);
+}
+
+.itinerary-card.scheduled.region-card-nara .itinerary-card-time { color: var(--region-nara-primary); }
+.itinerary-card.region-card-nara:hover { border-color: var(--region-nara-primary); }
+.itinerary-card.region-card-nara.active-selected {
+  border-color: var(--region-nara-primary) !important;
+  background: var(--region-nara-light);
+}
+
+.itinerary-card.scheduled.region-card-kyoto .itinerary-card-time { color: var(--region-kyoto-primary); }
+.itinerary-card.region-card-kyoto:hover { border-color: var(--region-kyoto-primary); }
+.itinerary-card.region-card-kyoto.active-selected {
+  border-color: var(--region-kyoto-primary) !important;
+  background: var(--region-kyoto-light);
+}
+
+/* 活版印刷深黑松煙墨標題 */
+.itinerary-card-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #24201D;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+  margin-top: 0.15rem;
+  line-height: 1.35;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.itinerary-card-address {
+  font-size: 0.72rem;
+  color: #6E685E;
+  margin-top: 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* 5. Center Panel (Leaflet Interactive Map & SVG Pins) */
+.panel-map {
+  position: relative;
+  background: #E5E7EB;
+  margin: 0;
+  padding: 0;
+}
+
+.map-view-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.leaflet-trip-map {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Precision SVG Map Markers */
+.map-pin-marker-container {
+  background: none !important;
+  border: none !important;
+}
+
+.svg-pin-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.svg-pin-wrapper:hover,
+.active-spot-pin .svg-pin-wrapper {
+  transform: scale(1.22);
+}
+
+.map-svg-pin {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
+  display: block;
+}
+
+.pin-base-pulse {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: rgba(232, 90, 79, 0.4);
+  border-radius: 50%;
+  bottom: -2px;
+  animation: mapPulse 2s infinite ease-out;
+  pointer-events: none;
+}
+
+@keyframes mapPulse {
+  0% { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+/* Map Floating Legend */
+.map-floating-legend {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 500;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.55rem 0.85rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  pointer-events: auto;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.dot-scheduled { background: var(--theme-primary); }
+.dot-gourmet { background: #D97706 !important; }
+.dot-optional { background: #64748B !important; }
+
+/* Custom Japanese Postcard Style Infowindow Popup */
+.custom-map-infowindow .leaflet-popup-content-wrapper {
+  padding: 0 !important;
+  border-radius: var(--radius-md) !important;
+  overflow: hidden !important;
+  box-shadow: 0 16px 36px rgba(45, 35, 20, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.8) inset !important;
+  background: var(--washi-cream) !important;
+  background-image: 
+    radial-gradient(var(--ink-border) 0.65px, transparent 0.65px),
+    linear-gradient(to bottom, #FFFFFF 0%, var(--washi-cream) 100%) !important;
+  background-size: 14px 14px, 100% 100% !important;
+  border: 1px solid var(--color-border-dark) !important;
+}
+
+.custom-map-infowindow .leaflet-popup-content {
+  margin: 0 !important;
+  width: 275px !important;
+  line-height: 1.4 !important;
+  box-sizing: border-box !important;
+}
+
+.map-popup-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.map-popup-img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border-bottom: 2px dashed var(--ink-border);
+}
+
+.map-popup-body {
+  padding: 0.85rem 1rem 0.95rem;
+  box-sizing: border-box;
+}
+
+.map-popup-tag-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.map-popup-title {
+  font-family: var(--font-mincho);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--ink-sumi);
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+
+.map-popup-address {
+  font-size: 0.74rem;
+  color: var(--ink-muted);
+  line-height: 1.35;
+  margin-bottom: 0.65rem;
+}
+
+.btn-popup-detail {
+  background: var(--theme-primary, var(--shuin-red));
+  color: #FFFFFF !important;
+  border: none;
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(195, 58, 50, 0.3);
+  transition: all var(--transition-fast);
+}
+.btn-popup-detail:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+/* 6. Right Panel (Deep Spot Guide, Buttons & Japanese Phrases - Techo Edition) */
+
+/* 6. Right Panel (Deep Spot Guide, Buttons & Japanese Phrases - Techo Edition) */
+
+/* 6-1. 拍立得厚磅相紙 (Polaroid Photo Cardstock & Masking Tapes) */
+.polaroid-frame-wrapper {
+  position: relative;
+  margin-bottom: 1.15rem;
+  width: 100%;
+}
+.washi-tape-corner {
+  position: absolute;
+  top: -8px;
+  left: 20px;
+  width: 58px;
+  height: 18px;
+  background: var(--tape-neutral, rgba(235, 220, 195, 0.85));
+  background-image: var(--tape-strip-pattern);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transform: rotate(-4.5deg);
+  border-left: 1px dashed rgba(160, 140, 110, 0.4);
+  border-right: 1px dashed rgba(160, 140, 110, 0.4);
+  z-index: 10;
+  pointer-events: none;
+  clip-path: polygon(0% 1px, 2px 0%, calc(100% - 2px) 1px, 100% 2px, 98% 15px, 100% 17px, calc(100% - 2px) 16px, 2px 17px, 0% 15px);
+}
+.polaroid-photo-frame {
+  background: #FFFFFF;
+  padding: 8px 8px 14px 8px;
+  border-radius: 4px;
+  box-shadow: var(--shadow-polaroid);
+  border: 1px solid rgba(195, 180, 160, 0.5);
+  transform: rotate(-0.6deg);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.polaroid-photo-frame:hover {
+  transform: rotate(0deg) scale(1.01);
+  box-shadow: var(--shadow-paper-lift);
+}
+.polaroid-img-container {
+  position: relative;
+  width: 100%;
+  height: 195px;
+  max-height: 200px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: #1E293B;
+}
+.polaroid-hero-img,
+.polaroid-photo-img {
+  width: 100%;
+  height: 195px;
+  max-height: 200px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.polaroid-photo-frame:hover .polaroid-hero-img,
+.polaroid-photo-frame:hover .polaroid-photo-img {
+  transform: scale(1.04);
+}
+.polaroid-tag-overlay {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+}
+.polaroid-caption-footer {
+  padding: 0.75rem 0.4rem 0.2rem;
+}
+.polaroid-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.polaroid-spot-title {
+  font-family: var(--font-mincho);
+  font-weight: 800;
+  font-size: 1.22rem;
+  color: var(--ink-sumi);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+.polaroid-hanko-region {
+  font-family: var(--font-mincho);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--shuin-red);
+  background: var(--shuin-red-light);
+  border: 1.2px solid var(--shuin-red);
+  padding: 0.08rem 0.4rem;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
+}
+
+.polaroid-photo-desc {
+  font-family: var(--font-handwriting);
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  line-height: 1.4;
+  margin-top: 0.35rem;
+  text-align: left;
+  border-top: 1px dashed var(--ink-border-dashed);
+  padding-top: 0.35rem;
+  letter-spacing: 0.02em;
+}
+
+/* 振假名排版 */
+.spot-furigana-box {
+  margin-top: 0.25rem;
+}
+.furigana-ruby {
+  font-family: var(--font-jp);
+  font-size: 0.88rem;
+  color: var(--ink-muted);
+  ruby-position: over;
+}
+.furigana-rt {
+  font-size: 0.62rem;
+  color: var(--theme-primary, var(--shuin-red));
+  font-weight: 600;
+}
+.spot-furigana-plain {
+  font-family: var(--font-jp);
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  margin-top: 0.15rem;
+}
+
+/* 6-2. 手帳和紙摺頁區塊 (Washi Journal Page Sheet - 直角裁切) */
+.spot-detail-section {
+  position: relative;
+  background-color: var(--paper-hosho);
+  background-image: var(--washi-hosho);
+  background-repeat: repeat;
+  border: var(--border-ink-soft);
+  border-radius: 0px !important;
+  padding: 1.1rem;
+  margin-bottom: 0.95rem;
+  box-shadow: var(--shadow-paper-sheet);
+}
+
+.spot-detail-sec-title {
+  font-family: var(--font-mincho);
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--ink-sumi);
+  margin-bottom: 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px dashed var(--color-border);
+  letter-spacing: 0.02em;
+}
+
+/* Navigation Link Buttons */
+.btn-nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.15rem;
+  border-radius: 0px !important;
+  font-weight: 800;
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.btn-nav-inline {
+  width: auto !important;
+  padding: 0.35rem 0.75rem !important;
+  font-size: 0.75rem !important;
+  border-radius: 0px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+.spot-detail-section .btn-nav-link {
+  width: 100%;
+}
+
+.btn-nav-primary {
+  background: var(--theme-primary, var(--shuin-red)) !important;
+  color: #FFFFFF !important;
+  border: none;
+  border-radius: 0px !important;
+  box-shadow: 0 2px 6px rgba(180, 50, 30, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  transition: all 0.2s ease;
+}
+.btn-nav-primary:hover {
+  filter: brightness(0.94);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(180, 50, 30, 0.32);
+  color: #FFFFFF !important;
+}
+
+/* 6-3. 核心亮點：鳥之子紙備忘筆記 (Torinoko Notes & Straight Edge) */
+.spot-highlights-box {
+  background-color: var(--paper-torinoko);
+  background-image: var(--washi-torinoko);
+  background-repeat: repeat;
+  border-radius: 0px !important;
+  border: 1px solid #E6DEC8;
+  padding: 0.85rem 1rem;
+  font-size: 0.86rem;
+  box-shadow: var(--shadow-paper-sheet);
+}
+.spot-highlight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+  color: var(--ink-sumi);
+  line-height: 1.5;
+}
+.spot-highlight-item:last-child {
+  margin-bottom: 0;
+}
+
+.spot-photo-tip {
+  margin-top: 0.6rem;
+  padding-top: 0.55rem;
+  border-top: 1px dashed #D5CBB3;
+  font-size: 0.82rem;
+  color: #5C5242;
+  font-style: normal;
+}
+
+/* 6-4. 招牌名物：居酒屋杉木札菜單 (Izakaya Wooden Menu Plaques) */
+.wood-menu-section {
+  background: var(--paper-bamboo) !important;
+  background-image: var(--washi-bamboo) !important;
+  border: 1.2px solid rgba(195, 160, 105, 0.65) !important;
+  border-radius: 0px !important;
+}
+.wood-menu-seal {
+  font-family: var(--font-mincho);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #D97706;
+  background: #FEF3C7;
+  border: 1px solid #F59E0B;
+  padding: 0.08rem 0.4rem;
+  border-radius: 0px !important;
+}
+.mokufuda-menu-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0.75rem 0;
+}
+.mokufuda-plaque-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FCFAF6;
+  background-image: linear-gradient(90deg, rgba(217, 119, 6, 0.05) 0%, transparent 100%);
+  border: 1.2px solid rgba(195, 160, 105, 0.45);
+  border-left: 5px solid #D97706;
+  border-radius: 0px !important;
+  padding: 0.6rem 0.85rem;
+  position: relative;
+  box-shadow: var(--shadow-paper-sheet);
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+.mokufuda-plaque-item:hover {
+  transform: translateX(2.5px);
+  border-color: #D97706;
+}
+.mokufuda-content {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  flex: 1;
+}
+.mokufuda-order {
+  font-family: var(--font-mincho);
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #D97706;
+}
+.mokufuda-name {
+  font-family: var(--font-handwriting);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink-sumi);
+}
+.mokufuda-stamp {
+  font-family: var(--font-mincho);
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #DC2626;
+  border: 1px solid #DC2626;
+  padding: 0.02rem 0.25rem;
+  border-radius: 0px !important;
+  transform: rotate(-4deg);
+}
+.wood-budget-box {
+  font-size: 0.8rem;
+  color: var(--ink-sumi);
+  padding: 0.4rem 0;
+  border-top: 1px dashed var(--ink-border);
+}
+.wood-notes-memo {
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  line-height: 1.45;
+  background: rgba(255,255,255,0.7);
+  padding: 0.45rem 0.65rem;
+  border-radius: 0px !important;
+  border-left: 3px solid #D97706;
+}
+
+/* 6-5. 實用日語：宣紙短冊語彙卡 (Tanzaku Japanese Cards) */
+.phrases-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.phrase-card {
+  position: relative;
+  background-color: var(--paper-xuan);
+  background-image: var(--washi-fiber-pattern);
+  border: 1px solid #DFD5BE;
+  border-left: 4.5px solid var(--theme-primary, var(--shuin-red));
+  border-radius: 0px !important;
+  padding: 0.95rem;
+  box-shadow: var(--shadow-paper-sheet);
+}
+.phrase-scenario-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--theme-primary, var(--shuin-red));
+  background: #FFF2EE;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0px !important;
+  border: 1px solid rgba(200, 60, 35, 0.2);
+  letter-spacing: 0.05em;
+}
+.phrase-japanese {
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: var(--ink-sumi);
+  margin-top: 0.4rem;
+  font-family: var(--font-jp);
+  letter-spacing: 0.03em;
+}
+.phrase-romaji {
+  font-size: 0.78rem;
+  color: #736754;
+  font-style: italic;
+  margin-top: 0.1rem;
+}
+.phrase-chinese {
+  font-size: 0.88rem;
+  color: var(--ink-sumi);
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+.phrase-actions {
+  display: flex;
+  gap: 0.45rem;
+  margin-top: 0.55rem;
+}
+.btn-speech-play {
+  background: var(--theme-primary, var(--shuin-red)) !important;
+  color: #FFFFFF;
+  border: none;
+  padding: 0.35rem 0.75rem;
+  border-radius: 0px !important;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(180, 50, 30, 0.2);
+  transition: all var(--transition-fast);
+}
+.btn-speech-play:hover {
+  filter: brightness(0.92);
+  transform: translateY(-1px);
+}
+.btn-show-staff {
+  background: #FFFFFF;
+  color: var(--ink-sumi);
+  border: 1px solid #D5CBB3;
+  padding: 0.35rem 0.75rem;
+  border-radius: 0px !important;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all var(--transition-fast);
+}
+.btn-show-staff:hover {
+  background: #FAF6EE;
+  border-color: var(--shuin-red);
+  color: var(--shuin-red);
+}
+
+/* 6-6. 緊急電話直撥樣式 */
+.emergency-hotline-card {
+  background: #FFF5F5 !important;
+  border: 1.5px solid #FEB2B2 !important;
+  border-left: 6px solid var(--shuin-red, #C53D2A) !important;
+  border-radius: 0px !important;
+  padding: 1rem;
+  margin-top: 1rem;
+  box-shadow: 0 2px 6px rgba(195, 58, 50, 0.08);
+}
+.emergency-hotline-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.5rem;
+}
+.emergency-tel-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.65rem;
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: 0px !important;
+  gap: 0.6rem;
+}
+.emergency-tel-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex: 1;
+}
+.emergency-tel-icon {
+  font-size: 1.15rem;
+}
+.emergency-tel-text {
+  display: flex;
+  flex-direction: column;
+}
+.emergency-tel-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.emergency-tel-sub {
+  font-size: 0.68rem;
+  color: var(--text-tertiary);
+}
+.btn-tel-dial {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--shuin-red, #C53D2A);
+  color: #FFFFFF !important;
+  text-decoration: none;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.35rem 0.65rem;
+  border-radius: 0px !important;
+  box-shadow: 0 1px 4px rgba(197, 61, 42, 0.25);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+.btn-tel-dial:hover,
+.btn-tel-dial:active {
+  background: #A9301F;
+  transform: translateY(-1px);
+}
+
+/* 7. Time Modification & Batch Shift System */
+.spot-time-toggle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn-toggle-time-edit {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: var(--bg-primary);
+  border: 1px solid var(--color-border);
+  padding: 0.18rem 0.55rem;
+  border-radius: 0px !important;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.btn-toggle-time-edit:hover {
+  border-color: var(--theme-primary);
+  color: var(--theme-primary);
+}
+
+.btn-toggle-batch {
+  font-size: 0.70rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  padding: 0.15rem 0.45rem;
+  border-radius: 0px !important;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin-left: auto;
+}
+.btn-toggle-batch:hover {
+  border-color: var(--theme-primary);
+  color: var(--theme-primary);
+  background: var(--theme-light);
+}
+
+.spot-time-editor-box {
+  background-color: #FFFFFF;
+  background-image: var(--planner-grid-pattern);
+  background-size: 16px 16px;
+  border: 1.2px solid #DCD4C0;
+  border-radius: 0px !important;
+  padding: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.6rem;
+  box-shadow: var(--shadow-paper-pressed);
+  animation: fadeIn 0.2s ease;
+}
+
+.spot-time-input-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.spot-time-input {
+  flex: 1;
+  padding: 0.5rem 0.8rem;
+  border: 1.2px solid #D0C6B0;
+  border-radius: 0px !important;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink-sumi);
+  background: var(--paper-hosho);
+  font-family: inherit;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: all var(--transition-fast);
+}
+.spot-time-input:focus {
+  outline: none;
+  border-color: var(--theme-primary);
+  box-shadow: 0 0 0 2px var(--theme-light);
+}
+
+.spot-time-quick-shifts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.btn-time-shift {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: 0px !important;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.btn-time-shift:hover {
+  border-color: var(--theme-primary);
+  color: var(--theme-primary);
+  background: var(--theme-light);
+}
+
+.spot-time-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  margin-top: 0.2rem;
+}
+
+.btn-time-save {
+  background: var(--theme-primary);
+  color: #FFFFFF !important;
+  border: none;
+  border-radius: 0px !important;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.btn-time-save:hover {
+  filter: brightness(0.92);
+}
+
+.btn-time-reset {
+  background: transparent;
+  color: var(--text-tertiary);
+  border: 1px dashed var(--color-border);
+  border-radius: 0px !important;
+  padding: 0.4rem 0.65rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-time-reset:hover {
+  color: var(--color-torii);
+  border-color: var(--color-torii);
+}
+
+/* 左側行程表「全天時間批量平移」工具條 */
+.itinerary-batch-time-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--paper-hosho);
+  background-image: var(--washi-hosho);
+  border: var(--border-ink-soft);
+  border-radius: 0px !important;
+  padding: 0.45rem 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-paper-sheet);
+}
+
+.batch-time-btn-group {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.btn-batch-shift {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: 0px !important;
+  padding: 0.2rem 0.45rem;
+  font-size: 0.70rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.btn-batch-shift:hover {
+  border-color: var(--theme-primary);
+  color: var(--theme-primary);
+  background: var(--theme-light);
+}
+
+/* Full Cultural Story & Deep Guide Section (古都經摺裝折本) */
+.spot-full-story-box {
+  background-color: #FAF5EA;
+  background-image: var(--washi-fiber-pattern);
+  border: 1.2px solid #DCD0B6;
+  border-radius: 0px !important;
+  padding: 1.15rem 1.25rem;
+  line-height: 1.78;
+  color: var(--ink-sumi);
+  font-size: 0.86rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-shadow: var(--shadow-paper-sheet);
+  position: relative;
+}
+.spot-full-story-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(160, 140, 110, 0) 0%, rgba(160, 140, 110, 0.25) 50%, rgba(160, 140, 110, 0) 100%);
+  pointer-events: none;
+}
+.story-paragraph {
+  margin: 0;
+  text-align: justify;
+  letter-spacing: 0.02em;
+}
+.story-paragraph:not(:last-child) {
+  padding-bottom: 0.85rem;
+  border-bottom: 1px dashed #D5C9AD;
+}
+
+/* 8. Centered Floating Modals (Toolbox & Admin/Prompt) */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 500;
+  display: none !important;
+  opacity: 0;
+  pointer-events: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1rem;
+  transition: opacity 0.25s ease;
+  box-sizing: border-box;
+}
+
+.drawer-backdrop.active {
+  display: flex !important;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer-panel {
+  background-color: var(--paper-hosho);
+  background-image: var(--washi-fiber-pattern);
+  border-radius: 12px;
+  border: 2px solid #D8CBB2;
+  width: 100%;
+  max-width: 580px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 
+    0 25px 60px -15px rgba(25, 20, 15, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset,
+    0 0 0 4px #EAE1CF;
+  transform: scale(0.94);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  margin: auto;
+}
+
+.drawer-backdrop.active .drawer-panel {
+  transform: scale(1);
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.4rem;
+  border-bottom: 2px dashed #D5C8AC;
+  background-color: #F7F1E3;
+  background-image: var(--washi-fiber-pattern);
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.drawer-title {
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: var(--ink-sumi);
+  letter-spacing: 0.03em;
+  margin: 0;
+}
+
+.btn-drawer-close {
+  background: var(--paper-hosho);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+.btn-drawer-close:hover {
+  background: var(--color-torii-light);
+  border-color: var(--color-torii);
+  color: var(--color-torii);
+  transform: scale(1.05);
+}
+
+.drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 1.5rem 1.5rem;
+  box-sizing: border-box;
+}
+
+.drawer-body::-webkit-scrollbar {
+  width: 6px;
+}
+.drawer-body::-webkit-scrollbar-thumb {
+  background: var(--color-border-dark);
+  border-radius: var(--radius-full);
+}
+
+/* 9. "Show to Staff" Fullscreen Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 550;
+  display: none !important;
+  opacity: 0;
+  pointer-events: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  transition: opacity 0.2s ease;
+}
+
+.modal-backdrop.active {
+  display: flex !important;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.staff-modal-content {
+  background-color: var(--paper-hosho);
+  background-image: var(--washi-fiber-pattern);
+  border-radius: 12px;
+  border: 3px solid #D5C29E;
+  max-width: 520px;
+  width: 100%;
+  padding: 2.25rem 1.75rem;
+  text-align: center;
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.35),
+    0 0 0 6px #F0E6D2;
+  transform: scale(0.92);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.modal-backdrop.active .staff-modal-content {
+  transform: scale(1);
+}
+
+.staff-modal-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--shuin-red);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.staff-modal-jp {
+  font-size: 1.95rem;
+  font-weight: 800;
+  color: var(--ink-sumi);
+  font-family: var(--font-jp);
+  line-height: 1.45;
+  margin-bottom: 1.25rem;
+  padding: 1.15rem;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-md);
+  user-select: all;
+}
+.staff-modal-zh {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 1.75rem;
+}
+.btn-close-modal {
+  background: var(--color-torii);
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.8rem 2.25rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  width: 100%;
+}
+
+/* 9. Toast Notification */
+.toast-notification {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #1E293B;
+  color: #FFFFFF;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-full);
+  font-size: 0.88rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+  z-index: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: all var(--transition-spring);
+}
+.toast-notification.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}

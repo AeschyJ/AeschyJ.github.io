@@ -1,0 +1,223 @@
+/* ==========================================================================
+   Responsive & Mobile-First Stylesheet - 3-Column Edition (Option A)
+   ========================================================================== */
+
+/* Tablet & Mobile Screens (<= 960px) */
+@media (max-width: 960px) {
+  .glass-header {
+    padding-top: env(safe-area-inset-top, 0px);
+    height: calc(64px + env(safe-area-inset-top, 0px));
+  }
+  .header-inner {
+    padding: 0 0.6rem;
+  }
+  .brand-badge {
+    display: none;
+  }
+
+  /* Desktop elements hidden on mobile */
+  .desktop-action,
+  .days-nav-wrapper {
+    display: none !important;
+  }
+
+  /* Mobile header dropdowns visible on mobile */
+  .mobile-day-selector-wrapper {
+    display: flex !important;
+    flex: 1;
+    min-width: 0;
+    max-width: 220px;
+    margin: 0 0.25rem;
+  }
+
+  /* Mobile Journal Day selector in header */
+  body.journal-mode-active .mobile-journal-day-wrapper {
+    display: flex !important;
+    flex: 1;
+    min-width: 0;
+    max-width: 220px;
+    margin: 0 0.25rem;
+  }
+
+  /* 在手機端手記模式下，隱藏手記頁面內部的左右滑動條，統一由頂部下拉選單控制 */
+  body.journal-mode-active .journal-days-nav {
+    display: none !important;
+  }
+
+  /* 在手機端手記模式下，頂部列簡化為天數下拉選單 */
+  body.journal-mode-active .header-journal-wrapper .journal-top-bar {
+    display: none !important;
+  }
+
+  /* 在手機端手記模式下，顯示工作區專屬手記控制列 (視角切換、旅期、栞室、共筆同步) */
+  body.journal-mode-active .journal-mobile-control-bar {
+    display: flex !important;
+  }
+
+  .header-tools-dropdown {
+    display: block !important;
+    flex-shrink: 0;
+  }
+
+  /* Segmented View Switcher Tabs (Washi Index Tabs) */
+  .mobile-view-tabs {
+    display: flex !important;
+    background: var(--washi-base);
+    border-bottom: 1.5px solid var(--ink-border);
+    padding: 0.35rem 0.5rem;
+    gap: 0.35rem;
+    position: sticky;
+    top: calc(64px + env(safe-area-inset-top, 0px));
+    z-index: 90;
+  }
+
+  .mobile-tab-btn {
+    flex: 1;
+    border: 1.2px solid var(--ink-border);
+    background: var(--washi-cream);
+    color: var(--ink-muted);
+    font-family: var(--font-handwriting);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.45rem 0.5rem;
+    border-radius: var(--radius-shiori);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    box-shadow: var(--shadow-paper-tab);
+  }
+  .mobile-tab-btn.active {
+    background: #FFFFFF;
+    color: var(--theme-primary, var(--shuin-red));
+    border-color: var(--theme-primary, var(--shuin-red));
+    border-top: 3px solid var(--theme-primary, var(--shuin-red));
+    box-shadow: var(--shadow-paper-active);
+    font-weight: 700;
+  }
+
+  /* Workspace becomes single column / toggle views */
+  .app-workspace-3col {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 110px);
+    height: calc(100dvh - 110px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .panel-column {
+    display: none;
+    width: 100%;
+    height: 100%;
+    border-right: none;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* Active panel shown */
+  .panel-column.mobile-active-view {
+    display: flex;
+  }
+
+  /* Map View in Mobile */
+  .panel-map.mobile-active-view {
+    display: flex;
+    height: 100%;
+  }
+
+  .mobile-sheet-drag-handle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 0.65rem 1rem;
+    z-index: 50;
+    box-shadow: var(--shadow-float);
+    cursor: pointer;
+  }
+
+  .sheet-pill-bar {
+    width: 36px;
+    height: 4px;
+    background: var(--color-border-dark);
+    border-radius: var(--radius-full);
+    margin-bottom: 0.35rem;
+  }
+
+  .sheet-title-preview {
+    font-size: 0.84rem;
+    font-weight: 800;
+    color: var(--color-torii);
+  }
+
+  /* Leaflet Controls in mobile: avoid overlap with bottom sheet handle */
+  .leaflet-bottom.leaflet-right {
+    margin-bottom: 66px !important;
+    margin-right: 12px !important;
+  }
+}
+
+/* Small Screens (<= 480px) */
+@media (max-width: 480px) {
+  .header-inner {
+    gap: 0.3rem;
+  }
+  .brand-main {
+    font-size: 0.95rem;
+  }
+  .btn-header-tool {
+    padding: 0.35rem 0.55rem;
+    font-size: 0.72rem;
+  }
+  .btn-header-nlm {
+    padding: 0.35rem 0.55rem;
+    font-size: 0.72rem;
+  }
+  .staff-modal-jp {
+    font-size: 1.45rem;
+  }
+
+  /* Mobile Legend Compact Layout */
+  .map-floating-legend {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    padding: 0.4rem 0.6rem;
+    gap: 0.45rem;
+    font-size: 0.68rem;
+    justify-content: space-around;
+  }
+  .legend-item {
+    gap: 0.25rem;
+  }
+
+  /* 手記小螢幕適配 (Mobile Journal Details) */
+  .hanko-completed-stamp {
+    width: 65px;
+    height: 65px;
+    top: 8px;
+    right: 10px;
+  }
+  .hanko-stamp-main {
+    font-size: 0.95rem;
+  }
+  .hanko-stamp-top, .hanko-stamp-bottom {
+    font-size: 0.5rem;
+  }
+  .btn-ceremony-complete {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+  .washi-tape-accent {
+    width: 52px;
+    height: 16px;
+  }
+}

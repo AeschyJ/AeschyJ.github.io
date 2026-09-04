@@ -1,0 +1,125 @@
+/**
+ * Central Portal Hub - Base Design System
+ * Deep Space Theme (#08090d), Typography, Variables & Responsive Foundation
+ */
+
+:root {
+  /* Core Backgrounds */
+  --bg-deep-space: #08090d;
+  --bg-surface: #0e1118;
+  --bg-surface-elevated: #161a24;
+  --bg-glass-blur: rgba(14, 17, 24, 0.72);
+  --bg-glass-border: rgba(255, 255, 255, 0.08);
+  --bg-glass-card: rgba(20, 24, 35, 0.65);
+
+  /* Dynamic Active Ambient Tokens (Updated at runtime via JS) */
+  --current-glow-1: rgba(168, 85, 247, 0.35); /* Defaults to Quantum Violet */
+  --current-glow-2: rgba(96, 165, 250, 0.25);
+  --current-accent: #a855f7;
+  --current-accent-secondary: #c084fc;
+
+  /* Static Exhibition Palette Tokens */
+  --color-exp-quantum: #a855f7;
+  --color-exp-secondary: #c084fc;
+  --color-osk-torii: #e11d48;
+  --color-osk-sakura: #f43f5e;
+  --color-show-ice: #60a5fa;
+  --color-show-secondary: #38bdf8;
+  --color-tic-radar: #f59e0b;
+  --color-tic-secondary: #fbbf24;
+  --color-cyb-neon: #00ff9d;
+  --color-cyb-secondary: #05f0a0;
+
+  /* Typography Colors */
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --text-inverse: #08090d;
+
+  /* Structural Dimensions */
+  --header-height: 72px;
+  --max-width-content: 1200px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 9999px;
+
+  /* Transitions */
+  --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-color-shift: 800ms;
+}
+
+/* Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--bg-deep-space);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans TC', sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+  /* iOS Safe Area Padding */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-deep-space);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--current-accent);
+}
+
+/* Base Links & Buttons */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+button {
+  background: none;
+  border: none;
+  font-family: inherit;
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Common Container Layout */
+.page-container {
+  width: 100%;
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (max-width: 640px) {
+  .page-container {
+    padding: 0 16px;
+  }
+}

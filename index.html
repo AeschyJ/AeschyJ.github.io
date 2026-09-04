@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>AeschyJ Portal Hub | 中央主題展覽館</title>
+  <meta name="description" content="AeschyJ 個人專案統一主題展覽館與多維作品展區，包含量子實驗室、大阪旅行指南、當代藝廊、雷達票務獵手與賽博習慣矩陣。">
+  <meta name="theme-color" content="#08090d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%2308090d'/><circle cx='50' cy='50' r='30' fill='none' stroke='%23a855f7' stroke-width='8'/><circle cx='50' cy='50' r='14' fill='%2360a5fa'/></svg>">
+
+  <!-- Core Design System & Ambient Optics -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/ambient.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <!-- Individual Specialized Pavilions Stylesheets -->
+  <link rel="stylesheet" href="css/pavilions/experiment.css">
+  <link rel="stylesheet" href="css/pavilions/osaka.css">
+  <link rel="stylesheet" href="css/pavilions/showcase.css">
+  <link rel="stylesheet" href="css/pavilions/ticket.css">
+  <link rel="stylesheet" href="css/pavilions/cyber.css">
+</head>
+<body>
+
+  <!-- Dynamic Ambient Glow Canvas Overlay -->
+  <div id="ambient-glow" aria-hidden="true">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+    <div class="ambient-orb ambient-orb-3"></div>
+  </div>
+
+  <!-- Floating Header Navigation -->
+  <header class="hub-header">
+    <div class="page-container header-inner">
+      <!-- Brand Logo -->
+      <a href="#" class="brand-group" aria-label="回到首頁">
+        <div class="brand-symbol">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">AeschyJ Hub</span>
+          <span class="brand-subtitle">Central Portal</span>
+        </div>
+      </a>
+
+      <!-- Pavilion Anchors Navigation (Strict Order: EXP -> OSK -> SHOW -> TIC -> CYB) -->
+      <nav class="header-nav" aria-label="展館導航">
+        <a href="#pavilion-exp" class="nav-link" data-pavilion="exp">量子實驗</a>
+        <a href="#pavilion-osk" class="nav-link" data-pavilion="osk">大阪旅誌</a>
+        <a href="#pavilion-show" class="nav-link" data-pavilion="show">當代藝廊</a>
+        <a href="#pavilion-tic" class="nav-link" data-pavilion="tic">雷達票務</a>
+        <a href="#pavilion-cyb" class="nav-link" data-pavilion="cyb">賽博矩陣</a>
+      </nav>
+
+      <!-- Global Controls & Shortcuts -->
+      <div class="header-controls">
+        <!-- Recent Visited Shortcut -->
+        <button id="btn-recent-jump" class="recent-jump-btn" title="快速回到最近訪問的展館">
+          <span class="recent-dot"></span>
+          <span class="btn-label">最近：<span id="recent-pavilion-name">--</span></span>
+        </button>
+
+        <!-- Pinned Pavilions Popover Trigger -->
+        <button id="btn-pinned-toggle" class="ctrl-btn" title="查看釘選展館" aria-haspopup="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="17" x2="12" y2="22"></line>
+            <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a1 1 0 0 0 0-2H8a1 1 0 0 0 0 2h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"></path>
+          </svg>
+          <span class="btn-label">釘選</span>
+          <span id="pinned-counter-badge" class="pinned-counter" style="display: none;">0</span>
+        </button>
+
+        <!-- Visual FX Toggle (Performance / Glow) -->
+        <button id="btn-fx-toggle" class="ctrl-btn active" title="切換動態流光光暈特效">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"/>
+          </svg>
+          <span class="btn-label">特效</span>
+        </button>
+
+        <!-- Audio Synthesizer Toggle -->
+        <button id="btn-audio-toggle" class="ctrl-btn" title="切換氛圍環境音效">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <span class="btn-label">音效</span>
+        </button>
+      </div>
+
+      <!-- Pinned Pavilions Popover Drawer -->
+      <div id="pinned-popover" class="pinned-popover" role="dialog" aria-modal="false">
+        <div class="pinned-header">
+          <span>📌 已釘選的展館</span>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">快速切換通道</span>
+        </div>
+        <div id="pinned-items-list" class="pinned-list">
+          <div class="pinned-empty">尚無釘選展館</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Portal Body -->
+  <main>
+    <!-- Hero Section -->
+    <section id="hero-section" class="hero-section page-container">
+      <div class="hero-badge-pill">
+        <span class="pulse-dot"></span>
+        <span>CENTRAL INNOVATION PORTAL</span>
+      </div>
+      <h1 class="hero-title">AeschyJ's Space of Innovations</h1>
+      <p class="hero-subtitle">
+        收納前瞻演算法原型、沉浸式離線雜誌、包浩斯建築當代藝廊與航管雷達系統的多維主題展覽中心。
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="#pavilion-exp" class="hero-btn hero-btn-primary">
+          <span>啟程巡覽展館</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="https://github.com/AeschyJ" target="_blank" rel="noopener noreferrer" class="hero-btn hero-btn-secondary">
+          <span>GitHub Profile</span>
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+        </a>
+      </div>
+
+      <a href="#pavilion-exp" class="scroll-cue" aria-label="向下滾動查看展館">
+        <span>EXPLORE PAVILIONS</span>
+        <svg class="scroll-cue-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </a>
+    </section>
+
+    <!-- Pavilions Container (Ordered: EXP -> OSK -> SHOW -> TIC -> CYB) -->
+    <div id="pavilions-container" class="page-container">
+      <!-- Semantic sections dynamically initialized & hydrated by pavilionRegistry -->
+      <section id="pavilion-exp" class="pavilion-section theme-exp" data-pavilion-id="exp" data-theme-color="#a855f7" data-secondary-color="#c084fc">
+        <div class="pavilion-slot" id="slot-exp"></div>
+      </section>
+
+      <section id="pavilion-osk" class="pavilion-section theme-osaka" data-pavilion-id="osk" data-theme-color="#e11d48" data-secondary-color="#f43f5e">
+        <div class="pavilion-slot" id="slot-osk"></div>
+      </section>
+
+      <section id="pavilion-show" class="pavilion-section theme-showcase" data-pavilion-id="show" data-theme-color="#60a5fa" data-secondary-color="#38bdf8">
+        <div class="pavilion-slot" id="slot-show"></div>
+      </section>
+
+      <section id="pavilion-tic" class="pavilion-section theme-ticket" data-pavilion-id="tic" data-theme-color="#f59e0b" data-secondary-color="#fbbf24">
+        <div class="pavilion-slot" id="slot-tic"></div>
+      </section>
+
+      <section id="pavilion-cyb" class="pavilion-section theme-cyber" data-pavilion-id="cyb" data-theme-color="#00ff9d" data-secondary-color="#05f0a0">
+        <div class="pavilion-slot" id="slot-cyb"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Central Hub Footer -->
+  <footer class="hub-footer">
+    <div class="page-container footer-inner">
+      <div class="footer-brand-claim">
+        <strong>AeschyJ Hub</strong> &copy; 2026. 零成本集中託管與個人專案主題展覽館架構。
+      </div>
+      <div class="footer-nav-links">
+        <a href="#hero-section">回到頂部</a>
+        <a href="https://github.com/AeschyJ" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="./manifest.json" target="_blank">PWA Manifest</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Back-to-Top Indicator -->
+  <button id="back-to-top" class="back-to-top-btn" aria-label="回航至頂部">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="m18 15-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <!-- Hub Application Engine Entry Point -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

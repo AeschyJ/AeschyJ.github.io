@@ -1,0 +1,640 @@
+/**
+ * Pavilion 01: Quantum Lab & Algorithmic Playground (EXP)
+ * Visual Theme: Academic Futurism & Neural Quantum Optics
+ * Scope: Strictly isolated under `.pavilion-exp` and `.pavilion-exp-modal`
+ */
+
+/* ==========================================================================
+   1. Quantum Lab Host Container & Outer Aesthetics
+   ========================================================================== */
+.pavilion-exp {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(16, 12, 26, 0.85) 0%, rgba(10, 8, 18, 0.92) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.22);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(168, 85, 247, 0.12);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  overflow: hidden;
+  padding: 40px;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.pavilion-exp:hover {
+  border-color: rgba(168, 85, 247, 0.45);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 50px rgba(168, 85, 247, 0.2);
+}
+
+/* Geometric Topology Dot-Matrix Grid Background */
+.pavilion-exp::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 1.5px 1.5px, rgba(168, 85, 247, 0.2) 1.5px, transparent 0),
+    linear-gradient(to right, rgba(168, 85, 247, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(168, 85, 247, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px, 48px 48px, 48px 48px;
+  pointer-events: none;
+  opacity: 0.75;
+  z-index: 1;
+}
+
+/* Subtle LaTeX Formula Watermark */
+.pavilion-exp::after {
+  content: '\\mathcal{L}_{XAI} = \\mathbb{E}_{x \\sim \\mathcal{D}} \\left[ \\| f_\\theta(x) - y \\|^2 + \\lambda \\Omega(\\nabla_x f_\\theta) \\right]  \\quad  \\oint_{\\partial \\mathcal{M}} \\omega = \\int_{\\mathcal{M}} d\\omega';
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  max-width: 85%;
+  font-family: 'Cambria Math', 'Latin Modern Math', 'Times New Roman', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: rgba(192, 132, 252, 0.06);
+  letter-spacing: 0.08em;
+  line-height: 1.8;
+  pointer-events: none;
+  z-index: 1;
+  text-align: right;
+  user-select: none;
+}
+
+/* Internal Content Wrapper - Above Background Grids */
+.pavilion-exp .exp-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* HUD Geometric Corner Accents */
+.pavilion-exp .exp-hud-corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: rgba(168, 85, 247, 0.5);
+  pointer-events: none;
+  z-index: 3;
+}
+.pavilion-exp .exp-hud-tl { top: 12px; left: 12px; border-top: 2px solid; border-left: 2px solid; }
+.pavilion-exp .exp-hud-tr { top: 12px; right: 12px; border-top: 2px solid; border-right: 2px solid; }
+.pavilion-exp .exp-hud-bl { bottom: 12px; left: 12px; border-bottom: 2px solid; border-left: 2px solid; }
+.pavilion-exp .exp-hud-br { bottom: 12px; right: 12px; border-bottom: 2px solid; border-right: 2px solid; }
+
+
+/* ==========================================================================
+   2. Header Meta Bar (Identity, arXiv Pill, Pinned Status)
+   ========================================================================== */
+.pavilion-exp .exp-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(168, 85, 247, 0.15);
+}
+
+.pavilion-exp .exp-identity-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pavilion-exp .exp-order-pill {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(168, 85, 247, 0.12);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.pavilion-exp .exp-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #e9d5ff;
+  text-transform: uppercase;
+}
+
+.pavilion-exp .exp-arxiv-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: var(--text-secondary);
+  font-family: monospace;
+}
+
+.pavilion-exp .exp-pin-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.pavilion-exp .exp-pin-btn:hover {
+  background: rgba(168, 85, 247, 0.2);
+  color: #f3f4f6;
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.pavilion-exp .exp-pin-btn.is-pinned {
+  background: #a855f7;
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.6);
+}
+
+
+/* ==========================================================================
+   3. Main Research Topology Card & Abstract Preview
+   ========================================================================== */
+.pavilion-exp .exp-main-body {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 36px;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .pavilion-exp .exp-main-body {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
+.pavilion-exp .exp-research-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pavilion-exp .exp-sub-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #c084fc;
+}
+
+.pavilion-exp .exp-title {
+  font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  color: #f8fafc;
+}
+
+.pavilion-exp .exp-title-zh {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #d8b4fe;
+  margin-top: 6px;
+  letter-spacing: 0.02em;
+}
+
+/* Badges & Tags */
+.pavilion-exp .exp-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0 10px;
+}
+
+.pavilion-exp .exp-badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(168, 85, 247, 0.08);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  color: #e9d5ff;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pavilion-exp .exp-badge-sota {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(192, 132, 252, 0.1));
+  border-color: rgba(168, 85, 247, 0.5);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.25);
+}
+
+/* Abstract Box */
+.pavilion-exp .exp-abstract-card {
+  position: relative;
+  background: rgba(12, 10, 22, 0.6);
+  border: 1px solid rgba(168, 85, 247, 0.14);
+  border-left: 3px solid #a855f7;
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: #cbd5e1;
+}
+
+.pavilion-exp .exp-abstract-card strong {
+  color: #f3f4f6;
+  font-weight: 600;
+}
+
+.pavilion-exp .exp-abstract-fade {
+  color: #94a3b8;
+  font-size: 0.88rem;
+  margin-top: 8px;
+}
+
+
+/* ==========================================================================
+   4. Interactive Benchmark Comparative Bar Widget
+   ========================================================================== */
+.pavilion-exp .exp-benchmark-widget {
+  background: rgba(14, 11, 24, 0.75);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.pavilion-exp .exp-benchmark-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pavilion-exp .exp-benchmark-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pavilion-exp .exp-benchmark-toggle-group {
+  display: flex;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 3px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pavilion-exp .exp-toggle-btn {
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pavilion-exp .exp-toggle-btn.is-active {
+  background: #a855f7;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+}
+
+/* Comparative Bar Items */
+.pavilion-exp .exp-metrics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pavilion-exp .exp-metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pavilion-exp .exp-metric-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+}
+
+.pavilion-exp .exp-metric-label {
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+.pavilion-exp .exp-metric-val {
+  font-family: 'SF Mono', monospace;
+  font-weight: 700;
+  color: #c084fc;
+  transition: color 0.3s ease;
+}
+
+.pavilion-exp .exp-metric-val.is-proposed {
+  color: #38bdf8;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+}
+
+.pavilion-exp .exp-bar-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  position: relative;
+}
+
+.pavilion-exp .exp-bar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, #9333ea, #c084fc);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
+}
+
+.pavilion-exp .exp-bar-fill.is-proposed {
+  background: linear-gradient(90deg, #a855f7 0%, #38bdf8 100%);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+}
+
+
+/* ==========================================================================
+   5. Action Buttons Group (Launch, Modal Trigger, GitHub)
+   ========================================================================== */
+.pavilion-exp .exp-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-top: 24px;
+  border-top: 1px solid rgba(168, 85, 247, 0.15);
+}
+
+.pavilion-exp .exp-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 24px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 600;
+  box-shadow: 0 4px 20px rgba(168, 85, 247, 0.35);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.pavilion-exp .exp-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(168, 85, 247, 0.55);
+  filter: brightness(1.1);
+}
+
+.pavilion-exp .exp-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  color: #e9d5ff;
+  font-size: 0.86rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.pavilion-exp .exp-btn-secondary:hover {
+  background: rgba(168, 85, 247, 0.2);
+  color: #ffffff;
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.pavilion-exp .exp-btn-tertiary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  transition: all 0.2s ease;
+}
+
+.pavilion-exp .exp-btn-tertiary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+
+
+/* ==========================================================================
+   6. Research Brief Modal Dialog
+   ========================================================================== */
+.pavilion-exp-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.pavilion-exp-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.pavilion-exp-modal .exp-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 4, 12, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.pavilion-exp-modal .exp-modal-window {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 720px;
+  max-height: 88vh;
+  overflow-y: auto;
+  background: #0f0b1a;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(168, 85, 247, 0.2);
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  transform: scale(0.94) translateY(10px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pavilion-exp-modal.is-open .exp-modal-window {
+  transform: scale(1) translateY(0);
+}
+
+.pavilion-exp-modal .exp-modal-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pavilion-exp-modal .exp-modal-close-btn:hover {
+  background: rgba(168, 85, 247, 0.25);
+  color: #ffffff;
+}
+
+.pavilion-exp-modal .exp-modal-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 40px;
+}
+
+.pavilion-exp-modal .exp-modal-kicker {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #c084fc;
+}
+
+.pavilion-exp-modal .exp-modal-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #f8fafc;
+  line-height: 1.3;
+}
+
+.pavilion-exp-modal .exp-modal-diagram {
+  width: 100%;
+  border-radius: var(--radius-md);
+  background: rgba(20, 15, 32, 0.7);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pavilion-exp-modal .exp-diagram-svg {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+}
+
+.pavilion-exp-modal .exp-contributions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.pavilion-exp-modal .exp-contributions-list li {
+  margin-left: 18px;
+}
+
+.pavilion-exp-modal .exp-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(168, 85, 247, 0.18);
+}
+
+.pavilion-exp-modal .exp-bibtex-box {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-family: 'SF Mono', monospace;
+  font-size: 0.76rem;
+  color: #94a3b8;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+
+/* ==========================================================================
+   7. Responsive Adaptations
+   ========================================================================== */
+@media (max-width: 640px) {
+  .pavilion-exp {
+    padding: 24px 18px;
+  }
+  
+  .pavilion-exp .exp-actions-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pavilion-exp .exp-btn-primary,
+  .pavilion-exp .exp-btn-secondary,
+  .pavilion-exp .exp-btn-tertiary {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .pavilion-exp-modal .exp-modal-window {
+    padding: 24px 18px;
+  }
+}

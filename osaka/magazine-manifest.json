@@ -1,0 +1,18 @@
+{
+  "name": "夏之栞・名阪京奈行旅繪卷",
+  "short_name": "行旅繪卷",
+  "description": "「步履隨風，穿行於尾張古城、浪花水都、奈良青苔與千本鳥居之間。」名阪京奈盛夏巡行水墨電子畫報。",
+  "start_url": "./magazine.html",
+  "display": "standalone",
+  "background_color": "#FAF7F0",
+  "theme_color": "#FAF7F0",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><circle cx='256' cy='256' r='240' fill='%23FAF7F0' stroke='%23C53D2A' stroke-width='16'/><circle cx='256' cy='256' r='120' fill='%23C53D2A'/><text x='256' y='285' font-size='130' font-family='serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'>栞</text></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

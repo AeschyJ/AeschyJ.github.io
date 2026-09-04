@@ -1,0 +1,18 @@
+{
+  "name": "旅の栞・名阪京奈 夏日巡行手帖",
+  "short_name": "旅の栞",
+  "description": "「步履隨風，穿行於尾張古城、浪花水都、奈良青苔與千本鳥居之間。」名阪奈京十一日隨身旅行手帖。",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FAF9F5",
+  "theme_color": "#E85A4F",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><circle cx='256' cy='256' r='240' fill='%23FAF9F5' stroke='%23E85A4F' stroke-width='16'/><circle cx='256' cy='256' r='120' fill='%23E85A4F'/><path d='M160 380 Q256 320 352 380' stroke='%2324292E' stroke-width='12' fill='none'/><path d='M180 200 L332 200 M210 170 L302 170 M210 170 L210 330 M302 170 L302 330' stroke='%23E85A4F' stroke-width='14' stroke-linecap='round'/></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

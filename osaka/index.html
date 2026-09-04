@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>旅の栞・名阪京奈 夏日巡行手帖</title>
+  
+  <!-- PWA & Mobile Web App Meta -->
+  <script>
+    if (location.protocol === 'http:' || location.protocol === 'https:') {
+      const manifestLink = document.createElement('link');
+      manifestLink.rel = 'manifest';
+      manifestLink.href = './manifest.json';
+      document.head.appendChild(manifestLink);
+    }
+  </script>
+  <meta name="theme-color" content="#FAF9F5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="旅の栞">
+  
+  <!-- SEO & Social Open Graph -->
+  <meta name="description" content="「步履隨風，穿行於尾張古城、浪花水都、奈良青苔與千本鳥居之間。」名阪奈京十一日隨身旅行手帖：每日行腳、隨行繪圖與風土名所指南。">
+  <meta property="og:title" content="旅の栞・名阪京奈 夏日巡行手帖">
+  <meta property="og:description" content="「步履隨風，穿行於尾張古城、浪花水都、奈良青苔與千本鳥居之間。」每日行腳・隨行繪圖・風土名所指南。">
+  <meta property="og:type" content="website">
+
+  <!-- Preconnect for Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Shippori+Mincho:wght@500;700;800&family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="./css/design-system.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/journal.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body class="paper-texture">
+
+  <!-- Top Wabi-Sabi Stationery Sticky Header -->
+  <header class="glass-header washi-header">
+    <div class="header-inner">
+      <!-- Brand Box: Hanko Seal + Handwritten Mincho Title -->
+      <div class="brand-box">
+        <div class="brand-seal">
+          <span>栞</span>
+        </div>
+        <div class="brand-text">
+          <div class="brand-main-wrapper">
+            <span class="brand-main">旅の栞</span>
+            <span class="brand-accent">TabiSync</span>
+          </div>
+          <span class="brand-badge">「名阪京奈・夏之栞」</span>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           CENTER ZONE: MAP MODE DATE SELECTORS
+           ===================================================================== -->
+      <!-- 11-Day Horizontal Shiori Bookmark Tags Carousel (Desktop >960px, Map mode) -->
+      <div class="days-nav-wrapper map-header-element" id="desktop-days-nav">
+        <div class="days-nav-controls">
+          <button class="days-scroll-btn btn-scroll-prev" id="scroll-prev-day-btn" title="往前翻頁">‹</button>
+          <div class="days-scroll-container" id="days-pills-list">
+            <!-- Shiori Day Tags (8/19 ~ 8/29) injected dynamically by app.js -->
+          </div>
+          <button class="days-scroll-btn btn-scroll-next" id="scroll-next-day-btn" title="往後翻頁">›</button>
+        </div>
+      </div>
+
+      <!-- Mobile Date Selector Dropdown (<=960px, Map mode: 封閉時僅顯示第一日，展開呈現完整日程資訊) -->
+      <div class="mobile-day-selector-wrapper map-header-element" id="mobile-day-selector-wrapper">
+        <div class="mobile-day-custom-dropdown" id="mobile-map-day-dropdown">
+          <button class="mobile-day-trigger" id="mobile-map-day-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="選擇行程天數">
+            <span class="mobile-day-select-icon">📜</span>
+            <span class="mobile-day-trigger-text" id="mobile-map-day-label">第一日</span>
+            <span class="mobile-day-select-arrow">▾</span>
+          </button>
+          <div class="mobile-day-menu-panel" id="mobile-map-day-menu">
+            <div class="mobile-day-menu-header">⛩️ 選擇行程巡行日</div>
+            <div class="mobile-day-menu-list" id="mobile-map-day-list">
+              <!-- Dynamically populated with full date & location info -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           CENTER ZONE: JOURNAL MODE CONTROLS & DATE SELECTOR (Header Swap)
+           ===================================================================== -->
+      <div class="header-journal-wrapper journal-header-element" id="header-journal-wrapper">
+        <!-- Mobile Journal Day Selector Dropdown (<=960px, Journal mode: 封閉時僅顯示第一日，展開呈現完整日程資訊) -->
+        <div class="mobile-day-selector-wrapper mobile-journal-day-wrapper" id="mobile-journal-day-wrapper">
+          <div class="mobile-day-custom-dropdown" id="mobile-journal-day-dropdown">
+            <button class="mobile-day-trigger" id="mobile-journal-day-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="切換手記天數">
+              <span class="mobile-day-select-icon">📖</span>
+              <span class="mobile-day-trigger-text" id="mobile-journal-day-label">第一日</span>
+              <span class="mobile-day-select-arrow">▾</span>
+            </button>
+            <div class="mobile-day-menu-panel" id="mobile-journal-day-menu">
+              <div class="mobile-day-menu-header">📖 選擇手記巡行日</div>
+              <div class="mobile-day-menu-list" id="mobile-journal-day-list">
+                <!-- Dynamically populated with full date & location info -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop/Header Journal Controls Bar -->
+        <div class="journal-top-bar" id="journal-top-bar">
+          <!-- Injected dynamically by journal.js: 視角, 旅期, 栞室, 共筆同步 -->
+        </div>
+      </div>
+      
+      <!-- =====================================================================
+           RIGHT ZONE: ACTION BUTTONS & DROPDOWNS
+           ===================================================================== -->
+      <div class="header-actions">
+        <!-- Mode Switch Button (Desktop: 📖 行旅手記 in Map mode, 🗺️ 返回地圖 in Journal mode) -->
+        <button id="btn-desktop-switch-journal" class="btn-header-tool desktop-action" title="切換至行旅手記（行程編排・評星・手帳結算）">
+          <span class="btn-tag-icon" id="desktop-mode-btn-icon">📖</span>
+          <span id="desktop-mode-btn-text">行旅手記</span>
+        </button>
+
+        <!-- NotebookLM AI Note Book Tag (Desktop) -->
+        <a id="header-nlm-link" href="https://notebooklm.google.com/notebook/08eca98d-dac6-43a7-815e-4a0245b56e35" target="_blank" rel="noopener" class="btn-header-nlm desktop-action" title="開啟 NotebookLM 旅程 AI 筆記本">
+          <span class="btn-tag-icon">🏮</span>
+          <span>AI 筆記 ↗</span>
+        </a>
+
+        <!-- Desktop More Dropdown (收納「隨身道具」與「手帖設定/Prompt」) -->
+        <div class="header-more-dropdown desktop-action" id="header-desktop-more-dropdown">
+          <button id="desktop-more-toggle-btn" class="btn-header-tool btn-more-toggle" aria-expanded="false" aria-haspopup="true" title="隨身道具與手帖設定">
+            <span class="btn-tag-icon">⋯</span>
+            <span>更多 ▾</span>
+          </button>
+          
+          <div class="more-dropdown-menu" id="desktop-more-menu" role="menu">
+            <button class="tools-dropdown-item" id="desktop-menu-item-toolbox" role="menuitem">
+              <span class="dropdown-item-icon">🧰</span>
+              <div class="dropdown-item-text">
+                <span class="dropdown-item-title">隨身道具箱</span>
+                <span class="dropdown-item-desc">住宿導航・匯率換算・行李打包</span>
+              </div>
+            </button>
+            
+            <button class="tools-dropdown-item" id="desktop-menu-item-admin" role="menuitem">
+              <span class="dropdown-item-icon">⚙️</span>
+              <div class="dropdown-item-text">
+                <span class="dropdown-item-title">手帖設定與 Prompt</span>
+                <span class="dropdown-item-desc">自訂 JSON・拂塵歸初</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Tool Menu Dropdown (<=960px) - 順序：行旅手記/返回地圖 -> AI筆記 -> 隨身道具 -> 手帖設定 -->
+        <div class="header-tools-dropdown" id="header-tools-dropdown">
+          <button id="mobile-tools-toggle-btn" class="btn-mobile-tools-toggle" aria-expanded="false" aria-haspopup="true" title="開啟功能選單">
+            <span>🏮</span>
+            <span class="tools-btn-label">選單</span>
+            <span class="tools-btn-arrow">▾</span>
+          </button>
+          
+          <div class="tools-dropdown-menu" id="tools-dropdown-menu" role="menu">
+            <!-- 1. 行旅手記 / 返回地圖 (動態隨模式更新) -->
+            <button class="tools-dropdown-item" id="menu-item-view-switch" role="menuitem">
+              <span class="dropdown-item-icon" id="menu-item-view-icon">📖</span>
+              <div class="dropdown-item-text">
+                <span class="dropdown-item-title" id="menu-item-view-title">📖 行旅手記與結算</span>
+                <span class="dropdown-item-desc" id="menu-item-view-desc">自訂行程・評星心得・旅伴共筆</span>
+              </div>
+            </button>
+
+            <!-- 2. AI 筆記 (NotebookLM) -->
+            <a class="tools-dropdown-item" id="menu-item-nlm" href="https://notebooklm.google.com/notebook/08eca98d-dac6-43a7-815e-4a0245b56e35" target="_blank" rel="noopener" role="menuitem">
+              <span class="dropdown-item-icon">🏮</span>
+              <div class="dropdown-item-text">
+                <span class="dropdown-item-title">NotebookLM 筆記 ↗</span>
+                <span class="dropdown-item-desc">開啟 Google 旅程 AI 筆記手帖</span>
+              </div>
+            </a>
+
+            <!-- 3. 隨身道具 -->
+            <button class="tools-dropdown-item" id="menu-item-toolbox" role="menuitem">
+              <span class="dropdown-item-icon">🧰</span>
+              <div class="dropdown-item-text">
+                <span class="dropdown-item-title">隨身道具箱</span>
+                <span class="dropdown-item-desc">住宿導航・匯率換算・行李打包</span>
+              </div>
+            </button>
+
+            <!-- 4. 手帖設定與 Prompt -->
+            <button class="tools-dropdown-item" id="menu-item-admin" role="menuitem">
+              <span class="dropdown-item-icon">⚙️</span>
+              <div class="dropdown-item-text">
+                <span class="dropdown-item-title">手帖設定與 Prompt</span>
+                <span class="dropdown-item-desc">自訂 JSON・拂塵歸初</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Segmented View Switcher (For Option A Bottom Sheet toggle) -->
+  <div class="mobile-view-tabs" id="mobile-view-tabs">
+    <button class="mobile-tab-btn active" data-tab="itinerary">📜 每日行腳</button>
+    <button class="mobile-tab-btn" data-tab="map">🗺️ 隨行地圖</button>
+    <button class="mobile-tab-btn" data-tab="details">🏮 名所手抄</button>
+  </div>
+
+  <!-- Main 3-Column Interactive Workspace (Default Visible) -->
+  <div class="app-workspace-3col" id="app-workspace-3col">
+    
+    <!-- =========================================================================
+         LEFT COLUMN: 當日排定行腳手帖 (320px)
+         ========================================================================= -->
+    <aside class="panel-column panel-itinerary mobile-active-view" id="panel-itinerary">
+      <div class="panel-scroll-area">
+        <!-- Dynamic Theme & Weather (順著滾動滑開，大幅擴增行程展示空間) -->
+        <div class="day-theme-card" id="day-theme-box">
+          <!-- Dynamic Theme & Weather injected by app.js -->
+        </div>
+
+        <!-- Scheduled Timeline Group -->
+        <div class="itinerary-section-title" style="margin-top:0.85rem; display:flex; align-items:center; justify-content:space-between;">
+          <div style="display:flex; align-items:center; gap:0.4rem;">
+            <span>⏱️ 排定行腳</span>
+            <span class="badge badge-torii" id="scheduled-count-badge">3 處名所</span>
+          </div>
+          <button class="btn-toggle-batch" id="btn-toggle-batch-bar" title="展開全天時間微調工具">
+            ⏱️ 時間微調 ▾
+          </button>
+        </div>
+        <div class="itinerary-list" id="scheduled-list-target">
+          <!-- Scheduled items injected by app.js -->
+        </div>
+
+        <!-- Optional / Side Quests / Food Group -->
+        <div class="itinerary-section-title" style="margin-top:1.25rem;">
+          <span>🧭 幽徑旬味</span>
+          <span class="badge badge-matcha" id="optional-count-badge">2 處拾遺</span>
+        </div>
+        <div class="itinerary-list" id="optional-list-target">
+          <!-- Optional items injected by app.js -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- =========================================================================
+         CENTER COLUMN: 當天隨行地圖 (Flex-1)
+         ========================================================================= -->
+    <main class="panel-column panel-map" id="panel-map">
+      <div class="map-view-container">
+        <!-- Leaflet Map Container -->
+        <div id="leaflet-trip-map" class="leaflet-trip-map"></div>
+
+        <!-- Floating Map Legend / Filter Controls -->
+        <div class="map-floating-legend">
+          <div class="legend-item">
+            <span class="legend-dot dot-scheduled"></span>
+            <span>排定行腳</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot dot-gourmet"></span>
+            <span>旬味名店</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot dot-optional"></span>
+            <span>私房拾遺</span>
+          </div>
+        </div>
+
+        <!-- Mobile Bottom Sheet Handle / Trigger (Option A) -->
+        <div class="mobile-sheet-drag-handle" id="mobile-sheet-drag-handle">
+          <div class="sheet-pill-bar"></div>
+          <div class="sheet-title-preview" id="sheet-title-preview">點選地標展開名所指南 ➔</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- =========================================================================
+         RIGHT COLUMN: 名所深度手抄與情境日語 (380px)
+         ========================================================================= -->
+    <aside class="panel-column panel-details" id="panel-details">
+      <div class="panel-scroll-area" id="spot-detail-content-target">
+        <!-- Active Spot Deep Details injected dynamically by app.js -->
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- =========================================================================
+       📖 行旅手記專屬獨立工作區 (Travel Journal & Planner Workspace)
+       ========================================================================= -->
+  <div id="journal-workspace" class="journal-workspace">
+    <!-- 風土名所水墨插畫與手帳底紋浮水印 (Stationery Sketch & Ink Watermarks) -->
+    <div class="journal-bg-decorations" id="journal-bg-decorations" aria-hidden="true">
+      <div class="bg-sketch sketch-top-left" title="京都千本鳥居">
+        <svg viewBox="0 0 160 160" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Torii Gate Sketch -->
+          <path d="M15 45 Q80 32 145 45" stroke-width="2.5" />
+          <path d="M25 58 L135 58" stroke-width="1.8" />
+          <path d="M42 43 L42 145 M118 43 L118 145" stroke-width="3" />
+          <path d="M42 85 L118 85" stroke-width="1.5" />
+          <rect x="72" y="46" width="16" height="12" rx="1" />
+          <!-- Bamboo Shoots -->
+          <path d="M135 110 Q145 85 142 60 M142 60 Q150 48 152 35" stroke-width="1" stroke-dasharray="3 2" />
+          <path d="M142 90 Q155 82 158 75 M142 70 Q130 65 125 58" stroke-width="0.9" />
+        </svg>
+      </div>
+      <div class="bg-sketch sketch-top-right" title="大阪城天守閣">
+        <svg viewBox="0 0 180 160" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Castle & Shachihoko Silhouette -->
+          <path d="M30 140 L150 140 L140 105 L40 105 Z" stroke-width="1.8" />
+          <path d="M45 105 L135 105 L125 75 L55 75 Z" stroke-width="1.6" />
+          <path d="M60 75 L120 75 L110 50 L70 50 Z" stroke-width="1.4" />
+          <path d="M50 50 Q90 32 130 50 L115 35 Q90 28 65 35 Z" stroke-width="1.8" />
+          <!-- Shachi Roof Ornament -->
+          <path d="M52 48 Q42 38 48 30 Q54 36 56 46" stroke-width="1.2" />
+          <path d="M128 48 Q138 38 132 30 Q126 36 124 46" stroke-width="1.2" />
+          <!-- Waves Motif -->
+          <path d="M20 150 Q50 142 80 150 T140 150 T170 150" stroke-width="1" stroke-dasharray="4 3" />
+        </svg>
+      </div>
+      <div class="bg-sketch sketch-bottom-right" title="奈良春日神鹿">
+        <svg viewBox="0 0 160 160" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Deer Silhouette Sketch -->
+          <path d="M55 140 L60 95 Q65 80 80 75 L105 75 Q115 80 118 95 L120 140" stroke-width="1.6" />
+          <path d="M60 95 Q55 70 48 50 Q45 42 50 38 Q56 40 58 48 L68 75" stroke-width="1.5" />
+          <!-- Antlers -->
+          <path d="M48 38 Q40 25 35 15 M42 26 Q32 28 28 32 M48 38 Q58 24 64 12 M54 26 Q62 25 68 28" stroke-width="1.2" />
+          <!-- Stone Lantern / Kasuga Motif -->
+          <path d="M130 140 L140 140 M135 140 L135 110 M128 110 L142 110 L145 95 L125 95 Z M120 95 Q135 88 150 95" stroke-width="1.1" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- 手機端專屬手記控制列 (視角切換、旅期、栞室、共筆同步) -->
+    <div class="journal-mobile-control-bar" id="journal-mobile-control-bar"></div>
+
+    <!-- 11 天日期導航膠囊 (桌面端保留橫向導覽，手機端由頂部下拉選單接管) -->
+    <div class="journal-days-nav" id="journal-days-nav"></div>
+
+    <!-- 當日主題大卡片 -->
+    <div class="journal-day-hero" id="journal-day-hero"></div>
+
+    <!-- 排定行程與評鑑清單 -->
+    <div class="journal-section-head">
+      <h3 class="journal-section-title">
+        <span>⛩️</span>
+        <span>日日行腳・隨行散策</span>
+      </h3>
+    </div>
+    <div class="journal-items-list" id="journal-items-list"></div>
+
+    <!-- 今日結算卡片容器 -->
+    <div id="journal-summary-card-wrap"></div>
+
+    <!-- 底部操作與分享按鈕 -->
+    <div id="journal-bottom-actions"></div>
+  </div>
+
+
+  <!-- =========================================================================
+       名所庫挑選抽屜 (Spot Picker Modal)
+       ========================================================================= -->
+  <div class="modal-overlay" id="spot-picker-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(4px);">
+    <div class="modal-card" style="background:#FAF9F5; border-radius:20px; max-width:680px; width:92%; max-height:85vh; overflow-y:auto; padding:1.5rem; border:1px solid #E2D9CE; position:relative; box-shadow:0 12px 40px rgba(0,0,0,0.15);">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; border-bottom:1px solid var(--theme-border); padding-bottom:0.65rem;">
+        <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-primary); margin:0;">⛩️ 從名所庫挑選地點</h3>
+        <button class="modal-close-btn" style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:var(--text-secondary);">✕</button>
+      </div>
+      <div id="spot-picker-content"></div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       日式旅情手帳卡彈窗 (Journal Share Card Modal)
+       ========================================================================= -->
+  <div class="modal-overlay" id="journal-card-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(5px); padding:1rem;">
+    <div class="modal-card" style="background:#FAF8F5; border:1.5px solid #CFC5B2; border-radius:12px; max-width:580px; width:100%; max-height:88vh; display:flex; flex-direction:column; overflow:hidden; position:relative; box-shadow:0 16px 50px rgba(0,0,0,0.25);">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:0.85rem 1.25rem; border-bottom:1.2px solid #E6DEC8; background:#F4EFE6; flex-shrink:0;">
+        <span style="font-size:0.92rem; font-weight:800; font-family:var(--font-mincho); color:#1F2429;">📸 旅の手帳卡</span>
+        <button class="modal-close-btn" style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:#73695C; line-height:1; padding:0.2rem 0.4rem;">✕</button>
+      </div>
+      <div id="journal-card-content" class="modal-scrollable-body" style="overflow-y:auto; overflow-x:hidden; padding:1.25rem; flex:1;"></div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       Room Code 私密房間與同步設定彈窗 (Room Sync Modal)
+       ========================================================================= -->
+  <div class="modal-overlay" id="room-sync-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(4px);">
+    <div class="modal-card" style="background:#FAF9F5; border-radius:20px; max-width:480px; width:90%; padding:1.5rem; border:1px solid #E2D9CE; position:relative; box-shadow:0 12px 40px rgba(0,0,0,0.15);">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; border-bottom:1px solid var(--theme-border); padding-bottom:0.65rem;">
+        <h3 style="font-size:1.1rem; font-weight:800; color:var(--text-primary); margin:0;">🗝️ 旅程房間暗號與同步設定</h3>
+        <button class="modal-close-btn" style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:var(--text-secondary);">✕</button>
+      </div>
+      
+      <p style="font-size:0.82rem; color:var(--text-secondary); line-height:1.5; margin-bottom:1rem;">
+        只要同行旅伴輸入<strong>相同的「旅程房間碼」</strong>與<strong>各自的「暱稱」</strong>，就能隨時一鍵同步，互相在 App 內切換查看彼此的今日心得與評分！
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:0.85rem; margin-bottom:1.25rem;">
+        <div>
+          <label style="font-size:0.8rem; font-weight:700; color:var(--text-primary); display:block; margin-bottom:0.3rem;">👤 您的旅伴暱稱：</label>
+          <input type="text" id="room-nickname-input" class="summary-input" placeholder="例如：Liao、小明、阿美" />
+        </div>
+        <div>
+          <label style="font-size:0.8rem; font-weight:700; color:var(--text-primary); display:block; margin-bottom:0.3rem;">🗝️ 旅程房間碼（旅伴需一致）：</label>
+          <input type="text" id="room-code-input" class="summary-input" placeholder="例如：osaka2026" />
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem;">
+        <button class="btn-journal-action share" id="btn-save-room-sync" style="width:100%; justify-content:center;">
+          儲存並立即連線同步
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODALS & DRAWERS
+       ========================================================================= -->
+
+  <!-- "Show to Staff" Fullscreen Modal -->
+  <div class="modal-backdrop" id="staff-modal-backdrop">
+    <div class="staff-modal-content">
+      <div class="staff-modal-label">🇯🇵 出示店員 (Show to Staff)</div>
+      <div class="staff-modal-jp" id="staff-modal-jp-text">手羽先二人前と、生ビールをお願いします。</div>
+      <div class="staff-modal-zh" id="staff-modal-zh-text">請給我兩份炸雞翅和生啤酒。</div>
+      <button class="btn-close-modal" id="staff-modal-close-btn">關閉視窗</button>
+    </div>
+  </div>
+
+  <!-- Toolbox Modal (Currency, Packing list, Flight memo, Hotel) -->
+  <div class="drawer-backdrop" id="toolbox-drawer-backdrop">
+    <div class="drawer-panel">
+      <!-- Fixed Header with Sticky Close Button -->
+      <div class="drawer-header">
+        <h3 class="drawer-title">🧰 隨身道具</h3>
+        <button id="close-toolbox-btn" class="btn-drawer-close" title="關閉工具箱">✕</button>
+      </div>
+
+      <!-- Scrollable Modal Body -->
+      <div class="drawer-body">
+        <!-- Hotel Accommodation Base -->
+        <div class="glass-card" style="padding:1rem; margin-bottom:1rem; border-left:4px solid var(--color-indigo);">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem;">
+            <div style="flex:1;">
+              <span class="badge badge-indigo" style="font-size:0.72rem;">🏨 8/21~8/25 宿點本陣</span>
+              <h4 style="font-size:0.95rem; font-weight:700; margin-top:0.25rem; color:var(--text-primary);">大阪阪神飯店 (Hotel Hanshin Osaka)</h4>
+              <p style="font-size:0.78rem; color:var(--text-secondary); margin-top:0.2rem;">📍 大阪市福島區福島5丁目6-16 (JR福島站步行1分)</p>
+              <p style="font-size:0.74rem; color:var(--color-indigo); margin-top:0.15rem;">♨️ 客房衛浴直通千米地下天然溫泉</p>
+            </div>
+            <a href="https://maps.app.goo.gl/6jYd7QmqnLscha826" target="_blank" rel="noopener" class="btn-nav-link btn-nav-primary btn-nav-inline">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+              <span>導航</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Currency Converter -->
+        <div class="glass-card" style="padding:1rem; margin-bottom:1rem;">
+          <h4 style="font-size:0.92rem; font-weight:700; margin-bottom:0.5rem; color:var(--text-primary);">💴 匯率換算 (匯率 0.215)</h4>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem;">
+            <div>
+              <label style="font-size:0.74rem; font-weight:600; color:var(--text-secondary);">日圓 JPY (円)</label>
+              <input type="number" id="calc-jpy-input" placeholder="1000" style="width:100%; padding:0.5rem; border:1px solid var(--color-border); border-radius:var(--radius-sm); font-size:0.95rem; font-weight:700; box-sizing:border-box;">
+            </div>
+            <div>
+              <label style="font-size:0.74rem; font-weight:600; color:var(--text-secondary);">新台幣 TWD (元)</label>
+              <input type="number" id="calc-twd-input" placeholder="215" style="width:100%; padding:0.5rem; border:1px solid var(--color-border); border-radius:var(--radius-sm); font-size:0.95rem; font-weight:700; box-sizing:border-box;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Personal Packing Checklist -->
+        <div class="glass-card" style="padding:1rem; margin-bottom:1rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+            <h4 style="font-size:0.92rem; font-weight:700; color:var(--text-primary);">🎒 行囊備忘</h4>
+            <span style="font-size:0.72rem; color:var(--text-tertiary);">（存於本機）</span>
+          </div>
+          <div id="packing-list-target">
+            <!-- Packing items injected by app.js -->
+          </div>
+          <div style="display:flex; gap:0.4rem; margin-top:0.75rem;">
+            <input type="text" id="add-packing-input" placeholder="新增行李物品..." style="flex:1; padding:0.45rem 0.65rem; border:1px solid var(--color-border); border-radius:var(--radius-sm); font-size:0.82rem;">
+            <button id="add-packing-btn" style="background:var(--color-torii); color:#fff; border:none; border-radius:var(--radius-sm); padding:0.45rem 0.85rem; font-weight:600; font-size:0.82rem; cursor:pointer;">新增</button>
+          </div>
+        </div>
+
+        <!-- Emergency Hotline (支援 tel: 點擊直撥) -->
+        <div class="emergency-hotline-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <h4 style="font-size:0.92rem; font-weight:800; color:var(--shuin-red, #C53D2A); display:flex; align-items:center; gap:0.35rem;">
+              <span>🚨</span> 緊急熱線
+            </h4>
+            <span style="font-size:0.7rem; color:var(--text-tertiary);">點擊號碼直接通話</span>
+          </div>
+          
+          <div class="emergency-hotline-grid">
+            <!-- 1. 警察局 110 -->
+            <div class="emergency-tel-row">
+              <div class="emergency-tel-meta">
+                <span class="emergency-tel-icon">👮</span>
+                <div class="emergency-tel-text">
+                  <span class="emergency-tel-title">警察局 (事件・事故)</span>
+                  <span class="emergency-tel-sub">免付費緊急報案</span>
+                </div>
+              </div>
+              <a href="tel:110" class="btn-tel-dial" title="直撥 110 警察">
+                <span class="tel-number">110</span>
+                <span class="tel-call-action">📞 直撥</span>
+              </a>
+            </div>
+
+            <!-- 2. 救護消防 119 -->
+            <div class="emergency-tel-row">
+              <div class="emergency-tel-meta">
+                <span class="emergency-tel-icon">🚑</span>
+                <div class="emergency-tel-text">
+                  <span class="emergency-tel-title">救護車 / 消防隊 (急病・火警)</span>
+                  <span class="emergency-tel-sub">免付費緊急救援</span>
+                </div>
+              </div>
+              <a href="tel:119" class="btn-tel-dial" title="直撥 119 救護消防">
+                <span class="tel-number">119</span>
+                <span class="tel-call-action">📞 直撥</span>
+              </a>
+            </div>
+
+            <!-- 3. JNTO 24h 中文觀光救援 -->
+            <div class="emergency-tel-row">
+              <div class="emergency-tel-meta">
+                <span class="emergency-tel-icon">📞</span>
+                <div class="emergency-tel-text">
+                  <span class="emergency-tel-title">JNTO 24h 中文觀光救援</span>
+                  <span class="emergency-tel-sub">日本政府觀光局多語熱線</span>
+                </div>
+              </div>
+              <a href="tel:05038162788" class="btn-tel-dial btn-tel-wide" title="直撥 JNTO 救援專線">
+                <span class="tel-number">050-3816-2788</span>
+                <span class="tel-call-action">📞 直撥</span>
+              </a>
+            </div>
+
+            <!-- 4. 台北駐大阪經濟文化辦事處 -->
+            <div class="emergency-tel-row">
+              <div class="emergency-tel-meta">
+                <span class="emergency-tel-icon">🏛️</span>
+                <div class="emergency-tel-text">
+                  <span class="emergency-tel-title">台北駐大阪辦事處 (急難救助)</span>
+                  <span class="emergency-tel-sub">旅外國人 24h 緊急聯絡電話</span>
+                </div>
+              </div>
+              <a href="tel:+819035633566" class="btn-tel-dial btn-tel-wide" title="直撥駐大阪辦事處緊急電話">
+                <span class="tel-number">+81-90-3563-3566</span>
+                <span class="tel-call-action">📞 直撥</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin / NotebookLM Prompt Generator Modal -->
+  <div class="drawer-backdrop" id="admin-drawer-backdrop">
+    <div class="drawer-panel">
+      <!-- Fixed Header with Sticky Close Button -->
+      <div class="drawer-header">
+        <h3 class="drawer-title">⚙️ 手帖指令</h3>
+        <button id="close-admin-drawer-btn" class="btn-drawer-close" title="關閉設定">✕</button>
+      </div>
+
+      <!-- Scrollable Modal Body -->
+      <div class="drawer-body">
+        <!-- Step 1: Copy NotebookLM Prompt -->
+        <div style="background:#EFF6FF; border:1px solid #BFDBFE; border-radius:var(--radius-md); padding:1rem; margin-bottom:1.25rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+            <strong style="color:#1D4ED8; font-size:0.9rem; display:flex; align-items:center; gap:0.35rem;">
+              <span>🤖</span> 步驟一：萃取指令
+            </strong>
+            <button id="copy-nlm-prompt-btn" style="background:#2563EB; color:#fff; border:none; border-radius:var(--radius-sm); padding:0.35rem 0.75rem; font-size:0.76rem; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:0.25rem;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              複製指令
+            </button>
+          </div>
+          <p style="font-size:0.78rem; color:#1E40AF; line-height:1.5; margin-bottom:0.5rem;">
+            點擊上方按鈕複製指令後，打開頂部的 NotebookLM 筆記本直接貼上發送，即可獲得標準格式 JSON！
+          </p>
+          <textarea id="nlm-prompt-preview" readonly style="width:100%; height:75px; font-family:monospace; font-size:0.75rem; padding:0.45rem; border:1px solid #BFDBFE; border-radius:var(--radius-xs); background:#FFFFFF; color:#334155; box-sizing:border-box;"></textarea>
+        </div>
+
+        <!-- Step 2: Paste JSON and Update -->
+        <div>
+          <strong style="font-size:0.88rem; color:var(--text-primary); margin-bottom:0.35rem; display:block;">
+            📝 步驟二：儲存手帖
+          </strong>
+          <textarea id="admin-json-textarea" style="width:100%; height:180px; font-family:monospace; font-size:0.78rem; padding:0.65rem; border:1px solid var(--color-border); border-radius:var(--radius-sm); margin-bottom:0.85rem; background:#F8FAFC; box-sizing:border-box;"></textarea>
+          <div style="display:flex; gap:0.65rem;">
+            <button id="admin-save-json-btn" style="flex:1.6; background:var(--color-torii); color:#fff; border:none; padding:0.65rem; border-radius:var(--radius-sm); font-weight:700; font-size:0.85rem; cursor:pointer;">
+              💾 儲存更新
+            </button>
+            <button id="admin-reset-json-btn" title="清空本機自訂行程、時間微調與隨行手記，重歸原初 11 日手帖" style="flex:1.4; background:#FAF7F0; color:#781515; border:1.2px solid #CFC5B2; padding:0.65rem 0.5rem; border-radius:var(--radius-sm); font-weight:700; font-size:0.82rem; cursor:pointer; font-family:var(--font-handwriting); transition:var(--transition-fast);">
+              🍃 拂塵歸初
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       🍃 拂塵歸初・和風確認彈窗 (Wabi-Sabi Reset Confirmation Modal)
+       ========================================================================= -->
+  <div class="modal-overlay" id="reset-confirm-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:99999; align-items:center; justify-content:center; backdrop-filter:blur(5px); padding:1rem;">
+    <div class="modal-card" style="background:#FAF8F5; border:1.5px solid #CFC5B2; border-radius:8px; max-width:440px; width:100%; overflow:hidden; position:relative; box-shadow:0 16px 50px rgba(0,0,0,0.25); animation:modalPopIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:0.85rem 1.25rem; border-bottom:1.2px solid #E6DEC8; background:#F4EFE6;">
+        <span style="font-size:0.95rem; font-weight:800; font-family:var(--font-mincho); color:#1F2429; display:flex; align-items:center; gap:0.4rem;">
+          <span>🍃</span>
+          <span>拂塵歸初・手帖重置</span>
+        </span>
+        <button id="close-reset-modal-btn" style="background:none; border:none; font-size:1.25rem; cursor:pointer; color:#73695C; line-height:1; padding:0.2rem 0.4rem;">✕</button>
+      </div>
+      <div style="padding:1.35rem 1.4rem;">
+        <div style="background:rgba(184, 59, 59, 0.06); border-left:3px solid #B83B3B; padding:0.75rem 0.9rem; border-radius:0 4px 4px 0; margin-bottom:1rem;">
+          <p style="margin:0; font-size:0.84rem; line-height:1.6; color:#2A241E; font-family:var(--font-sans);">
+            即將清空本機所有<strong>自訂行程、時間微調、隨行評星心得與手記紀錄</strong>，重歸原初 11 日行腳手帖。
+          </p>
+        </div>
+        <p style="margin:0 0 1.25rem 0; font-size:0.78rem; color:#73695C; font-family:var(--font-handwriting); line-height:1.5;">
+          * 此舉如焚稿洗硯，本機記錄將不可復原。若僅想暫存或備份，請先至手記匯出 Markdown 或 CSV 存檔。
+        </p>
+        <div style="display:flex; gap:0.75rem; justify-content:flex-end;">
+          <button id="cancel-reset-modal-btn" type="button" style="padding:0.5rem 1.15rem; background:#EFEAE1; border:1px solid #CFC5B2; border-radius:3px; font-family:var(--font-handwriting); font-size:0.84rem; font-weight:700; color:#5A5044; cursor:pointer; transition:all 0.15s ease;">
+            暫且保留
+          </button>
+          <button id="confirm-reset-modal-btn" type="button" style="padding:0.5rem 1.35rem; background:linear-gradient(135deg, #B83B3B 0%, #8F2222 100%); border:1px solid #781515; border-radius:3px; font-family:var(--font-mincho); font-size:0.85rem; font-weight:800; color:#FFFFFF; cursor:pointer; box-shadow:0 3px 10px rgba(184,59,59,0.3); transition:all 0.15s ease; letter-spacing:0.05em;">
+            🍃 確定歸初
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="app-toast" class="toast-notification"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Application Scripts -->
+  <script src="./js/trip-data.js"></script>
+  <script src="./js/speech.js"></script>
+  <script src="./js/storage.js"></script>
+  <script src="./js/map.js"></script>
+  <script src="./js/journal.js"></script>
+  <script src="./js/app.js"></script>
+
+  <!-- PWA Service Worker Registration (Only active on HTTP/HTTPS protocol) -->
+  <script>
+    if ('serviceWorker' in navigator && (location.protocol === 'http:' || location.protocol === 'https:')) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then((reg) => {
+          console.log('[TabiSync PWA] Service Worker registered:', reg.scope);
+        }).catch((err) => {
+          console.warn('[TabiSync PWA] Service Worker registration failed:', err);
+        });
+      });
+    }
+  </script>
+
+  <!-- 微縮回航膠囊 (Floating Portal Pill) -->
+  <script src="./js/portal-pill.js" data-target="../" data-label="Antigravity Hub" data-position="bottom-right"></script>
+</body>
+</html>

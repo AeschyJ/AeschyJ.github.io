@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>夏之栞・名阪京奈行旅繪卷 (TabiSync Emaki Magazine)</title>
+  
+  <!-- PWA & Mobile Web App Meta -->
+  <link rel="manifest" href="./magazine-manifest.json">
+  <meta name="theme-color" content="#FAF7F0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="行旅繪卷">
+  
+  <!-- SEO & Social Open Graph -->
+  <meta name="description" content="「步履隨風，穿行於尾張古城、浪花水都、奈良青苔與千本鳥居之間。」名阪京奈盛夏巡行水墨電子畫報。">
+  <meta property="og:title" content="夏之栞・名阪京奈行旅繪卷">
+  <meta property="og:description" content="九日水墨繪卷・尾張風骨、浪花人情、南都佛光與湖國落日。">
+  <meta property="og:type" content="website">
+
+  <!-- Preconnect for Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Shippori+Mincho:wght@500;700;800&family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Serif+TC:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="./css/magazine.css?v=4.9.2">
+</head>
+
+
+
+
+
+
+
+<body class="emaki-canvas-bg">
+
+  <!-- =========================================================================
+       1. 頂部和風懸浮控制列 (Emaki Header)
+       ========================================================================= -->
+  <header class="emaki-nav-bar" id="emaki-nav-bar">
+    <div class="brand-section">
+      <div class="brand-hanko">栞</div>
+      <div class="brand-titles">
+        <span class="brand-title-main">夏之栞・行旅繪卷</span>
+        <span class="brand-title-sub">NAGOYA・OSAKA・NARA・KYOTO 2026</span>
+      </div>
+    </div>
+
+    <!-- 雙重視角切換膠囊 (橫向漫遊 vs 縱向折本) -->
+    <div class="view-switch-capsule">
+      <button class="view-toggle-btn active" data-view="horizontal" title="展開為連綿手卷橫向漫遊">
+        <span>📜</span>
+        <span>繪卷橫展</span>
+      </button>
+      <button class="view-toggle-btn" data-view="vertical" title="切換為現代折本雜誌垂直閱覽">
+        <span>📖</span>
+        <span>折本雜誌</span>
+      </button>
+    </div>
+
+    <!-- 頂欄右側功能按鈕 (雅樂音效 & 朱印典藏) -->
+    <div class="nav-actions">
+      <button class="btn-nav-action btn-sound-toggle" id="btn-sound-toggle" title="播放禪境雅樂微風音效 (Web Audio)">
+        <span>🎐 雅樂</span>
+      </button>
+      <button class="btn-nav-action" id="btn-stamp-drawer" title="查看已鈐印的珍藏寫真">
+        <span>💮 珍藏冊</span>
+        <span id="stamp-count-badge" style="color:var(--shuin-red); font-weight:700;">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       2. 繪卷主舞台與九卷畫廊軌道 (Emaki Viewport & Track)
+       ========================================================================= -->
+  <main class="emaki-viewport" id="emaki-viewport" data-mode="horizontal">
+    <div class="emaki-track" id="emaki-track">
+      <!-- 卷首扉頁 (Chapter 0) -->
+      <article class="emaki-chapter-panel emaki-cover-panel" id="vol-0">
+        <div class="cover-kirikane"></div>
+        <div class="cover-content-box">
+          <!-- 封面左側：日文縱書大標題 -->
+          <div class="cover-vertical-title-col">
+            <h1 class="cover-kanji-title">夏之栞・行旅繪卷</h1>
+            <div class="cover-kanji-subtitle">名阪京奈盛夏巡行・九日水墨畫報</div>
+          </div>
+
+          <!-- 封面右側：雜誌刊頭、發刊詞與開卷按鈕 -->
+          <div class="cover-editorial-col">
+            <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+              <span class="cover-issue-badge">VOL. 01 / 盛夏特刊</span>
+              <span style="font-size:0.75rem; color:var(--sumi-faint); font-weight:600;">PHOTO & ESSAY: JAES</span>
+            </div>
+
+            <div class="cover-lead-quote">
+              “步履隨風，穿行於尾張古城、浪花水都、奈良青苔與千本鳥居之間；行腳千里，落款成卷。將盛夏九日之汗水、球場之喧囂、舌尖之炙香與古寺之鐘鳴，研墨化作永恆繪卷。”
+            </div>
+
+            <div class="cover-meta-grid">
+              <div>🗓️ 巡行紀日：<strong>2026.08.19 — 08.27</strong></div>
+              <div>📸 收錄珍藏：<strong>313 幀寫真與影音</strong></div>
+              <div>🏯 踏查名城：<strong>國寶犬山城・彥根城・大阪城</strong></div>
+              <div>⛩️ 探訪神域：<strong>熱田神宮・東大寺・清水寺・白鬚神社</strong></div>
+            </div>
+
+            <button class="cover-btn-enter" id="btn-cover-enter">
+              <span>開卷・展軸覽勝</span>
+              <span>›</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 卷之一 至 卷之九 將由 js/magazine.js 動態追加注入 -->
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       3. 卷軸底端軸棒與進度指示器 (Emaki Spindle Bar)
+       ========================================================================= -->
+  <footer class="emaki-spindle-bar" id="emaki-spindle-bar">
+    <div class="spindle-track-line" id="spindle-track-line">
+      <div class="spindle-fill-line" id="spindle-progress-fill"></div>
+      <div class="spindle-milestones">
+        <span class="milestone-dot" title="卷首 盛夏特刊"></span>
+        <span class="milestone-dot" title="卷之一 名古屋"></span>
+        <span class="milestone-dot" title="卷之二 熱田神宮"></span>
+        <span class="milestone-dot" title="卷之三 犬山城巨蛋"></span>
+        <span class="milestone-dot" title="卷之四 甲子園道頓堀"></span>
+        <span class="milestone-dot" title="卷之五 大阪城藍天大廈"></span>
+        <span class="milestone-dot" title="卷之六 AONIYOSHI奈良"></span>
+        <span class="milestone-dot" title="卷之七 三嶋亭清水寺"></span>
+        <span class="milestone-dot" title="卷之八 滋賀琵琶湖白鬚"></span>
+        <span class="milestone-dot" title="卷之九 金閣寺平安神宮"></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       5. 全螢幕宣紙水墨燈箱 (Sumi Lightbox)
+       ========================================================================= -->
+  <div class="sumi-lightbox-modal" id="sumi-lightbox" role="dialog" aria-modal="true" aria-label="照片全螢幕檢視">
+    <!-- 固定螢幕右上角關閉按鈕 -->
+    <button class="lightbox-close-btn" id="btn-close-lightbox" title="關閉檢視 (ESC)">✕</button>
+
+    <!-- 固定於螢幕兩側之翻頁箭頭 (不隨圖片長寬比跳動，絕對防按空) -->
+    <button class="lightbox-nav-btn lightbox-btn-prev" id="btn-prev-lightbox" title="上一張 (←)" aria-label="上一張照片">
+      <span>‹</span>
+    </button>
+    <button class="lightbox-nav-btn lightbox-btn-next" id="btn-next-lightbox" title="下一張 (→)" aria-label="下一張照片">
+      <span>›</span>
+    </button>
+
+    <!-- 照片與影音主體 (長寬自適應，不帶跑兩側按鈕) -->
+    <div class="lightbox-content-box">
+      <img class="lightbox-main-img" id="lightbox-img" src="" alt="大圖預覽" />
+      <video class="lightbox-main-video" id="lightbox-video" controls playsinline style="display:none; max-width:90vw; max-height:82vh; border-radius:4px; box-shadow:0 8px 32px rgba(0,0,0,0.3); background:#000;"></video>
+      
+      <div class="lightbox-info-slip">
+        <div class="lightbox-header-row">
+          <div class="lightbox-title-group">
+            <span id="lightbox-tag" class="lightbox-tag-badge" style="display:none;"></span>
+            <span id="lightbox-caption">寫真漫覽</span>
+          </div>
+          <span id="lightbox-meta" style="color:var(--sumi-faint); font-size:0.8rem; flex-shrink:0;">1 / 1</span>
+        </div>
+        <div id="lightbox-note" class="lightbox-note-text" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       6. 我的朱印典藏側邊抽屜 (Stamp Drawer)
+       ========================================================================= -->
+  <aside class="stamp-drawer-panel" id="stamp-drawer-panel">
+    <div class="stamp-drawer-header">
+      <div style="display:flex; align-items:center; gap:0.5rem;">
+        <span style="font-size:1.2rem;">💮</span>
+        <h3 style="font-family:var(--font-mincho); font-size:1.1rem; color:var(--sumi-deep);">行旅朱印典藏冊</h3>
+      </div>
+      <button id="btn-close-stamp-drawer" style="background:transparent; border:none; font-size:1.4rem; cursor:pointer; color:var(--sumi-faint);">✕</button>
+    </div>
+    <div class="stamp-drawer-body" id="stamp-drawer-body">
+      <!-- 已鈐印珍藏之拍立得將動態注入此處 -->
+    </div>
+  </aside>
+
+  <!-- =========================================================================
+       7. 核心腳本載入 (帶版本控制防快取假死)
+       ========================================================================= -->
+  <script src="./js/magazine-data.js?v=4.9.2"></script>
+  <script src="./js/magazine.js?v=4.9.2"></script>
+  <!-- 開發輔助快速註釋與 MD 輸出工具 -->
+  <!-- <script src="./js/debug-proofread.js?v=1.0"></script> -->
+
+
+
+
+
+
+
+  <!-- PWA Service Worker 註冊 -->
+  <script>
+    if ('serviceWorker' in navigator && (location.protocol === 'http:' || location.protocol === 'https:')) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then((reg) => {
+          console.log('[Emaki Magazine PWA] Service Worker active:', reg.scope);
+        }).catch((err) => {
+          console.warn('[Emaki Magazine PWA] Service Worker registration failed:', err);
+        });
+      });
+    }
+  </script>
+
+  <!-- 微縮回航膠囊 (Floating Portal Pill) -->
+  <script src="./js/portal-pill.js" data-target="../" data-label="Antigravity Hub" data-position="bottom-right"></script>
+</body>
+</html>

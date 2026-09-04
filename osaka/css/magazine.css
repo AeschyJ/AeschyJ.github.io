@@ -1,0 +1,1536 @@
+/* ==========================================================================
+   📜《夏之栞・名阪京奈行旅繪卷》水墨電子雜誌核心樣式表
+   Sumi-e Emaki Magazine Stylesheet
+   ========================================================================== */
+
+/* --- 1. 設計系統變數與和風墨色 --- */
+:root {
+  /* 墨象五色 */
+  --sumi-deep: #141210;          /* 濃墨：主標題、重音 */
+  --sumi-charcoal: #262320;      /* 焦墨：內文字 */
+  --sumi-muted: #5C564F;         /* 油煙中墨：副標、摘記 */
+  --sumi-faint: #8E8578;         /* 薄墨：次要標註、刻度 */
+  --sumi-ghost: #DDD6C8;         /* 淡墨：邊框、分隔線 */
+
+  /* 和紙與宣紙底溫 */
+  --paper-hosho: #FAF7F0;        /* 越前粗面白奉書紙 */
+  --paper-torinoko: #F4EEDF;     /* 鳥之子紙 */
+  --paper-aged: #ECE4D3;         /* 薄香古紙 */
+  --paper-card: #FFFFFF;         /* 拍立得純白紙 */
+
+  /* 點睛礦物與印泥 */
+  --shuin-red: #C53D2A;          /* 朱泥正紅 */
+  --shuin-soft: rgba(197, 61, 42, 0.08);
+  --kirikane-gold: #C69A45;      /* 截金泥金 */
+  --kirikane-glow: rgba(198, 154, 69, 0.35);
+
+  /* 風土和色 */
+  --color-nagoya: #B58836;
+  --color-inuyama: #2A7972;
+  --color-osaka: #A74755;
+  --color-hyogo: #3A5C80;
+  --color-nara: #6E843A;
+  --color-kyoto: #6F4E7E;
+
+  /* 字型體系 */
+  --font-mincho: 'Shippori Mincho', 'Noto Serif TC', serif;
+  --font-hand: 'Klee One', cursive;
+  --font-maru: 'Zen Maru Gothic', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+
+  /* 陰影體系 */
+  --shadow-subtle: 0 4px 16px rgba(20, 18, 16, 0.06);
+  --shadow-polaroid: 0 8px 24px rgba(20, 18, 16, 0.12), 0 2px 6px rgba(20, 18, 16, 0.08);
+  --shadow-float: 0 16px 36px rgba(20, 18, 16, 0.16);
+}
+
+/* 全域重置與和紙背景 */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--paper-hosho);
+  color: var(--sumi-charcoal);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  line-height: 1.75;
+}
+
+/* 和紙纖維微噪點底紋 */
+.emaki-canvas-bg {
+  background-color: var(--paper-hosho);
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.6) 0%, rgba(244, 238, 223, 0.4) 100%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.3 0 0 0 0 0.25 0 0 0 0 0.18 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+}
+
+/* --- 2. 懸浮和風導航頂欄 (Emaki Header) --- */
+.emaki-nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  background: rgba(250, 247, 240, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(221, 214, 200, 0.6);
+  transition: transform 0.3s ease;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-hanko {
+  width: 32px;
+  height: 32px;
+  background: var(--shuin-red);
+  color: #FFF;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mincho);
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(197, 61, 42, 0.3);
+  transform: rotate(-3deg);
+}
+
+.brand-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title-main {
+  font-family: var(--font-mincho);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--sumi-deep);
+}
+
+.brand-title-sub {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: var(--sumi-faint);
+  font-weight: 600;
+}
+
+/* 雙視角切換膠囊 (Dual View Toggle) */
+.view-switch-capsule {
+  display: flex;
+  background: var(--paper-aged);
+  border: 1px solid var(--sumi-ghost);
+  border-radius: 20px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.view-toggle-btn {
+  border: none;
+  background: transparent;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  color: var(--sumi-muted);
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+}
+
+.view-toggle-btn.active {
+  background: #FFF;
+  color: var(--sumi-deep);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* 頂欄右側功能按鈕 */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-nav-action {
+  border: 1px solid var(--sumi-ghost);
+  background: #FFF;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-family: var(--font-sans);
+  color: var(--sumi-charcoal);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.btn-nav-action:hover {
+  background: var(--paper-torinoko);
+  border-color: var(--kirikane-gold);
+}
+
+.btn-sound-toggle.active {
+  color: var(--color-inuyama);
+  border-color: var(--color-inuyama);
+  background: rgba(42, 121, 114, 0.08);
+}
+
+/* --- 3. 卷首大氣封面 (The Grand Emaki Cover) --- */
+.emaki-cover-section {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem 2rem;
+  background: radial-gradient(circle at 60% 40%, rgba(255, 255, 255, 0.9) 0%, rgba(244, 238, 223, 0.8) 100%);
+  overflow: hidden;
+  z-index: 10;
+}
+
+.cover-kirikane {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(1.5px 1.5px at 15% 20%, var(--kirikane-gold) 60%, transparent 100%),
+    radial-gradient(2px 2px at 45% 65%, #E9CE77 60%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 75% 30%, var(--kirikane-gold) 60%, transparent 100%),
+    radial-gradient(2px 1.5px at 85% 80%, #DFC368 50%, transparent 100%);
+  background-size: 220px 220px;
+  opacity: 0.65;
+  animation: kirikaneShimmer 8s infinite alternate ease-in-out;
+}
+
+@keyframes kirikaneShimmer {
+  0% { opacity: 0.4; }
+  100% { opacity: 0.75; }
+}
+
+.cover-content-box {
+  max-width: 880px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  position: relative;
+}
+
+/* 封面直書書法大標題 */
+.cover-vertical-title-col {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.cover-kanji-title {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-family: var(--font-mincho);
+  font-size: clamp(2.6rem, 5vw, 4.2rem);
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  color: var(--sumi-deep);
+  line-height: 1.4;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+  border-left: 2px solid var(--kirikane-gold);
+  padding-left: 1.25rem;
+}
+
+.cover-kanji-subtitle {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-family: var(--font-hand);
+  font-size: clamp(1rem, 1.8vw, 1.35rem);
+  color: var(--sumi-muted);
+  letter-spacing: 0.28em;
+  line-height: 1.8;
+}
+
+/* 封面右側雜誌刊頭與發刊詞 */
+.cover-editorial-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+  background: rgba(255, 255, 255, 0.75);
+  padding: 2.25rem;
+  border-radius: 4px;
+  border: 1px solid rgba(221, 214, 200, 0.8);
+  box-shadow: var(--shadow-polaroid);
+  position: relative;
+}
+
+.cover-issue-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #FFF;
+  background: var(--sumi-deep);
+  padding: 0.25rem 0.65rem;
+  border-radius: 2px;
+}
+
+.cover-lead-quote {
+  font-family: var(--font-hand);
+  font-size: 1.15rem;
+  line-height: 1.9;
+  color: var(--sumi-charcoal);
+  border-left: 3px solid var(--shuin-red);
+  padding-left: 1rem;
+}
+
+.cover-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem 1.5rem;
+  width: 100%;
+  font-size: 0.8rem;
+  color: var(--sumi-muted);
+  border-top: 1px dashed var(--sumi-ghost);
+  padding-top: 1rem;
+}
+
+.cover-btn-enter {
+  margin-top: 0.5rem;
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, var(--sumi-deep) 0%, #2D2A26 100%);
+  color: #FFF;
+  border: 1px solid var(--kirikane-gold);
+  border-radius: 3px;
+  font-family: var(--font-mincho);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 12px rgba(20, 18, 16, 0.25);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cover-btn-enter:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(198, 154, 69, 0.4);
+  background: linear-gradient(135deg, #2D2A26 0%, var(--shuin-red) 100%);
+}
+
+/* --- 4. 繪卷主舞台與章節容器 (Emaki Viewport & Track) --- */
+.emaki-viewport {
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  padding-top: 50px; /* 避開頂欄，緊湊釋放畫卷空間 */
+  padding-bottom: 14px; /* 緊貼底端軸棒，垂直視覺頂天立地 */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* 模式 A：橫向漫遊繪卷 (Horizontal Emaki Scroll) */
+.emaki-viewport[data-mode="horizontal"] .emaki-track {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overflow-anchor: none;
+  overscroll-behavior-x: contain;
+  cursor: grab;
+  user-select: none;
+}
+
+.emaki-viewport[data-mode="horizontal"] .emaki-track.is-grabbing {
+  cursor: grabbing;
+}
+
+
+.emaki-viewport[data-mode="horizontal"] .emaki-chapter-panel {
+  flex: 0 0 auto;
+  height: 100%;
+  width: clamp(1580px, 95vw, 1860px);
+  min-width: 1580px;
+  max-width: 1860px;
+  margin-right: clamp(3rem, 5vw, 5.5rem); /* 章節間如展卷留白，杜絕任何重疊 */
+  padding: 0.35rem clamp(1.5rem, 2vw, 2.5rem); /* 收緊垂直 Padding，充盈展現畫作 */
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* 橫向卷首扉頁面板 */
+.emaki-viewport[data-mode="horizontal"] .emaki-cover-panel {
+  width: clamp(920px, 88vw, 1150px);
+  min-width: 920px;
+  max-width: 1150px;
+  margin-right: clamp(3rem, 5vw, 5.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 2rem 3vw;
+}
+
+/* 模式 B：縱向折本雜誌 (Vertical Orihon Flip) */
+.emaki-viewport[data-mode="vertical"] .emaki-track {
+  display: block;
+  height: calc(100dvh - 58px);
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  user-select: auto;
+  cursor: default;
+}
+
+.emaki-viewport[data-mode="vertical"] .emaki-cover-panel {
+  display: block;
+  width: 100%;
+  max-width: 960px;
+  height: auto !important;
+  min-height: calc(100dvh - 120px);
+  margin: 0 auto 4rem auto;
+  padding: 3.5rem 1.5rem 2rem;
+  border-bottom: 2px solid var(--kirikane-gold);
+  box-sizing: border-box;
+}
+
+.emaki-viewport[data-mode="vertical"] .emaki-chapter-panel {
+  display: block !important;
+  width: 100% !important;
+  max-width: 1100px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 auto 5rem auto !important;
+  padding: 3rem 1.5rem !important;
+  box-sizing: border-box !important;
+  border-bottom: 2px solid rgba(181, 136, 54, 0.3) !important;
+  position: relative !important;
+  clear: both !important;
+}
+
+.emaki-viewport[data-mode="vertical"] .chapter-inner-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  gap: 2.2rem !important;
+}
+
+.emaki-viewport[data-mode="vertical"] .chapter-col-header,
+.emaki-viewport[data-mode="vertical"] .chapter-col-visual,
+.emaki-viewport[data-mode="vertical"] .chapter-col-scrapbook,
+.emaki-viewport[data-mode="vertical"] .chapter-col-timeline {
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  position: relative !important;
+}
+
+.emaki-viewport[data-mode="vertical"] .chapter-col-header {
+  border-right: none !important;
+  border-bottom: 1px solid rgba(221, 214, 200, 0.7) !important;
+  padding-right: 0 !important;
+  padding-bottom: 1.5rem !important;
+}
+
+.emaki-viewport[data-mode="vertical"] .hero-spread-card {
+  max-height: 520px !important;
+  height: auto !important;
+}
+
+.emaki-viewport[data-mode="vertical"] .hero-spread-img {
+  max-height: 500px !important;
+  width: 100% !important;
+  object-fit: cover !important;
+}
+
+.emaki-viewport[data-mode="vertical"] .chapter-col-scrapbook {
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.emaki-viewport[data-mode="vertical"] .scrapbook-grid {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
+  gap: 1.25rem !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+.emaki-viewport[data-mode="vertical"] .polaroid-thumb-img {
+  aspect-ratio: 4 / 3 !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+.emaki-viewport[data-mode="vertical"] .chapter-col-timeline {
+  margin-top: 1rem;
+}
+
+.emaki-viewport[data-mode="vertical"] .chapter-timeline-card {
+  max-height: none !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.emaki-viewport[data-mode="vertical"] .timeline-items-list {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+  gap: 0.6rem !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* --- 5. 雜誌章節內部結構 (Chapter Components) --- */
+.chapter-inner-wrapper {
+  width: 100%;
+  height: 100%;
+  max-height: min(85vh, 800px); /* 釋放垂直高度上限，整幅畫卷頂天立地 */
+  display: grid;
+  grid-template-columns: clamp(310px, 19vw, 360px) minmax(320px, 1.15fr) clamp(340px, 20vw, 380px) clamp(245px, 15vw, 265px);
+  gap: clamp(1.2rem, 1.8vw, 2.2rem);
+  align-items: center;
+  box-sizing: border-box;
+}
+
+
+
+/* 含影音之章節調校高度 */
+.chapter-inner-wrapper.has-video .hero-spread-card {
+  max-height: min(40vh, 340px);
+}
+.chapter-inner-wrapper.has-video .hero-spread-img {
+  max-height: min(36vh, 300px);
+}
+.chapter-inner-wrapper.has-video .video-filmstrip-card {
+  margin-top: 0.6rem;
+  padding: 0.45rem;
+}
+.chapter-inner-wrapper.has-video .video-player-element {
+  max-height: clamp(110px, 15vh, 150px);
+}
+
+
+
+/* 5.1 左欄：章節題頭與引言 (Editorial Header Column) */
+.chapter-col-header {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(0.5rem, 1.2vh, 0.9rem);
+  position: relative;
+  border-right: 1px solid rgba(221, 214, 200, 0.7);
+  padding-right: 1.5rem;
+}
+
+.chapter-badge-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chapter-vol-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 0.15rem 0.55rem;
+  border-radius: 2px;
+  color: #FFF;
+}
+
+.chapter-date-tag {
+  font-size: clamp(0.72rem, 1.1vh, 0.78rem);
+  color: var(--sumi-faint);
+  font-weight: 600;
+}
+
+.chapter-kanji-title-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.chapter-kanji-vol {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-family: var(--font-mincho);
+  font-size: clamp(1.6rem, 2.6vh, 2rem);
+  font-weight: 800;
+  color: var(--sumi-deep);
+  border-right: 2px solid var(--kirikane-gold);
+  padding-right: 0.5rem;
+  line-height: 1.2;
+}
+
+.chapter-kanji-title {
+  font-family: var(--font-mincho);
+  font-size: clamp(1.3rem, 2.2vh, 1.6rem);
+  font-weight: 700;
+  color: var(--sumi-deep);
+  line-height: 1.4;
+}
+
+.chapter-quote-block {
+  font-family: var(--font-hand);
+  font-size: clamp(0.82rem, 1.3vh, 0.92rem);
+  line-height: 1.7;
+  color: var(--sumi-muted);
+  background: rgba(255, 255, 255, 0.6);
+  padding: clamp(0.45rem, 0.9vh, 0.75rem) 0.95rem;
+  border-left: 3px solid var(--shuin-red);
+  border-radius: 0 4px 4px 0;
+}
+
+.chapter-summary-desc {
+  font-size: clamp(0.75rem, 1.1vh, 0.82rem);
+  line-height: 1.55;
+  color: var(--sumi-charcoal);
+  display: block;
+  overflow: visible;
+  text-overflow: clip;
+  margin: 0;
+}
+
+.chapter-pace-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: clamp(0.75rem, 1.1vh, 0.8rem);
+  color: var(--sumi-faint);
+}
+
+.btn-open-full-album {
+  margin-top: clamp(0.2rem, 0.6vh, 0.4rem);
+  padding: clamp(0.35rem, 0.8vh, 0.5rem) 0.95rem;
+  font-size: clamp(0.78rem, 1.2vh, 0.85rem);
+  flex-shrink: 0;
+}
+
+/* 5.2 中欄：主視覺大圖與水墨暈染 (Hero Visual Center) */
+.chapter-col-visual {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  min-width: 0; /* 消除 Grid 子項目 min-width: auto 導致的爆版溢出 */
+  overflow: hidden;
+}
+
+.hero-spread-card {
+  position: relative;
+  width: 100%;
+  max-height: min(65vh, 580px);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: var(--shadow-float);
+  border: 1px solid rgba(221, 214, 200, 0.8);
+  background: #FFF;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-spread-card:hover {
+  transform: scale(1.01);
+}
+
+.hero-spread-img {
+  width: 100%;
+  height: 100%;
+  max-height: min(74vh, 670px); /* 由 520px 霸氣提升至 670px */
+  object-fit: cover;
+  display: block;
+  transition: filter 0.3s ease, opacity 0.2s ease, transform 0.2s ease;
+}
+
+.hero-caption-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.1rem 1.4rem;
+  background: linear-gradient(180deg, transparent 0%, rgba(20, 18, 16, 0.82) 100%);
+  color: #FFF;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.hero-caption-text {
+  font-family: var(--font-mincho);
+  font-size: clamp(0.9rem, 1.5vh, 1.1rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+
+.hero-badge-tag {
+  font-size: 0.7rem;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(4px);
+  padding: 0.15rem 0.45rem;
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* 影片膠卷播放卡 (Day 3 & Day 4) */
+.video-filmstrip-card {
+  margin-top: 0.6rem;
+  background: #1A1816;
+  border-radius: 4px;
+  padding: 0.5rem;
+  border: 1px solid rgba(198, 154, 69, 0.4);
+  box-shadow: var(--shadow-subtle);
+}
+
+.video-filmstrip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #E6DFD5;
+  font-size: 0.72rem;
+  margin-bottom: 0.35rem;
+  padding: 0 0.2rem;
+}
+
+.video-player-element {
+  width: 100%;
+  max-height: 180px;
+  border-radius: 2px;
+  outline: none;
+}
+
+/* 5.3 第 3 欄：拍立得拼貼群 (Polaroid Scrapbook Column) */
+.chapter-col-scrapbook {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* 拍立得 2x2 或 2x3 拼貼網格 */
+.scrapbook-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.35rem, 0.8vh, 0.55rem);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.polaroid-item-wrap {
+  position: relative;
+  background: #FFF;
+  padding: clamp(4px, 0.6vh, 6px) clamp(4px, 0.6vh, 6px) clamp(8px, 1.2vh, 12px);
+  box-shadow: var(--shadow-polaroid);
+  border: 1px solid rgba(220, 215, 205, 0.7);
+  border-radius: 2px;
+  cursor: pointer;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.polaroid-item-wrap:hover {
+  transform: translateY(-4px) scale(1.03) !important;
+  z-index: 20;
+  box-shadow: var(--shadow-float);
+}
+
+
+/* 和紙膠帶斜向貼痕 */
+.washi-tape-accent {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 46px;
+  height: 14px;
+  background: rgba(238, 230, 215, 0.88);
+  box-shadow: 0 1px 3px rgba(60, 48, 36, 0.15);
+  clip-path: polygon(3% 0%, 97% 0%, 100% 100%, 0% 100%);
+  pointer-events: none;
+}
+
+/* 拍立得相片：100% 純正日系 4:3 黃金比例，自由舒展 */
+.polaroid-thumb-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+  border-radius: 2px;
+}
+
+.polaroid-caption {
+  font-family: var(--font-hand);
+  font-size: clamp(0.68rem, 1.1vh, 0.76rem);
+  color: var(--sumi-charcoal);
+  margin-top: 0.35rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  padding-left: 2px;
+  padding-right: 22px;
+}
+
+/* 朱印按鈕 (Stamp Hanko Button) */
+.stamp-hanko-btn {
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  width: 19px;
+  height: 19px;
+  border: 1px solid var(--shuin-red);
+  background: transparent;
+  color: var(--shuin-red);
+  border-radius: 2px;
+  font-family: var(--font-mincho);
+  font-size: 0.6rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.stamp-hanko-btn.stamped {
+  background: var(--shuin-red);
+  color: #FFF;
+  transform: rotate(-8deg) scale(1.1);
+  box-shadow: 0 2px 5px rgba(197, 61, 42, 0.4);
+}
+
+/* 5.4 第 4 欄：獨立日日行腳時間軸豎軸 (Daily Footsteps Timeline Column) */
+.chapter-col-timeline {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.chapter-timeline-card {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(221, 214, 200, 0.85);
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  max-height: min(78vh, 720px); /* 由 580px 舒展至 720px */
+  box-shadow: var(--shadow-subtle);
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-card-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.55rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--kirikane-gold);
+  flex-shrink: 0;
+}
+
+.timeline-card-title {
+  font-family: var(--font-mincho);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--sumi-deep);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.btn-timeline-reset {
+  background: rgba(197, 61, 42, 0.08);
+  border: 1px solid var(--shuin-red);
+  color: var(--shuin-red);
+  font-family: var(--font-mincho);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.btn-timeline-reset:hover {
+  background: var(--shuin-red);
+  color: #FFF;
+  transform: translateY(-1px);
+}
+
+.timeline-items-list {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 4px;
+}
+
+.timeline-mini-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.76rem;
+  padding: 0.38rem 0.4rem;
+  border-bottom: 1px dashed rgba(221, 214, 200, 0.5);
+  gap: 0.4rem;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.timeline-mini-item.clickable-spot {
+  cursor: pointer;
+}
+
+.timeline-mini-item.clickable-spot:hover {
+  background: rgba(197, 61, 42, 0.06);
+  transform: translateX(3px);
+}
+
+.timeline-mini-item.active-spot {
+  background: rgba(197, 61, 42, 0.12);
+  border-left: 3px solid var(--shuin-red);
+  padding-left: 0.5rem;
+  font-weight: 600;
+}
+
+.spot-photo-count-pill {
+  font-size: 0.6rem;
+  color: #8C6A2E;
+  background: rgba(181, 136, 54, 0.15);
+  border: 1px solid rgba(181, 136, 54, 0.3);
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-family: var(--font-mincho);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.timeline-mini-item:last-child {
+  border-bottom: none;
+}
+
+/* 拍立得上方景點名稱與和紙分頁條 */
+.scrapbook-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+  padding: 0.25rem 0.45rem;
+  background: rgba(244, 240, 230, 0.9);
+  border-radius: 3px;
+  border-bottom: 1px solid rgba(44, 42, 41, 0.12);
+  flex-shrink: 0;
+}
+
+.scrapbook-spot-title {
+  font-family: var(--font-mincho);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--sumi-deep);
+  flex: 1 1 auto;
+  min-width: 0;
+  line-height: 1.35;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.scrapbook-spot-badge {
+  flex-shrink: 0;
+}
+
+/* 隨行手記和紙便籤 (Spot Note) */
+.scrapbook-spot-note {
+  margin-bottom: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  background: rgba(255, 255, 255, 0.78);
+  border-left: 2.5px solid var(--shuin-red);
+  border-radius: 0 3px 3px 0;
+  font-family: var(--font-hand);
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: var(--sumi-charcoal);
+  box-shadow: 0 1px 3px rgba(44, 42, 41, 0.06);
+  word-break: break-word;
+  max-height: 4.5em;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.scrapbook-spot-note .spot-note-icon {
+  color: var(--shuin-red);
+  margin-right: 0.3rem;
+  font-size: 0.8rem;
+}
+
+.scrapbook-washi-pages {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.washi-page-tab {
+  background: var(--washi-card);
+  border: 1px solid rgba(44, 42, 41, 0.25);
+  color: var(--sumi-charcoal);
+  font-size: 0.66rem;
+  font-family: var(--font-mincho);
+  padding: 1px 6px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.washi-page-tab:hover {
+  border-color: var(--shuin-red);
+  color: var(--shuin-red);
+}
+
+.washi-page-tab.active {
+  background: var(--shuin-red);
+  color: #FFF;
+  border-color: var(--shuin-red);
+  font-weight: 700;
+}
+
+/* 水墨淡入淡出切換特效 (Ink Cross-fade) */
+.ink-switching {
+  opacity: 0.25;
+  filter: blur(2px);
+  transform: scale(0.985);
+  transition: all 0.12s ease;
+}
+
+.timeline-mini-name {
+  color: var(--sumi-charcoal);
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.timeline-mini-stars {
+  color: #D97706;
+  font-size: 0.7rem;
+  letter-spacing: -0.05em;
+  flex-shrink: 0;
+}
+
+
+/* --- 6. 卷軸底端軸棒與進度條 (Emaki Spindle Bar) --- */
+.emaki-spindle-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 28px;
+  background: #25221F;
+  border-top: 1px solid var(--kirikane-gold);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.spindle-track-line {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  position: relative;
+  cursor: pointer;
+}
+
+.spindle-fill-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--kirikane-gold) 0%, var(--shuin-red) 100%);
+  border-radius: 2px;
+  transition: width 0.15s ease-out;
+}
+
+.spindle-milestones {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: -8px;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+.milestone-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--paper-aged);
+  border-radius: 50%;
+  border: 1px solid var(--kirikane-gold);
+}
+
+/* --- 7. 全螢幕宣紙水墨燈箱 (Sumi Lightbox) --- */
+.sumi-lightbox-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(20, 18, 16, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sumi-lightbox-modal.active {
+  display: flex;
+  opacity: 1;
+}
+
+.lightbox-content-box {
+  position: relative;
+  max-width: 90vw;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lightbox-main-img {
+  max-width: 100%;
+  max-height: 75vh;
+  border-radius: 2px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(198, 154, 69, 0.35);
+  object-fit: contain;
+}
+
+.lightbox-info-slip {
+  margin-top: 0.75rem;
+  background: var(--paper-hosho);
+  padding: 0.65rem 1.4rem;
+  border-radius: 3px;
+  border: 1px solid var(--sumi-ghost);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: var(--sumi-deep);
+  font-family: var(--font-mincho);
+  font-size: 0.92rem;
+  max-width: 90vw;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.lightbox-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.lightbox-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.lightbox-tag-badge {
+  background: rgba(197, 61, 42, 0.12);
+  border: 1px solid var(--shuin-red);
+  color: var(--shuin-red);
+  font-size: 0.72rem;
+  padding: 1px 7px;
+  border-radius: 2px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.lightbox-note-text {
+  font-family: var(--font-hand);
+  font-size: 0.82rem;
+  color: var(--sumi-charcoal);
+  line-height: 1.45;
+  border-top: 1px dashed rgba(44, 42, 41, 0.18);
+  padding-top: 0.35rem;
+  word-break: break-word;
+}
+
+/* 相片拍立得角標 Tag */
+.polaroid-tag-badge {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  background: rgba(44, 42, 41, 0.78);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: #FAF7F0;
+  font-size: 0.62rem;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  z-index: 5;
+  letter-spacing: 0.04em;
+  font-family: var(--font-mincho);
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+.polaroid-item-wrap:hover .polaroid-tag-badge {
+  background: rgba(197, 61, 42, 0.9);
+  color: #FFF;
+}
+
+.lightbox-close-btn {
+  position: fixed;
+  top: clamp(16px, 3vh, 32px);
+  right: clamp(16px, 3vw, 36px);
+  z-index: 230;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(30, 26, 23, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(221, 214, 200, 0.4);
+  color: #FAF7F0;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.lightbox-close-btn:hover {
+  background: rgba(197, 61, 42, 0.9);
+  border-color: var(--shuin-red);
+  transform: rotate(90deg) scale(1.08);
+}
+
+/* 固定於螢幕兩側之切圖導航按鈕 (絕對固定位置，永不按空) */
+.lightbox-nav-btn {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 230;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(30, 26, 23, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(198, 154, 69, 0.6);
+  color: #FAF7F0;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5), 0 0 14px rgba(198, 154, 69, 0.25);
+  font-size: 2.2rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+/* 擴大透明觸發熱區，杜絕按空 */
+.lightbox-nav-btn::before {
+  content: '';
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+}
+
+.lightbox-nav-btn:hover {
+  background: rgba(197, 61, 42, 0.92);
+  border-color: var(--kirikane-gold);
+  color: #FFF;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 12px 30px rgba(197, 61, 42, 0.5), 0 0 18px rgba(198, 154, 69, 0.45);
+}
+
+.lightbox-nav-btn:active {
+  transform: translateY(-50%) scale(0.94);
+}
+
+.lightbox-btn-prev {
+  left: clamp(16px, 3.5vw, 44px);
+  right: auto;
+}
+
+.lightbox-btn-next {
+  right: clamp(16px, 3.5vw, 44px);
+  left: auto;
+}
+
+
+/* --- 8. 我的朱印典藏側邊抽屜 (Stamp Drawer) --- */
+.stamp-drawer-panel {
+  position: fixed;
+  top: 0;
+  right: -360px;
+  width: 360px;
+  height: 100%;
+  background: var(--paper-hosho);
+  box-shadow: -8px 0 28px rgba(0, 0, 0, 0.15);
+  border-left: 1px solid var(--sumi-ghost);
+  z-index: 150;
+  transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.stamp-drawer-panel.active {
+  right: 0;
+}
+
+.stamp-drawer-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--sumi-ghost);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stamp-drawer-body {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  align-content: start;
+}
+
+/* --- 9. 手機行動端響應式 (RWD <= 960px) --- */
+@media (max-width: 960px) {
+  .cover-content-box {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-top: 1rem;
+  }
+
+  .cover-kanji-title {
+    font-size: 2.4rem;
+  }
+
+  /* 僅在縱向折本模式下垂直排列，橫向長卷維持橫向安全展開 */
+  .emaki-viewport[data-mode="vertical"] .chapter-inner-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  .emaki-viewport[data-mode="horizontal"] .emaki-chapter-panel {
+    width: clamp(1420px, 94vw, 1580px) !important;
+    min-width: 1420px !important;
+    margin-right: 2.5rem !important;
+    padding: 1rem 1.5rem !important;
+  }
+
+
+  .lightbox-btn-prev { left: 10px; }
+  .lightbox-btn-next { right: 10px; }
+}
+
+
+
+
+/* 拍立得底部前後頁箭頭導航列 */
+.scrapbook-bottom-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.45rem;
+  padding: 0.25rem 0.6rem;
+  background: rgba(244, 240, 230, 0.92);
+  border-radius: 4px;
+  border: 1px solid rgba(44, 42, 41, 0.12);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.scrapbook-nav-arrow {
+  background: var(--washi-card);
+  border: 1px solid rgba(44, 42, 41, 0.25);
+  color: var(--sumi-charcoal);
+  font-family: var(--font-mincho);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.scrapbook-nav-arrow:hover:not(:disabled) {
+  background: var(--shuin-red);
+  color: #FFF;
+  border-color: var(--shuin-red);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(197, 61, 42, 0.3);
+}
+
+.scrapbook-nav-arrow:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+  border-color: rgba(44, 42, 41, 0.1);
+}
+
+.scrapbook-nav-pages-indicator {
+  font-family: var(--font-mincho);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--sumi-deep);
+  letter-spacing: 0.04em;
+}
+
+/* 無相片手記行程專用卡片 */
+.empty-spot-card {
+  grid-column: 1 / -1;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px dashed rgba(181, 136, 54, 0.45);
+  border-radius: 4px;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  box-shadow: var(--shadow-subtle);
+}
+
+.spot-text-pill {
+  font-size: 0.6rem;
+  color: var(--sumi-faint);
+  background: rgba(44, 42, 41, 0.08);
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-family: var(--font-mincho);
+  flex-shrink: 0;
+}
+
+.timeline-mini-item.no-photo-spot {
+  opacity: 0.85;
+}
+
+.timeline-mini-item.no-photo-spot:hover {
+  background: rgba(181, 136, 54, 0.08);
+}
+
+/* 水墨平滑淡入動畫 */
+.ink-fade-in {
+  animation: inkFadeInAnim 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes inkFadeInAnim {
+  from {
+    opacity: 0.25;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 拍立得影音卡片徽章與播放圖標 */
+.polaroid-video-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(181, 136, 54, 0.92);
+  color: #FFFFFF;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  letter-spacing: 0.04em;
+  font-family: var(--font-mincho);
+}
+
+.polaroid-play-icon {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  background: rgba(44, 42, 41, 0.75);
+  color: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  padding-left: 2px;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  transition: transform 0.22s ease, background 0.22s ease;
+  z-index: 4;
+}
+
+.polaroid-item-wrap:hover .polaroid-play-icon {
+  transform: translate(-50%, -50%) scale(1.15);
+  background: rgba(181, 136, 54, 0.9);
+}

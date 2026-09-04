@@ -1,0 +1,349 @@
+/* ==========================================================================
+   Design System - Modern Kyoto Wabi-Sabi
+   ========================================================================== */
+
+:root {
+  /* 和色系統 (Japanese Traditional & Modern HSL Palette) */
+  --bg-primary: #FAF9F5;          /* 和紙生成色 (Warm Rice Paper) */
+  --bg-secondary: #FFFFFF;        /* 純白卡片底 */
+  --bg-tertiary: #F3EFEA;         /* 淺沙石色 */
+  --bg-card: rgba(255, 255, 255, 0.94);
+  --bg-glass: rgba(250, 249, 245, 0.82);
+  --bg-glass-card: rgba(255, 255, 255, 0.85);
+
+  --text-primary: #1F2429;        /* 墨黑 (Deep Sumi Ink) */
+  --text-secondary: #5A646E;      /* 薄墨 (Muted Ink) */
+  --text-tertiary: #8C96A0;       /* 灰墨 (Light Stone) */
+  --text-inverse: #FFFFFF;
+
+  /* 全局動態主題色與輔色系統 (動態切換) */
+  --theme-primary: #E85A4F;       /* 主色 (Primary) */
+  --theme-secondary: #D97706;     /* 輔色 (Secondary) */
+  --theme-light: #FDEEEB;         /* 淺色微底 (Light Background) */
+  --theme-border: #FCA5A5;        /* 邊框高亮 (Highlight Border) */
+  --theme-gradient: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 100%);
+
+  /* 傳統主題色相容別名 (動態映射至當日主輔色) */
+  --color-torii: var(--theme-primary);
+  --color-torii-light: var(--theme-light);
+  --color-torii-hover: var(--theme-primary);
+
+  --color-matcha: #10B981;        /* 抹茶若草 (Matcha Green) */
+  --color-matcha-light: #E8F8F2;
+
+  --color-indigo: #2563EB;        /* 琉璃紺青 (Indigo Blue) */
+  --color-indigo-light: #EFF6FF;
+
+  --color-gold: #D97706;          /* 金茶箔 (Golden Amber) */
+  --color-gold-light: #FEF3C7;
+
+  --color-sakura: #EC4899;        /* 櫻花粉 (Sakura Blossom) */
+  --color-sakura-light: #FDF2F8;
+
+  /* 六大地域日系淡雅莫蘭迪和色體系 (Muted Japanese Morandi Regional Palettes) */
+  --region-nagoya-primary: #BA8B32;       /* 名古屋・山吹茶金 (淡雅金茶) */
+  --region-nagoya-secondary: #966B24;     /* 名古屋・尾張深茶 */
+  --region-nagoya-light: #FAF4E6;
+  --region-nagoya-border: #DBC594;
+
+  --region-inuyama-primary: #1D7A73;      /* 犬山・木曾川青磁碧藍 (翡翠清流・冷調青碧) */
+  --region-inuyama-secondary: #13534E;    /* 犬山・深碧 */
+  --region-inuyama-light: #E8F6F5;
+  --region-inuyama-border: #9CD6D0;
+
+  --region-osaka-primary: #A94452;        /* 大阪・浪花茜紅 (莫蘭迪梅紅) */
+  --region-osaka-secondary: #872E3A;      /* 大阪・江戶紅 */
+  --region-osaka-light: #F9ECEE;
+  --region-osaka-border: #DFABAF;
+
+  --region-hyogo-primary: #3B5B7E;        /* 兵庫/甲子園・勝色紺青 (莫蘭迪灰藍) */
+  --region-hyogo-secondary: #263E57;      /* 兵庫/甲子園・深紺 */
+  --region-hyogo-light: #EEF4F9;
+  --region-hyogo-border: #A4BFD9;
+
+  --region-nara-primary: #6E8236;         /* 奈良・古都若草苔綠 (春日大社・暖調草木綠) */
+  --region-nara-secondary: #4E5E24;       /* 奈良・古木深綠 */
+  --region-nara-light: #F4F8EE;
+  --region-nara-border: #C3D9A4;
+
+  --region-kyoto-primary: #6D4C7C;        /* 京都・京紫藤 (莫蘭迪紫藤) */
+  --region-kyoto-secondary: #4E335B;      /* 京都・深紫 */
+  --region-kyoto-light: #F4EEF7;
+  --region-kyoto-border: #C8B2D5;
+
+  --color-border: #E8E4DD;
+  --color-border-light: #F0EDE6;
+  --color-border-dark: #D4CEBF;
+
+  /* 陰影體系 */
+  --shadow-sm: 0 2px 6px rgba(31, 36, 41, 0.04), 0 1px 2px rgba(31, 36, 41, 0.03);
+  --shadow-md: 0 6px 16px rgba(31, 36, 41, 0.06), 0 2px 4px rgba(31, 36, 41, 0.04);
+  --shadow-lg: 0 14px 32px rgba(31, 36, 41, 0.09), 0 4px 8px rgba(31, 36, 41, 0.04);
+  --shadow-float: 0 20px 40px rgba(31, 36, 41, 0.12), 0 8px 16px rgba(31, 36, 41, 0.06);
+
+  /* 圓角系統 (日系手帖直角裁切風格 - 告別現代圓角) */
+  --radius-xs: 0px;
+  --radius-sm: 0px;                   /* 直角裁切 */
+  --radius-md: 2px;                   /* 微倒角手作感 */
+  --radius-lg: 4px;
+  --radius-xl: 8px;
+  --radius-full: 9999px;
+  --radius-card: 0px;                 /* 行程卡片直角邊框 */
+  --radius-shiori: 0px;               /* 直角栞籤 */
+  --radius-hanko: 2px;                /* 落款朱印微圓角 */
+
+  /* 字體排版 (導入日系手寫手帳字體) */
+  --font-sans: 'Plus Jakarta Sans', 'Noto Sans TC', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-jp: 'Noto Sans JP', var(--font-sans);
+  --font-handwriting: 'Klee One', 'Zen Maru Gothic', 'Noto Sans TC', cursive, sans-serif;
+  --font-mincho: 'Shippori Mincho', 'Noto Serif TC', serif;
+  --font-maru: 'Zen Maru Gothic', 'Noto Sans TC', sans-serif;
+
+  /* 和紙與手帳材質調色盤 (Authentic Coarse Washi Palette) */
+  --paper-hosho: #FBF8F2;             /* 高級越前粗面白奉書紙 (Pure Coarse Hosho Washi) */
+  --paper-torinoko: #F6F1E5;          /* 典雅鳥之子紙 / 生產和紙 (Natural Torinoko Paper) */
+  --paper-kraft: #ECE0CA;             /* 粗糲手撕原色牛皮紙籤 (Raw Coarse Kraft Paper) */
+  --paper-kraft-dark: #D4BE9B;        /* 深色牛皮紙裁切邊緣 */
+  --paper-bamboo: #F6ECCF;            /* 居酒屋粗紋暖竹紙 (Bamboo Izakaya Paper) */
+  --paper-xuan: #F8F3E6;              /* 手工生宣紙色 (Raw Sumi Xuan Paper) */
+  --washi-cream: #FBF8F2;             /* 鳥之子紙生成白 */
+  --washi-base: #F5EFE3;              /* 奉書紙溫潤米白 */
+  --washi-warm: #EFE6D5;              /* 薄香紙（便籤底色） */
+  --washi-tag: #F8F3E8;               /* 栞籤底色 */
+  --gold-leaf: #C69234;               /* 泥金箔色 (Gold Leaf) */
+  
+  /* 墨線與手繪縫線 (Sumi Ink & Thread Lines) */
+  --ink-sumi: #1F1C19;                /* 松煙濃墨 (深邃木版墨黑) */
+  --ink-muted: #524B42;               /* 油煙薄墨 */
+  --ink-faint: #887E70;               /* 淡墨淺灰 */
+  --ink-border: #CFC5B2;              /* 木版墨線裁切邊框色 */
+  --ink-border-dashed: #B5A893;       /* 便籤虛線縫線 */
+  --border-ink-soft: 1px solid rgba(170, 150, 125, 0.65);
+  --border-ink-dashed: 1.2px dashed rgba(155, 135, 105, 0.75);
+
+  /* 朱印與風土礦物色 (Shuin Vermilion & Mineral Tones) */
+  --shuin-red: #C53D2A;               /* 朱印丹紅（落款印章） */
+  --shuin-red-light: #FBF0ED;         /* 朱泥暈染粉底 */
+  --shuin-red-border: #E58676;        /* 朱印外框線 */
+
+  /* --- 粗糙和紙紙漿與植物長纖維紋理 (Coarse Washi Texture Engine) --- */
+  /* 鳥之子紙 (三椏粗紙漿顆粒 ✕ 漫反射) */
+  --washi-torinoko: 
+    linear-gradient(175deg, rgba(255, 255, 255, 0.5) 0%, rgba(240, 230, 215, 0.35) 100%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='coarseNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85 0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.25 0 0 0 0 0.2 0 0 0 0 0.12 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23coarseNoise)'/%3E%3C/svg%3E"),
+    #F6F1E5;
+
+  /* 越前粗面白奉書紙 (粗糙紙漿 ✕ 長楮皮長纖維交錯) */
+  --washi-hosho: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(245, 238, 225, 0.45) 100%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='hoshoCoarse'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05 0.95' numOctaves='3'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.35 0 0 0 0 0.28 0 0 0 0 0.18 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23hoshoCoarse)'/%3E%3C/svg%3E"),
+    #FBF8F2;
+
+  /* 粗糲手撕牛皮紙籤 (未漂白粗紙屑 ✕ 長纖維) */
+  --washi-kraft: 
+    linear-gradient(160deg, rgba(255, 255, 255, 0.2) 0%, rgba(195, 165, 125, 0.25) 100%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='kraftCoarse'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65 0.55' numOctaves='4'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.4 0 0 0 0 0.28 0 0 0 0 0.15 0 0 0 0.14 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23kraftCoarse)'/%3E%3C/svg%3E"),
+    #ECE0CA;
+
+  /* 居酒屋粗竹簾紙 (直條竹絲壓紋) */
+  --washi-bamboo: 
+    repeating-linear-gradient(0deg, rgba(160, 120, 60, 0.06) 0px, rgba(160, 120, 60, 0.06) 1px, transparent 1px, transparent 3px),
+    linear-gradient(135deg, rgba(255, 245, 210, 0.5) 0%, rgba(240, 215, 155, 0.35) 100%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='bambooCoarse'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.25 0.85' numOctaves='3'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.45 0 0 0 0 0.3 0 0 0 0 0.1 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23bambooCoarse)'/%3E%3C/svg%3E"),
+    #F6ECCF;
+
+  --washi-fiber-pattern: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85 0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.28 0 0 0 0 0.22 0 0 0 0 0.14 0 0 0 0.075 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+
+  /* --- 直角厚磅紙張疊放物理陰影 (Crisp Straight-Edge Paper Elevation) --- */
+  --shadow-paper-sheet: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 rgba(50, 35, 20, 0.06),
+    0 1px 3px rgba(60, 45, 30, 0.08),
+    0 4px 10px rgba(60, 45, 30, 0.05);
+
+  --shadow-paper-lift: 
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 4px 8px rgba(60, 45, 30, 0.10),
+    0 10px 20px rgba(60, 45, 30, 0.06);
+
+  --shadow-paper-pressed: 
+    inset 0 2px 4px rgba(45, 30, 15, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.95),
+    0 3px 8px rgba(232, 90, 79, 0.18);
+
+  --shadow-polaroid: 
+    0 2px 4px rgba(20, 25, 30, 0.08),
+    0 8px 20px rgba(20, 25, 30, 0.14),
+    inset 0 0 0 1px rgba(255, 255, 255, 1);
+
+  --shadow-shuin: inset 0 0 0 1px rgba(197, 61, 42, 0.35), 0 2px 5px rgba(197, 61, 42, 0.15);
+
+  --shadow-shuin: inset 0 0 0 1px rgba(197, 61, 42, 0.35), 0 2px 5px rgba(197, 61, 42, 0.15);
+
+  /* 手帳刺繡縫線 (Sashiko Stitching) */
+  --stitch-line-style: repeating-linear-gradient(
+    to bottom,
+    var(--ink-border-dashed) 0px,
+    var(--ink-border-dashed) 5px,
+    transparent 5px,
+    transparent 10px
+  );
+
+  /* 木札與千社札質感 (Mokufuda Wood Grain) */
+  --wood-grain-bg: linear-gradient(180deg, #FDFBF7 0%, #F5EFE4 50%, #EADECB 100%);
+  --wood-border: #9C7A4E;
+  --wood-text: #3D2B19;
+  --wood-shadow: 0 2px 5px rgba(61, 43, 25, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+
+  /* 半透明和紙膠帶貼角體系 (Washi Masking Tape System) */
+  --tape-neutral: rgba(235, 225, 210, 0.85);
+  --tape-yamabuki: rgba(245, 220, 160, 0.85);
+  --tape-akane: rgba(235, 175, 175, 0.85);
+  --tape-matcha: rgba(195, 220, 190, 0.85);
+  --tape-shadow: 0 1px 4px rgba(60, 48, 36, 0.14);
+  --tape-strip-pattern: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.03) 100%);
+
+  /* 動效過渡 */
+  --transition-fast: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Base Reset & Typography */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 16px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  background-image: var(--washi-torinoko);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  line-height: 1.5;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 3.7mm ほぼ日手帳方格 ✕ 和紙長纖維底紋 (Hobonichi Graph Grid + Washi Texture) */
+.paper-texture {
+  background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(var(--ink-border) 0.65px, transparent 0.65px),
+    var(--washi-torinoko);
+  background-size: 18px 18px, 100% 100%;
+  background-attachment: fixed;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-dark);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* Utility Classes */
+.container {
+  width: 100%;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.glass-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-border-light);
+  transition: var(--transition-normal);
+}
+
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  line-height: 1.2;
+}
+
+.badge-torii {
+  background: var(--color-torii-light);
+  color: var(--color-torii);
+}
+
+.badge-matcha {
+  background: var(--color-matcha-light);
+  color: var(--color-matcha);
+}
+
+.badge-indigo {
+  background: var(--color-indigo-light);
+  color: var(--color-indigo);
+}
+
+.badge-gold {
+  background: var(--color-gold-light);
+  color: var(--color-gold);
+}
+
+.badge-gray {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+/* Japanese Ruby (振假名) 排版 */
+ruby {
+  ruby-align: center;
+  ruby-position: over;
+  font-weight: 600;
+}
+
+rt {
+  font-size: 0.62em;
+  font-weight: 500;
+  color: var(--color-torii);
+  letter-spacing: 0.05em;
+  transform: translateY(-2px);
+}

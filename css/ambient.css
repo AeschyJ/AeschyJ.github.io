@@ -1,0 +1,117 @@
+/**
+ * Central Portal Hub - Dynamic Ambient Glow Engine
+ * Fluid chromatic shifts, radial mesh orbs, and soft-focus atmospheric optics.
+ */
+
+#ambient-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  transition: opacity 0.5s ease;
+}
+
+/* Fluid Orb 1: Primary Ambient Aura (Upper-left to Center) */
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform, background, opacity;
+  opacity: 0.75;
+  transition: background var(--duration-color-shift) var(--transition-smooth),
+              opacity 0.4s ease;
+}
+
+.ambient-orb-1 {
+  top: -15vh;
+  left: 10vw;
+  width: 60vw;
+  height: 60vw;
+  max-width: 700px;
+  max-height: 700px;
+  background: radial-gradient(circle, var(--current-glow-1) 0%, rgba(8, 9, 13, 0) 70%);
+  animation: orbDrift1 22s infinite alternate ease-in-out;
+}
+
+/* Fluid Orb 2: Secondary Chromatic Resonance (Lower-right to Mid) */
+.ambient-orb-2 {
+  bottom: -10vh;
+  right: 5vw;
+  width: 55vw;
+  height: 55vw;
+  max-width: 650px;
+  max-height: 650px;
+  background: radial-gradient(circle, var(--current-glow-2) 0%, rgba(8, 9, 13, 0) 70%);
+  animation: orbDrift2 26s infinite alternate ease-in-out;
+}
+
+/* Fluid Orb 3: Center Sub-harmonics */
+.ambient-orb-3 {
+  top: 40vh;
+  left: 35vw;
+  width: 45vw;
+  height: 45vw;
+  max-width: 500px;
+  max-height: 500px;
+  background: radial-gradient(circle, var(--current-glow-1) 0%, rgba(8, 9, 13, 0) 65%);
+  opacity: 0.35;
+  animation: orbDrift3 18s infinite alternate ease-in-out;
+}
+
+/* Digital Noise Texture Overlay for subtle grit & filmic depth */
+#ambient-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0);
+  background-size: 24px 24px;
+  opacity: 0.4;
+}
+
+/* Keyframe Drifting Animations */
+@keyframes orbDrift1 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(8vw, 12vh) scale(1.1);
+  }
+  100% {
+    transform: translate(-5vw, 6vh) scale(0.92);
+  }
+}
+
+@keyframes orbDrift2 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-10vw, -15vh) scale(1.08);
+  }
+  100% {
+    transform: translate(6vw, -8vh) scale(0.95);
+  }
+}
+
+@keyframes orbDrift3 {
+  0% {
+    transform: translate(0, 0) scale(0.9);
+  }
+  100% {
+    transform: translate(12vw, -8vh) scale(1.15);
+  }
+}
+
+/* Power-Saving / FX Disabled Mode */
+body.fx-disabled #ambient-glow {
+  opacity: 0.25;
+}
+
+body.fx-disabled .ambient-orb {
+  animation: none;
+  filter: blur(40px);
+}

@@ -1,0 +1,20 @@
+{
+  "name": "AeschyJ Portal Hub | 中央展覽館",
+  "short_name": "PortalHub",
+  "description": "AeschyJ 個人專案統一主題展覽館與多維作品展區",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#08090d",
+  "theme_color": "#08090d",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%2308090d'/><circle cx='50' cy='50' r='32' fill='none' stroke='%23a855f7' stroke-width='6'/><circle cx='50' cy='50' r='18' fill='%2360a5fa'/><polygon points='50,15 56,26 44,26' fill='%23e11d48'/><polygon points='85,50 74,56 74,44' fill='%2300ff9d'/><polygon points='50,85 44,74 56,74' fill='%23f59e0b'/></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["portfolio", "productivity", "utilities"]
+}

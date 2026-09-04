@@ -1,0 +1,751 @@
+/**
+ * Pavilion 04: Ticket Radar Bot (航管雷達票務獵手)
+ * Visual Style: Air-Traffic Radar Console, Amber Orange, Dark CRT Scanlines, Server LEDs
+ * Scope: Strict encapsulation under .pavilion-tic & .pavilion-tic-modal
+ */
+
+/* ==========================================================================
+   1. Ticket Root Scope & CSS Variables
+   ========================================================================== */
+.pavilion-tic {
+  --tic-amber: #f59e0b;
+  --tic-amber-light: #fbbf24;
+  --tic-radar-bg: #090b10;
+  --tic-surface: #0e121a;
+  --tic-surface-glass: rgba(14, 18, 26, 0.85);
+  --tic-border-glass: rgba(245, 158, 11, 0.25);
+  --tic-crt-scan: rgba(0, 0, 0, 0.35);
+  --tic-green: #10b981;
+  --tic-red: #ef4444;
+  --tic-glow: rgba(245, 158, 11, 0.55);
+
+  position: relative;
+  width: 100%;
+}
+
+/* ==========================================================================
+   2. Main Console Shell & Radar Ambient Grid
+   ========================================================================== */
+.pavilion-tic .ticket-console-shell {
+  position: relative;
+  border-radius: var(--radius-lg, 24px);
+  background: linear-gradient(160deg, #0f131c 0%, #090c12 100%);
+  border: 1px solid var(--tic-border-glass);
+  box-shadow: 
+    0 24px 50px rgba(0, 0, 0, 0.7),
+    0 0 30px rgba(245, 158, 11, 0.1) inset;
+  padding: 34px;
+  overflow: hidden;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* CRT Scanline Overlay */
+.pavilion-tic .ticket-crt-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+/* ==========================================================================
+   3. Header Bar & Blinking Server LEDs
+   ========================================================================== */
+.pavilion-tic .ticket-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(245, 158, 11, 0.15);
+  padding-bottom: 16px;
+  position: relative;
+  z-index: 6;
+}
+
+.pavilion-tic .ticket-radar-status-cluster {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pavilion-tic .ticket-order-tag {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill, 9999px);
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--tic-amber);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+}
+
+.pavilion-tic .ticket-server-leds {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill, 9999px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pavilion-tic .server-led {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.pavilion-tic .led-green {
+  background: var(--tic-green);
+  box-shadow: 0 0 8px var(--tic-green);
+  animation: led-blink 1.4s infinite alternate;
+}
+
+.pavilion-tic .led-amber {
+  background: var(--tic-amber);
+  box-shadow: 0 0 8px var(--tic-amber);
+  animation: led-blink 0.9s infinite alternate 0.3s;
+}
+
+.pavilion-tic .led-blue {
+  background: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+  animation: led-blink 2.2s infinite alternate 0.6s;
+}
+
+@keyframes led-blink {
+  0% { opacity: 0.3; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1.1); }
+}
+
+.pavilion-tic .ticket-status-label {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  letter-spacing: 0.06em;
+}
+
+.pavilion-tic .ticket-pin-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-secondary, #9ca3af);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pavilion-tic .ticket-pin-btn:hover {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: var(--tic-amber);
+  color: #ffffff;
+}
+
+.pavilion-tic .ticket-pin-btn.is-pinned {
+  background: var(--tic-amber);
+  color: #090b10;
+  border-color: var(--tic-amber);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.7);
+}
+
+/* ==========================================================================
+   4. Dual Pane Grid: Console Metadata & Live Radar Display
+   ========================================================================= */
+.pavilion-tic .ticket-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 6;
+}
+
+.pavilion-tic .ticket-intel-pane {
+  display: flex;
+  flex-direction: column;
+}
+
+.pavilion-tic .ticket-pre-badge {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.75rem;
+  color: var(--tic-amber-light);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.pavilion-tic .ticket-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.pavilion-tic .ticket-title {
+  font-size: clamp(1.8rem, 3.8vw, 2.3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.pavilion-tic .ticket-title-zh {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #fcd34d;
+}
+
+.pavilion-tic .ticket-desc {
+  font-size: 0.94rem;
+  line-height: 1.72;
+  color: #cbd5e1;
+  margin-bottom: 20px;
+}
+
+.pavilion-tic .ticket-tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.pavilion-tic .ticket-tag {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.74rem;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill, 9999px);
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  color: #fde68a;
+}
+
+/* Radar Scope Simulation Screen */
+.pavilion-tic .ticket-radar-terminal-box {
+  position: relative;
+  background: #06080c;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius-md, 16px);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) inset;
+  height: 310px;
+  overflow: hidden;
+}
+
+/* Miniature Radar Sweep Radar Dish in top right */
+.pavilion-tic .radar-mini-dish {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, rgba(0, 0, 0, 0.6) 70%);
+  pointer-events: none;
+  z-index: 4;
+  overflow: hidden;
+}
+
+.pavilion-tic .radar-mini-dish::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,
+    rgba(245, 158, 11, 0.05) 270deg,
+    rgba(245, 158, 11, 0.6) 360deg
+  );
+  animation: radar-sweep-spin 3s linear infinite;
+}
+
+@keyframes radar-sweep-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.pavilion-tic .radar-mini-dish::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(245, 158, 11, 0.2);
+}
+
+.pavilion-tic .radar-cross-v {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: rgba(245, 158, 11, 0.2);
+}
+
+/* Terminal Header */
+.pavilion-tic .terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 6px;
+}
+
+.pavilion-tic .terminal-title {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.72rem;
+  color: var(--tic-amber);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.pavilion-tic .terminal-meta-ping {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.7rem;
+  color: #10b981;
+}
+
+/* Interactive Live Log Feed */
+.pavilion-tic .ticket-log-stream {
+  flex: 1;
+  overflow-y: auto;
+  font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 4px;
+}
+
+.pavilion-tic .ticket-log-stream::-webkit-scrollbar {
+  width: 4px;
+}
+
+.pavilion-tic .ticket-log-stream::-webkit-scrollbar-thumb {
+  background: rgba(245, 158, 11, 0.3);
+  border-radius: 2px;
+}
+
+.pavilion-tic .log-entry {
+  display: flex;
+  gap: 8px;
+  word-break: break-all;
+}
+
+.pavilion-tic .log-time {
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.pavilion-tic .log-msg-normal {
+  color: #cbd5e1;
+}
+
+.pavilion-tic .log-msg-amber {
+  color: var(--tic-amber-light);
+  font-weight: 600;
+}
+
+.pavilion-tic .log-msg-green {
+  color: #34d399;
+  font-weight: 700;
+}
+
+.pavilion-tic .log-msg-blue {
+  color: #38bdf8;
+}
+
+/* Terminal Typing Cursor */
+.pavilion-tic .terminal-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 13px;
+  background: var(--tic-amber);
+  vertical-align: middle;
+  animation: cursor-blink 1s step-start infinite;
+  margin-left: 4px;
+}
+
+@keyframes cursor-blink {
+  50% { opacity: 0; }
+}
+
+/* ==========================================================================
+   5. Interactive Trigger Actions & Webhook Simulation Toast
+   ========================================================================== */
+.pavilion-tic .ticket-actions-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(245, 158, 11, 0.15);
+  padding-top: 22px;
+  flex-wrap: wrap;
+  gap: 16px;
+  position: relative;
+  z-index: 6;
+}
+
+.pavilion-tic .ticket-btns-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pavilion-tic .ticket-drop-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: var(--radius-pill, 9999px);
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  box-shadow: 0 4px 16px rgba(217, 119, 6, 0.4);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pavilion-tic .ticket-drop-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(245, 158, 11, 0.6);
+  border-color: #fde68a;
+}
+
+.pavilion-tic .ticket-drop-btn:active {
+  transform: translateY(0);
+}
+
+.pavilion-tic .ticket-arch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: var(--radius-pill, 9999px);
+  background: rgba(14, 18, 26, 0.7);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fde68a;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pavilion-tic .ticket-arch-btn:hover {
+  background: rgba(245, 158, 11, 0.15);
+  color: #ffffff;
+  border-color: var(--tic-amber);
+}
+
+.pavilion-tic .ticket-launch-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+  font-size: 0.84rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.pavilion-tic .ticket-launch-link:hover {
+  color: var(--tic-amber-light);
+}
+
+/* Webhook Simulation Push Notification Popover */
+.pavilion-tic .ticket-webhook-toast {
+  position: absolute;
+  bottom: 84px;
+  right: 28px;
+  width: 340px;
+  max-width: 90vw;
+  background: rgba(15, 20, 30, 0.95);
+  border: 1px solid #10b981;
+  border-radius: var(--radius-md, 14px);
+  padding: 16px;
+  box-shadow: 
+    0 18px 40px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(16, 185, 129, 0.3);
+  z-index: 10;
+  display: none;
+  backdrop-filter: blur(20px);
+  animation: webhook-toast-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.pavilion-tic .ticket-webhook-toast.is-active {
+  display: block;
+}
+
+@keyframes webhook-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.pavilion-tic .webhook-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.pavilion-tic .webhook-bot-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.pavilion-tic .webhook-close-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.pavilion-tic .webhook-body {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #e2e8f0;
+}
+
+.pavilion-tic .webhook-highlight-tag {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.75rem;
+}
+
+/* ==========================================================================
+   6. Architecture Deep-Dive Modal (.pavilion-tic-modal)
+   ========================================================================== */
+.pavilion-tic-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(5, 7, 12, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modal-fade-in 0.25s ease forwards;
+}
+
+.pavilion-tic-modal-backdrop.is-open {
+  display: flex;
+}
+
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.pavilion-tic-modal {
+  position: relative;
+  width: 820px;
+  max-width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: linear-gradient(165deg, #111622 0%, #0a0d14 100%);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: var(--radius-lg, 20px);
+  padding: 32px;
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.9),
+    0 0 40px rgba(245, 158, 11, 0.15);
+  color: #e2e8f0;
+}
+
+.pavilion-tic-modal .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+  padding-bottom: 16px;
+}
+
+.pavilion-tic-modal .modal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pavilion-tic-modal .modal-icon-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid var(--tic-amber);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tic-amber);
+}
+
+.pavilion-tic-modal .modal-heading {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.pavilion-tic-modal .modal-subheading {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  font-family: 'SF Mono', monospace;
+}
+
+.pavilion-tic-modal .modal-close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.pavilion-tic-modal .modal-close-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ffffff;
+  border-color: #ef4444;
+}
+
+/* Modal Content Sections */
+.pavilion-tic-modal .modal-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.pavilion-tic-modal .arch-block {
+  background: rgba(14, 18, 28, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.pavilion-tic-modal .arch-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--tic-amber-light);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pavilion-tic-modal .arch-desc {
+  font-size: 0.88rem;
+  line-height: 1.68;
+  color: #cbd5e1;
+  margin-bottom: 14px;
+}
+
+/* State Machine Transition Flowchart (Pure CSS/Flex) */
+.pavilion-tic-modal .fsm-flow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.pavilion-tic-modal .fsm-node {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.74rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fde68a;
+}
+
+.pavilion-tic-modal .fsm-node.active-node {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #10b981;
+  color: #34d399;
+  font-weight: 700;
+}
+
+.pavilion-tic-modal .fsm-arrow {
+  color: #64748b;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   7. Mobile Responsive Layout
+   ========================================================================== */
+@media (max-width: 860px) {
+  .pavilion-tic .ticket-main-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .pavilion-tic .ticket-console-shell {
+    padding: 22px 18px;
+  }
+
+  .pavilion-tic .ticket-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pavilion-tic .ticket-btns-left {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .pavilion-tic .ticket-drop-btn,
+  .pavilion-tic .ticket-arch-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pavilion-tic .ticket-webhook-toast {
+    right: 16px;
+    left: 16px;
+    width: auto;
+    bottom: 20px;
+  }
+}

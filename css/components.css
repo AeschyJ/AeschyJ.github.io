@@ -1,0 +1,739 @@
+/**
+ * Central Portal Hub - UI Components System
+ * Header Bar, Quick Navigation, Pinned Tray, Hero Section, Default Cards & Footer
+ */
+
+/* ==========================================================================
+   1. Floating Header Navigation
+   ========================================================================== */
+.hub-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  z-index: 100;
+  background: var(--bg-glass-blur);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--bg-glass-border);
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  gap: 16px;
+}
+
+/* Brand Identity */
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.brand-symbol {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--current-accent) 0%, rgba(255, 255, 255, 0.1) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 16px var(--current-glow-1);
+  transition: box-shadow var(--duration-color-shift) ease, background var(--duration-color-shift) ease;
+}
+
+.brand-symbol svg {
+  width: 20px;
+  height: 20px;
+  stroke: #ffffff;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.brand-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Center Navigation Links */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 4px 6px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.nav-link {
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  transition: color 0.2s ease, background 0.2s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-link.is-active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 12px var(--current-glow-1);
+}
+
+/* Header Utilities (Recent, Pinned, FX, Audio) */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ctrl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 12px;
+  gap: 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.ctrl-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.ctrl-btn.active {
+  color: var(--current-accent);
+  border-color: var(--current-accent);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.ctrl-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Recent Visited Badge */
+.recent-jump-btn {
+  display: none; /* Shown dynamically via JS when a recent pavilion exists */
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  height: 38px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.recent-jump-btn .recent-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--current-accent);
+  box-shadow: 0 0 8px var(--current-accent);
+}
+
+/* Pinned Counter Badge */
+.pinned-counter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  font-size: 0.7rem;
+  border-radius: 9px;
+  background: var(--current-accent);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Pinned Dropdown Drawer */
+.pinned-popover {
+  position: absolute;
+  top: calc(var(--header-height) + 8px);
+  right: 24px;
+  width: 320px;
+  max-width: 90vw;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--bg-glass-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px var(--current-glow-1);
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 105;
+  backdrop-filter: blur(24px);
+}
+
+.pinned-popover.is-open {
+  display: flex;
+}
+
+.pinned-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.pinned-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.pinned-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.03);
+  transition: background 0.2s ease;
+}
+
+.pinned-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.pinned-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.pinned-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.pinned-empty {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 16px 0;
+}
+
+
+/* ==========================================================================
+   2. Hero Section
+   ========================================================================== */
+.hero-section {
+  position: relative;
+  z-index: 10;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: calc(var(--header-height) + 40px) 24px 60px;
+}
+
+.hero-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--current-accent);
+  margin-bottom: 24px;
+  transition: color var(--duration-color-shift) ease;
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+  animation: pulseAnimation 2s infinite ease-in-out;
+}
+
+@keyframes pulseAnimation {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+.hero-title {
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+  max-width: 900px;
+  background: linear-gradient(180deg, #ffffff 40%, rgba(255, 255, 255, 0.65) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--text-secondary);
+  max-width: 640px;
+  margin: 0 auto 36px;
+  line-height: 1.65;
+}
+
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.hero-btn-primary {
+  background: #ffffff;
+  color: #08090d;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+}
+
+.hero-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(255, 255, 255, 0.3);
+}
+
+.hero-btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hero-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.scroll-cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: auto;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.scroll-cue:hover {
+  color: var(--text-primary);
+}
+
+.scroll-cue-arrow {
+  animation: bounceDown 2s infinite ease-in-out;
+}
+
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+
+/* ==========================================================================
+   3. Pavilions Container & Default Universal Skeleton Cards
+   ========================================================================== */
+#pavilions-container {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 120px;
+  padding-bottom: 120px;
+}
+
+.pavilion-section {
+  position: relative;
+  scroll-margin-top: calc(var(--header-height) + 20px);
+  width: 100%;
+}
+
+.pavilion-slot {
+  width: 100%;
+}
+
+/* Universal Fallback Skeleton Card */
+.pavilion-default-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  background: var(--bg-glass-card);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--bg-glass-border);
+  padding: 40px;
+  overflow: hidden;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+}
+
+.pavilion-default-card:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 255, 255, 0.05);
+}
+
+.card-ambient-aura {
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--pavilion-accent, var(--current-accent)) 0%, transparent 70%);
+  opacity: 0.18;
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.card-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.card-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-order-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+
+.card-status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--pavilion-accent, var(--current-accent));
+}
+
+.pin-toggle-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.pin-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+}
+
+.pin-toggle-btn.is-pinned {
+  background: var(--pavilion-accent, var(--current-accent));
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 0 14px var(--pavilion-accent, var(--current-accent));
+}
+
+.card-body {
+  margin-bottom: 32px;
+}
+
+.card-icon-halo {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pavilion-accent, var(--current-accent));
+  margin-bottom: 18px;
+}
+
+.card-icon-halo svg {
+  width: 26px;
+  height: 26px;
+}
+
+.card-sub-label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--pavilion-secondary, var(--text-muted));
+  display: block;
+  margin-bottom: 6px;
+}
+
+.card-main-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+
+.card-title-zh {
+  font-size: 0.9em;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-left: 8px;
+}
+
+.card-description {
+  font-size: 0.96rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 780px;
+  margin-bottom: 22px;
+}
+
+.card-tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-chip {
+  font-size: 0.75rem;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
+.card-footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 24px;
+}
+
+.action-launch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: var(--radius-pill);
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.action-launch-btn.primary-action {
+  background: var(--pavilion-accent, var(--current-accent));
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+}
+
+.action-launch-btn.primary-action:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.15);
+}
+
+.action-launch-btn.secondary-action {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.action-launch-btn.secondary-action:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+
+/* ==========================================================================
+   4. Footer & Back-to-Top Floating Widget
+   ========================================================================== */
+.hub-footer {
+  position: relative;
+  z-index: 10;
+  border-top: 1px solid var(--bg-glass-border);
+  padding: 50px 0 30px;
+  background: rgba(8, 9, 13, 0.85);
+  backdrop-filter: blur(16px);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-brand-claim {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+}
+
+.footer-brand-claim strong {
+  color: var(--text-primary);
+}
+
+.footer-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.footer-nav-links a:hover {
+  color: var(--text-primary);
+}
+
+.back-to-top-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--bg-glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  z-index: 90;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px);
+  transition: all 0.3s ease;
+}
+
+.back-to-top-btn.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top-btn:hover {
+  background: var(--current-accent);
+  color: #ffffff;
+  box-shadow: 0 8px 24px var(--current-glow-1);
+}
+
+
+/* ==========================================================================
+   5. Responsive RWD Adaptations
+   ========================================================================== */
+@media (max-width: 900px) {
+  .header-nav {
+    display: none; /* Collapsed for compact mobile header */
+  }
+}
+
+@media (max-width: 640px) {
+  .header-inner {
+    gap: 8px;
+  }
+  
+  .brand-title {
+    font-size: 0.95rem;
+  }
+  
+  .brand-subtitle {
+    display: none;
+  }
+  
+  .ctrl-btn {
+    padding: 0 8px;
+  }
+  
+  .ctrl-btn span.btn-label {
+    display: none;
+  }
+  
+  .pavilion-default-card {
+    padding: 24px 20px;
+  }
+  
+  #pavilions-container {
+    gap: 60px;
+  }
+}

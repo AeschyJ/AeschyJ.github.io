@@ -1,0 +1,22 @@
+{
+  "name": "MUSEUM - 個人香水與衣物展示館",
+  "short_name": "MUSEUM",
+  "description": "個人擁有的精緻香水與衣物/鞋子收藏展示網站，支援離線瀏覽與 Google Sheets 同步。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B0C10",
+  "theme-color": "#0B0C10",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
