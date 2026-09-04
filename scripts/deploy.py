@@ -587,7 +587,31 @@ def prune_git_history(dry_run: bool = False) -> bool:
             f"   壓平後: {format_size(final_size)}\n"
             f"   節省空間: {format_size(saved)}"
         )
-        log_info(f"💡 提醒: 若需推送至遠端 GitHub，請使用強制推送: git push -f origin {branch}")
+
+        # 詢問並執行強制推送至遠端 GitHub
+        try:
+            confirm = input(f"\n{Colors.CYAN}是否立即強制推送 (git push -f origin {branch}) 至遠端 GitHub？ [Y/n]: {Colors.RESET}").strip().lower()
+        except (KeyboardInterrupt, EOFError):
+            confirm = "n"
+
+        if confirm in ("", "y", "yes"):
+            log_info(f"正在強制推送至遠端 GitHub Pages (git push -f origin {branch})...")
+            push_res = subprocess.run(
+                ["git", "push", "-f", "origin", branch],
+                cwd=BASE_DIR,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace"
+            )
+            if push_res.returncode == 0:
+                log_success("🎉 已成功強制推送至遠端 GitHub Pages！")
+            else:
+                log_error(f"推送至遠端失敗: {push_res.stderr.strip()}")
+                log_info(f"手動推送指令: git push -f origin {branch}")
+        else:
+            log_info(f"已略過推送。您可隨時手動推送: git push -f origin {branch}")
+
         return True
     except Exception as e:
         log_error(f"壓平歷史失敗: {e}")
@@ -708,6 +732,92 @@ def run_deploy(targets: List[str], dry_run: bool = False, skip_build: bool = Fal
 
     if all_passed:
         log_success("🎉 所有指定專案皆已通過 5 重防呆檢驗並完成發布準備！")
+
+        # 若非乾跑模式，檢查 Git 狀態並引導/執行提交與推送
+        if not dry_run and (BASE_DIR / ".git").exists():
+            branch_res = subprocess.run(
+                ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+                cwd=BASE_DIR,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace"
+            )
+            branch = branch_res.stdout.strip() or "main"
+
+            status_res = subprocess.run(
+                ["git", "status", "--porcelain"],
+                cwd=BASE_DIR,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace"
+            )
+            has_changes = bool(status_res.stdout.strip())
+
+            ahead_res = subprocess.run(
+                ["git", "status", "-uno"],
+                cwd=BASE_DIR,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace"
+            )
+            is_ahead = "Your branch is ahead" in ahead_res.stdout
+
+            if has_changes:
+                print(f"\n{Colors.CYAN}偵測到公開部署檔案有新增或變更。{Colors.RESET}")
+                try:
+                    confirm = input(f"{Colors.BOLD}{Colors.CYAN}是否立即 Commit 並推送 (git push origin {branch}) 至 GitHub？ [Y/n]: {Colors.RESET}").strip().lower()
+                except (KeyboardInterrupt, EOFError):
+                    confirm = "n"
+
+                if confirm in ("", "y", "yes"):
+                    commit_msg = f"deploy: sync updates for {', '.join(targets)}"
+                    subprocess.run(["git", "add", "-A"], cwd=BASE_DIR)
+                    subprocess.run(["git", "commit", "-m", commit_msg], cwd=BASE_DIR)
+                    log_info(f"正在推送至遠端 GitHub Pages (git push origin {branch})...")
+                    push_res = subprocess.run(
+                        ["git", "push", "origin", branch],
+                        cwd=BASE_DIR,
+                        capture_output=True,
+                        text=True,
+                        encoding="utf-8",
+                        errors="replace"
+                    )
+                    if push_res.returncode == 0:
+                        log_success("🎉 已成功推送至遠端 GitHub Pages！")
+                    else:
+                        log_error(f"推送失敗: {push_res.stderr.strip()}")
+                        log_info(f"您可稍後手動推送: git push origin {branch}")
+                else:
+                    log_info(f"已略過推送。您可隨時手動推送: git push origin {branch}")
+            elif is_ahead:
+                print(f"\n{Colors.CYAN}本地有尚未推送至遠端的 Commit。{Colors.RESET}")
+                try:
+                    confirm = input(f"{Colors.BOLD}{Colors.CYAN}是否立即推送 (git push origin {branch}) 至 GitHub？ [Y/n]: {Colors.RESET}").strip().lower()
+                except (KeyboardInterrupt, EOFError):
+                    confirm = "n"
+
+                if confirm in ("", "y", "yes"):
+                    log_info(f"正在推送至遠端 GitHub Pages (git push origin {branch})...")
+                    push_res = subprocess.run(
+                        ["git", "push", "origin", branch],
+                        cwd=BASE_DIR,
+                        capture_output=True,
+                        text=True,
+                        encoding="utf-8",
+                        errors="replace"
+                    )
+                    if push_res.returncode == 0:
+                        log_success("🎉 已成功推送至遠端 GitHub Pages！")
+                    else:
+                        log_error(f"推送失敗: {push_res.stderr.strip()}")
+                else:
+                    log_info(f"已略過推送。您可隨時手動推送: git push origin {branch}")
+            else:
+                log_info("本地檔案與遠端已是最新同步狀態，無須額外推送。")
+
         return True
     else:
         log_error("⚠️  部分專案未通過發布管線，請檢查上述錯誤日誌進行修正。")
