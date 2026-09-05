@@ -39,12 +39,6 @@ export const cyberPavilion = {
           <!-- Matrix Dot Grid Overlay -->
           <div class="cyber-dot-matrix-layer" aria-hidden="true"></div>
 
-          <!-- HUD Tech Corner Markers -->
-          <div class="hud-corner hud-corner-tl" aria-hidden="true"></div>
-          <div class="hud-corner hud-corner-tr" aria-hidden="true"></div>
-          <div class="hud-corner hud-corner-bl" aria-hidden="true"></div>
-          <div class="hud-corner hud-corner-br" aria-hidden="true"></div>
-
           <!-- Top Status Bar -->
           <header class="cyber-header-bar">
             <div class="cyber-identity-cluster">

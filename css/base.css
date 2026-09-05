@@ -75,6 +75,12 @@
   --duration-color-shift: 600ms;
 }
 
+@media (orientation: landscape) and (max-height: 520px) {
+  :root {
+    --header-height: 46px;
+  }
+}
+
 /* Reset & Box Sizing */
 *, *::before, *::after {
   box-sizing: border-box;

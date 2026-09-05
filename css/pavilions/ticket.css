@@ -24,12 +24,12 @@
   height: 100%;
   min-height: 100dvh;
   display: flex;
-  align-items: center;
+  align-items: safe center;
   justify-content: center;
   background: radial-gradient(circle at 50% 30%, #121622 0%, #080A0F 100%);
   overflow-y: auto;
   overflow-x: hidden;
-  padding: clamp(70px, 8vh, 100px) clamp(24px, 5vw, 80px);
+  padding: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 16px) clamp(16px, 4vw, 80px) calc(24px + env(safe-area-inset-bottom, 0px));
 }
 
 /* ==========================================================================
@@ -39,7 +39,7 @@
   position: relative;
   width: 100%;
   max-width: 1340px;
-  margin: 0 auto;
+  margin: auto 0;
   border-radius: 0;
   background: transparent;
   border: none;
@@ -262,67 +262,34 @@
   overflow: hidden;
 }
 
-/* Miniature Radar Sweep Radar Dish in top right */
-.pavilion-tic .radar-mini-dish {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 76px;
-  height: 76px;
-  border-radius: 50%;
-  border: 1px solid rgba(245, 158, 11, 0.35);
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, rgba(0, 0, 0, 0.6) 70%);
-  pointer-events: none;
-  z-index: 4;
-  overflow: hidden;
-}
-
-.pavilion-tic .radar-mini-dish::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: conic-gradient(
-    from 0deg at 50% 50%,
-    transparent 0deg,
-    rgba(245, 158, 11, 0.05) 270deg,
-    rgba(245, 158, 11, 0.6) 360deg
-  );
-  animation: radar-sweep-spin 3s linear infinite;
-}
-
-@keyframes radar-sweep-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.pavilion-tic .radar-mini-dish::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: rgba(245, 158, 11, 0.2);
-}
-
-.pavilion-tic .radar-cross-v {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 1px;
-  background: rgba(245, 158, 11, 0.2);
-}
-
-/* Terminal Header */
+/* Terminal Header & Radar HUD Cluster */
 .pavilion-tic .terminal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  padding-bottom: 6px;
+  gap: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 10px;
+  min-height: 48px;
+  flex-shrink: 0;
+}
+
+.pavilion-tic .terminal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.pavilion-tic .terminal-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--tic-amber, #f59e0b);
+  box-shadow: 0 0 8px var(--tic-amber, #f59e0b);
+  animation: led-blink 1.2s infinite alternate;
+  flex-shrink: 0;
 }
 
 .pavilion-tic .terminal-title {
@@ -331,12 +298,116 @@
   color: var(--tic-amber);
   font-weight: 700;
   letter-spacing: 0.06em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pavilion-tic .terminal-hud-cluster {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .pavilion-tic .terminal-meta-ping {
   font-family: 'SF Mono', 'Fira Code', monospace;
   font-size: 0.7rem;
   color: #10b981;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 3px 8px;
+  border-radius: 9999px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.pavilion-tic .ping-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px #10b981;
+  animation: ping-pulse 1.8s infinite ease-in-out;
+}
+
+@keyframes ping-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.75); }
+}
+
+/* Miniature Radar Sweep Radar Dish (integrated into HUD cluster) */
+.pavilion-tic .radar-mini-dish {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, rgba(0, 0, 0, 0.8) 75%);
+  pointer-events: none;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.15);
+  flex-shrink: 0;
+}
+
+.pavilion-tic .radar-sweep-beam {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,
+    rgba(245, 158, 11, 0.04) 260deg,
+    rgba(245, 158, 11, 0.65) 360deg
+  );
+  animation: radar-sweep-spin 2.6s linear infinite;
+}
+
+@keyframes radar-sweep-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.pavilion-tic .radar-cross-h {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(245, 158, 11, 0.25);
+  transform: translateY(-50%);
+}
+
+.pavilion-tic .radar-cross-v {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: rgba(245, 158, 11, 0.25);
+  transform: translateX(-50%);
+}
+
+.pavilion-tic .radar-blip {
+  position: absolute;
+  top: 28%;
+  left: 65%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px #10b981;
+  animation: radar-blip-flash 2.6s infinite ease-in-out;
+}
+
+@keyframes radar-blip-flash {
+  0%, 65% { opacity: 0; transform: scale(0.5); }
+  75% { opacity: 1; transform: scale(1.3); }
+  90% { opacity: 0.3; transform: scale(1); }
+  100% { opacity: 0; }
 }
 
 /* Interactive Live Log Feed */
@@ -645,21 +716,29 @@
 }
 
 .pavilion-tic-modal .modal-close-btn {
-  width: 36px;
-  height: 36px;
+  position: sticky;
+  top: 0;
+  align-self: flex-end;
+  margin-bottom: -44px;
+  z-index: 20;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(18, 22, 34, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: #94a3b8;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
 }
 
 .pavilion-tic-modal .modal-close-btn:hover {
-  background: rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.25);
   color: #ffffff;
   border-color: #ef4444;
 }
@@ -760,5 +839,86 @@
     left: 16px;
     width: auto;
     bottom: 20px;
+  }
+
+  .pavilion-tic .terminal-header {
+    gap: 8px;
+    min-height: 42px;
+  }
+
+  .pavilion-tic .terminal-hud-cluster {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pavilion-tic .terminal-header {
+    gap: 6px;
+    min-height: 38px;
+    padding-bottom: 8px;
+  }
+
+  .pavilion-tic .terminal-title {
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+  }
+
+  .pavilion-tic .terminal-hud-cluster {
+    gap: 6px;
+  }
+
+  .pavilion-tic .ping-label {
+    display: none;
+  }
+
+  .pavilion-tic .terminal-meta-ping {
+    padding: 2px 6px;
+    font-size: 0.68rem;
+  }
+
+  .pavilion-tic .radar-mini-dish {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* 橫向矮螢幕 (Landscape / Short Screen: 高度 <= 520px) 緊湊適配 */
+@media (max-height: 520px) {
+  .pavilion-tic {
+    padding: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 8px) clamp(12px, 2.5vw, 32px) calc(20px + env(safe-area-inset-bottom, 0px)) !important;
+    align-items: flex-start !important;
+  }
+
+  .pavilion-tic .ticket-console-shell {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .pavilion-tic .ticket-radar-terminal-box {
+    height: 190px !important;
+  }
+
+  .pavilion-tic .terminal-header {
+    min-height: 36px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+  }
+
+  .pavilion-tic .radar-mini-dish {
+    width: 32px;
+    height: 32px;
+  }
+
+  .pavilion-tic .radar-scope {
+    height: 170px !important;
+  }
+
+  .pavilion-tic .ticket-terminal-content {
+    max-height: 140px !important;
+  }
+
+  .pavilion-tic .ticket-actions-bar {
+    margin-top: 10px;
+    padding-top: 10px;
   }
 }

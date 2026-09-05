@@ -25,12 +25,12 @@
   height: 100%;
   min-height: 100dvh;
   display: flex;
-  align-items: center;
+  align-items: safe center;
   justify-content: center;
   background: radial-gradient(circle at 50% 32%, #171822 0%, #0B0C10 100%);
   overflow-y: auto;
   overflow-x: hidden;
-  padding: clamp(70px, 8vh, 100px) clamp(24px, 5vw, 80px);
+  padding: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 16px) clamp(16px, 4vw, 80px) calc(24px + env(safe-area-inset-bottom, 0px));
 }
 
 /* ==========================================================================
@@ -93,7 +93,7 @@
   position: relative;
   width: 100%;
   max-width: 1340px;
-  margin: 0 auto;
+  margin: auto 0;
   border-radius: 0;
   padding: 0;
   background: transparent;
@@ -494,5 +494,32 @@
   .pavilion-show .showcase-curator-signature {
     text-align: center;
     margin-top: 4px;
+  }
+}
+
+/* 橫向矮螢幕 (Landscape / Short Screen: 高度 <= 520px) 緊湊適配 */
+@media (max-height: 520px) {
+  .pavilion-show {
+    padding: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 8px) clamp(12px, 2.5vw, 32px) calc(20px + env(safe-area-inset-bottom, 0px)) !important;
+    align-items: flex-start !important;
+  }
+
+  .pavilion-show .showcase-card {
+    padding: 14px 16px;
+    gap: 10px;
+  }
+
+  .pavilion-show .showcase-content-grid {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 12px;
+  }
+
+  .pavilion-show .showcase-pedestal-card {
+    min-height: 130px !important;
+  }
+
+  .pavilion-show .showcase-footer {
+    margin-top: 8px;
+    padding-top: 8px;
   }
 }

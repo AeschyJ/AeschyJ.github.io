@@ -5,6 +5,55 @@
 
 ---
 
+## [2.1.0] - 2026-09-05
+
+### 💎 品牌躍升與視覺哲思重塑 (Brand Evolution & Philosophy)
+- **品牌更名為「AESCHY」**：
+  - 捨棄原先略顯技術導向之命名，升級為極簡大氣的精品黑標風格 **`AESCHY`**，副標題設定為簡潔有力的 `Works & Archive`。
+  - 全面注入 `white-space: nowrap` 與 `flex-shrink: 0` 佈局防線，根除桌面端詞間空格折行溢出頂欄問題。
+- **Hero 內文詩性精煉**：
+  - 核心標題設定為 `From Research to Wanderlust`。
+  - 撰寫純粹文人副標：*「研析成文，行旅作卷；當代造物，日用常行。」*。
+- **頁尾停泊列與雙軌訪客計數器**：
+  - 頁尾文案精緻化：`AESCHY • From Research to Wanderlust • Since 2026 • 2,418 Visitors`。
+  - 實作「本地持久化記憶（以 2,418 為基準累加）+ Hits.sh 即時動態訊標（綠色呼吸燈）」雙軌計數器，離線/連線皆有最佳視覺反饋。
+
+### 📱 全站與子頁面雙向原生 RWD 適配 (Native Dual-Orientation Everywhere)
+- **主展館頂部導航欄 (Hub Header)**：
+  - 手機橫屏（`max-height: 520px`）自適應切換為純 SVG 向量圖示膠囊模式，隱藏文字標籤，寬度壓縮至 480px 以內，根除爆版折行。
+  - 補齊音效開關按鈕缺失之閉合標籤。
+- **主展館 Slide 5 頁尾排版 (Footer Dock)**：
+  - 解除 Flex 預設 row 排版將 `#slot-cyb` 與頁尾左右對分的 Bug，強制改為垂直 column 排版，頁尾 100% 貼附底端。
+- **OSAKA 繪卷 (`magazine.html`)**：
+  - 頂端列直屏切換為極簡圖示膠囊（📜/📖、🎐/💮），根除文字直立折行。
+  - 橫屏採用 `100dvh` 精準控制與題頭欄內部觸控捲動（`-webkit-overflow-scrolling: touch`），杜絕上下裁切。
+  - 軸棒與導航列安全邊界（`safe-area-inset`）雙向注入，修復御朱印蓋章按鈕與里程碑圓點 44px 觸控熱區。
+- **TabiSync 助手 (`osaka/index.html`)**：
+  - 手機橫屏解鎖「雙欄駕駛艙儀表板 (Cockpit Split View)」，行程清單與地圖/詳情並列呈現。
+  - 新增天數與景點 ID 之 `localStorage` 本地記憶，旋轉或重新整理保持當前閱讀進度。
+- **賽博日常 (`cyber-routine`)**：
+  - PWA Manifest 解鎖 `orientation: any` 自由旋轉。
+  - 修復全域 `.cyber-btn` 污染，重構彈窗垂直置中（`margin: auto 0`）杜絕負座標截斷。
+  - 手機橫屏專屬 3 欄緊湊統計，補齊通關慶祝金色粒子遮罩。
+  - 微縮回航膠囊在滾動中主動保持 `.is-idle` 微縮狀態，避免遮擋卡片操作按鈕。
+- **當代收藏品藝廊 (`showcase`)**：
+  - Viewport 宣告 `viewport-fit=cover` 支援全螢幕延展。
+  - 小卡片模式重構為 `minmax(150px, 1fr)`，直屏手機恢復雙欄小卡。
+  - 橫屏矮螢幕壓縮首屏 Hero 邊距，確保首屏直接可見展品。
+  - 展品詳情 Modal 橫屏雙欄獨立捲動，關閉按鈕增大至 44px 且支援 sticky/fixed，Z-Index 提升至頂層。
+
+### 🎫 搶票機器人模擬雷達與 Ping 值重疊修復 (Ticket Pavilion HUD)
+- 將原先以絕對定位（`position: absolute; top: 14px; right: 14px;`）浮動的旋轉雷達盤，收納進 `.terminal-header` 的 `.terminal-hud-cluster` 彈性排版容器中。
+- 與綠色 Ping 值標籤並列（帶有 12px 留白與呼吸綠點），在排版物理結構上徹底杜絕任何文字與圖形重疊的可能。
+- 終端機底線 (`border-bottom`) 統一延展於雷達與 Ping 標籤下方，日誌區域獲得 100% 完整寬度，文字不再被遮擋。
+- 心跳探針每 4 秒動態更新 Ping 延遲，模擬搶票觸發瞬間降至 18ms，極致強化科技感。
+- 針對窄螢幕（<=480px）自適應縮減為 36px 並簡化為 `● 38ms`；矮螢幕縮減為 32px。
+
+### 🧹 賽博日常展館邊緣殘留 HUD 框線清除 (Cyber Pavilion Cleanup)
+- 徹底清除殘留在展館四周的 4 個絕對定位 `.hud-corner` 框線元素及其 CSS 規則，恢復純淨現代視野。
+
+---
+
 ## [2.0.0] - 2026-09-05
 
 ### 🚀 重大重構 (Major Architectural Overhaul)

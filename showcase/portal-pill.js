@@ -254,10 +254,14 @@
     startIdleCountdown();
   };
 
+  const onScroll = () => {
+    container.classList.add('is-idle');
+  };
+
   container.addEventListener('mouseenter', wakeUp);
   container.addEventListener('mouseleave', startIdleCountdown);
   container.addEventListener('touchstart', wakeUp, { passive: true });
-  window.addEventListener('scroll', wakeUp, { passive: true });
+  window.addEventListener('scroll', onScroll, { passive: true });
 
   startIdleCountdown();
 

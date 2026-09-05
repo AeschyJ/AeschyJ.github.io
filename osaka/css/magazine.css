@@ -77,17 +77,18 @@ html, body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 60px;
+  height: calc(60px + env(safe-area-inset-top, 0px));
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1.5rem;
+  padding: env(safe-area-inset-top, 0px) max(1.5rem, env(safe-area-inset-right, 0px)) 0 max(1.5rem, env(safe-area-inset-left, 0px));
   background: rgba(250, 247, 240, 0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(221, 214, 200, 0.6);
   transition: transform 0.3s ease;
+  box-sizing: border-box;
 }
 
 .brand-section {
@@ -746,7 +747,8 @@ html, body {
   flex-direction: column;
   justify-content: center;
   min-width: 0;
-  overflow: hidden;
+  overflow-y: auto;
+  max-height: 75vh;
 }
 
 /* 拍立得 2x2 或 2x3 拼貼網格 */
@@ -835,6 +837,19 @@ html, body {
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  z-index: 5;
+}
+
+/* 44px 觸控熱區擴展，避免誤點背景相片觸發燈箱 */
+.stamp-hanko-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
 }
 
 .stamp-hanko-btn.stamped {
@@ -1068,13 +1083,15 @@ html, body {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 28px;
+  height: calc(28px + env(safe-area-inset-bottom, 0px));
   background: #25221F;
   border-top: 1px solid var(--kirikane-gold);
   z-index: 90;
   display: flex;
   align-items: center;
   padding: 0 1rem;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  box-sizing: border-box;
 }
 
 .spindle-track-line {
@@ -1104,15 +1121,37 @@ html, body {
   top: -8px;
   left: 0;
   width: 100%;
-  pointer-events: none;
+  pointer-events: auto !important;
 }
 
 .milestone-dot {
+  position: relative;
   width: 6px;
   height: 6px;
   background: var(--paper-aged);
   border-radius: 50%;
   border: 1px solid var(--kirikane-gold);
+  pointer-events: auto !important;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.milestone-dot:hover {
+  transform: scale(1.6);
+  background: var(--shuin-red);
+}
+
+/* 擴充至 44px 觸控半徑，支援行動端快速點擊跳轉九卷 */
+.milestone-dot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 /* --- 7. 全螢幕宣紙水墨燈箱 (Sumi Lightbox) --- */
@@ -1354,8 +1393,8 @@ html, body {
   align-content: start;
 }
 
-/* --- 9. 手機行動端響應式 (RWD <= 960px) --- */
-@media (max-width: 960px) {
+/* --- 9. 手機行動端豎屏適配 (Portrait <= 680px) 頂端列元素防溢出 --- */
+@media (max-width: 960px) and (orientation: portrait) {
   .cover-content-box {
     flex-direction: column;
     gap: 1.5rem;
@@ -1365,7 +1404,75 @@ html, body {
   .cover-kanji-title {
     font-size: 2.4rem;
   }
+}
 
+@media (max-width: 680px) {
+  .emaki-nav-bar {
+    height: calc(52px + env(safe-area-inset-top, 0px)) !important;
+    padding: env(safe-area-inset-top, 0px) max(0.6rem, env(safe-area-inset-right, 0px)) 0 max(0.6rem, env(safe-area-inset-left, 0px)) !important;
+  }
+
+  .brand-section {
+    gap: 0.4rem !important;
+  }
+
+  .brand-hanko {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 0.88rem !important;
+  }
+
+  .brand-titles .brand-title-sub {
+    display: none !important;
+  }
+
+  .brand-titles .brand-title-main {
+    font-size: 0.85rem !important;
+    letter-spacing: 0.04em !important;
+    white-space: nowrap !important;
+  }
+
+  .view-switch-capsule {
+    padding: 2px !important;
+    gap: 2px !important;
+  }
+
+  .view-toggle-btn {
+    padding: 0.25rem 0.45rem !important;
+    font-size: 0.72rem !important;
+    white-space: nowrap !important;
+    gap: 0.2rem !important;
+  }
+
+  .view-toggle-btn .btn-text {
+    display: none !important;
+  }
+
+  .nav-actions {
+    gap: 0.35rem !important;
+  }
+
+  .btn-nav-action {
+    padding: 0.25rem 0.45rem !important;
+    font-size: 0.75rem !important;
+    white-space: nowrap !important;
+    gap: 0.2rem !important;
+  }
+
+  .btn-sound-toggle .btn-text {
+    display: none !important;
+  }
+
+  .btn-stamp-drawer .btn-text {
+    display: none !important;
+  }
+
+  .btn-stamp-drawer #stamp-count-badge {
+    margin-left: 2px;
+  }
+}
+
+@media (max-width: 960px) {
   /* 僅在縱向折本模式下垂直排列，橫向長卷維持橫向安全展開 */
   .emaki-viewport[data-mode="vertical"] .chapter-inner-wrapper {
     display: flex !important;
@@ -1381,9 +1488,276 @@ html, body {
     padding: 1rem 1.5rem !important;
   }
 
-
   .lightbox-btn-prev { left: 10px; }
   .lightbox-btn-next { right: 10px; }
+}
+
+/* --- 10. 極扁手機橫屏適配 (Landscape Cockpit <= 520px) 徹底解決內容上下裁切 --- */
+@media (orientation: landscape) and (max-height: 520px) {
+  .emaki-nav-bar {
+    height: calc(38px + env(safe-area-inset-top, 0px)) !important;
+    padding: env(safe-area-inset-top, 0px) max(0.8rem, env(safe-area-inset-right, 0px)) 0 max(0.8rem, env(safe-area-inset-left, 0px)) !important;
+  }
+
+  .brand-hanko {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .brand-titles .brand-title-sub {
+    display: none !important;
+  }
+
+  .brand-title-main {
+    font-size: 0.82rem !important;
+  }
+
+  .view-toggle-btn {
+    padding: 0.18rem 0.45rem !important;
+    font-size: 0.7rem !important;
+  }
+
+  .view-toggle-btn .btn-text {
+    display: none !important;
+  }
+
+  .btn-nav-action {
+    padding: 0.2rem 0.45rem !important;
+    font-size: 0.7rem !important;
+  }
+
+  .btn-sound-toggle .btn-text,
+  .btn-stamp-drawer .btn-text {
+    display: none !important;
+  }
+
+  .emaki-spindle-bar {
+    height: calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+  }
+
+  .emaki-viewport {
+    padding-top: calc(38px + env(safe-area-inset-top, 0px)) !important;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+    height: 100dvh !important;
+    box-sizing: border-box !important;
+  }
+
+  .emaki-cover-section {
+    padding: 2rem 1.2rem 0.8rem !important;
+    height: calc(100dvh - 62px) !important;
+    min-height: 0 !important;
+  }
+
+  .cover-content-box {
+    flex-direction: row !important;
+    gap: 1.25rem !important;
+    align-items: center !important;
+    max-height: calc(100dvh - 70px) !important;
+  }
+
+  .cover-vertical-title-col {
+    gap: 0.6rem !important;
+  }
+
+  .cover-kanji-title {
+    font-size: 1.85rem !important;
+    padding-left: 0.6rem !important;
+    border-left-width: 1.5px !important;
+  }
+
+  .cover-kanji-subtitle {
+    font-size: 0.82rem !important;
+  }
+
+  .cover-editorial-col {
+    padding: 0.75rem 1.1rem !important;
+    gap: 0.5rem !important;
+    max-height: calc(100dvh - 75px) !important;
+    overflow-y: auto !important;
+  }
+
+  .cover-issue-badge {
+    font-size: 0.62rem !important;
+    padding: 0.15rem 0.45rem !important;
+  }
+
+  .cover-lead-quote {
+    font-size: 0.84rem !important;
+    line-height: 1.45 !important;
+    padding-left: 0.5rem !important;
+  }
+
+  .cover-meta-grid {
+    display: none !important;
+  }
+
+  .cover-btn-enter {
+    margin-top: 0.25rem !important;
+    padding: 0.45rem 1.25rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* 橫向模式章節面板垂直不裁切 */
+  .emaki-viewport[data-mode="horizontal"] .emaki-chapter-panel {
+    height: calc(100dvh - 62px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) !important;
+    min-height: 0 !important;
+    padding: 4px 1.2rem !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: stretch !important;
+  }
+
+  .chapter-inner-wrapper {
+    height: 100% !important;
+    max-height: 100% !important;
+    grid-template-columns: 270px minmax(240px, 1.15fr) 260px 220px !important;
+    gap: 0.75rem !important;
+    align-items: stretch !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 題頭與說明文字支援內部捲動，永不截斷 */
+  .chapter-col-header {
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    justify-content: flex-start !important;
+    padding-right: 0.6rem !important;
+    gap: 0.35rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .chapter-kanji-vol {
+    font-size: 1.15rem !important;
+    padding-right: 0.35rem !important;
+  }
+
+  .chapter-kanji-title {
+    font-size: 1rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .chapter-quote-block {
+    font-size: 0.72rem !important;
+    line-height: 1.4 !important;
+    padding: 3px 6px !important;
+    border-left-width: 2px !important;
+  }
+
+  .chapter-summary-desc {
+    font-size: 0.7rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .chapter-pace-indicator {
+    font-size: 0.68rem !important;
+  }
+
+  .btn-open-full-album {
+    padding: 3px 8px !important;
+    font-size: 0.72rem !important;
+    margin-top: 2px !important;
+  }
+
+  /* 主視覺卡片防裁切 */
+  .chapter-col-visual {
+    height: 100% !important;
+    max-height: 100% !important;
+    justify-content: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .hero-spread-card {
+    height: 100% !important;
+    max-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  .hero-spread-img {
+    height: 100% !important;
+    max-height: 100% !important;
+    width: 100% !important;
+    object-fit: cover !important;
+    flex: 1 1 auto !important;
+  }
+
+  .hero-caption-overlay {
+    padding: 0.35rem 0.6rem !important;
+  }
+
+  .hero-caption-text {
+    font-size: 0.78rem !important;
+  }
+
+  /* 影音章節縮減高度比例 */
+  .chapter-inner-wrapper.has-video .hero-spread-card {
+    max-height: 54% !important;
+  }
+
+  .chapter-inner-wrapper.has-video .video-filmstrip-card {
+    max-height: 44% !important;
+    margin-top: 3px !important;
+    padding: 3px !important;
+  }
+
+  .chapter-inner-wrapper.has-video .video-player-element {
+    max-height: 85px !important;
+  }
+
+  /* 拍立得寫真內部捲動 */
+  .chapter-col-scrapbook {
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
+  }
+
+  .polaroid-item-wrap {
+    padding: 3px !important;
+  }
+
+  .polaroid-caption {
+    font-size: 0.65rem !important;
+    margin-top: 2px !important;
+  }
+
+  .scrapbook-bottom-nav {
+    margin-top: 2px !important;
+    padding: 2px 4px !important;
+  }
+
+  /* 時間軸卡片自適應 */
+  .chapter-col-timeline {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  .chapter-timeline-card {
+    height: 100% !important;
+    max-height: 100% !important;
+    padding: 0.4rem 0.6rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .timeline-items-list {
+    max-height: calc(100% - 28px) !important;
+    overflow-y: auto !important;
+  }
+
+  .timeline-mini-item {
+    padding: 0.2rem 0.3rem !important;
+    font-size: 0.68rem !important;
+  }
 }
 
 

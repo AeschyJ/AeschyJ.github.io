@@ -11,7 +11,8 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: var(--header-height);
+  height: calc(var(--header-height) + env(safe-area-inset-top, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
   z-index: 100;
   background: var(--bg-glass-blur);
   backdrop-filter: blur(20px);
@@ -24,12 +25,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
+  height: var(--header-height);
   gap: 16px;
   width: 100%;
   max-width: var(--max-width-content);
   margin: 0 auto;
-  padding: 0 28px;
+  padding: 0 max(20px, env(safe-area-inset-right, 20px)) 0 max(20px, env(safe-area-inset-left, 20px));
 }
 
 /* ==========================================================================
@@ -204,6 +205,8 @@ body[data-active-theme="cyb"] .brand-symbol {
   align-items: center;
   gap: 12px;
   text-decoration: none;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .brand-symbol {
@@ -217,6 +220,7 @@ body[data-active-theme="cyb"] .brand-symbol {
   border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 0 16px var(--current-glow-1);
   transition: box-shadow var(--duration-color-shift) ease, background var(--duration-color-shift) ease, border-color 0.4s ease;
+  flex-shrink: 0;
 }
 
 .brand-symbol svg {
@@ -228,6 +232,9 @@ body[data-active-theme="cyb"] .brand-symbol {
 .brand-text {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .brand-title {
@@ -236,6 +243,8 @@ body[data-active-theme="cyb"] .brand-symbol {
   letter-spacing: -0.02em;
   color: var(--text-primary);
   transition: color 0.4s ease;
+  white-space: nowrap;
+  line-height: 1.2;
 }
 
 .brand-subtitle {
@@ -244,6 +253,8 @@ body[data-active-theme="cyb"] .brand-symbol {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   transition: color 0.4s ease;
+  white-space: nowrap;
+  line-height: 1.1;
 }
 
 /* Center Navigation Links */
@@ -264,13 +275,30 @@ body[data-active-theme="cyb"] .brand-symbol {
   padding: 6px 14px;
   border-radius: var(--radius-pill);
   color: var(--text-secondary);
-  transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  stroke-width: 2;
+  transition: transform 0.2s ease, stroke 0.2s ease;
 }
 
 .nav-link:hover {
   color: var(--text-primary);
   background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-link:hover .nav-icon {
+  transform: scale(1.1);
 }
 
 .nav-link.is-active {
@@ -660,6 +688,18 @@ body[data-active-theme="cyb"] .brand-symbol {
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* 44x44px 最小觸控熱區 */
+.indicator-dot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
 .indicator-dot:hover {
   background: rgba(255, 255, 255, 0.8);
   transform: scale(1.3);
@@ -690,9 +730,11 @@ body[data-active-theme="cyb"] .brand-symbol {
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.indicator-dot:hover::after {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0);
+@media (hover: hover) and (pointer: fine) {
+  .indicator-dot:hover::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
 }
 
 /* Dynamic theme adaptations for right dock */
@@ -1063,23 +1105,78 @@ body[data-active-theme="show"] .indicator-dot.is-active {
 /* ==========================================================================
    5. Responsive RWD Adaptations
    ========================================================================== */
-@media (max-width: 900px) {
-  .header-nav {
-    display: none; /* Collapsed for compact mobile header */
-  }
-}
 
-@media (max-width: 640px) {
-  .header-inner {
-    gap: 8px;
+/* 手機橫屏專屬與中窄螢幕：切換為精美 SVG 向量圖示導航模式 (避免文字折行爆版) */
+@media (orientation: landscape) and (max-height: 520px), (max-width: 1120px) and (min-width: 681px) {
+  .header-nav {
+    display: flex !important;
+    gap: 4px;
+    padding: 3px 6px;
+  }
+  
+  .header-nav .nav-link {
+    padding: 6px 8px;
+    min-width: 34px;
+    height: 34px;
+    border-radius: var(--radius-pill);
+    justify-content: center;
+    gap: 0;
+  }
+  
+  .header-nav .nav-link .nav-text {
+    display: none !important;
+  }
+  
+  .header-nav .nav-link .nav-icon {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+  }
+  
+  .brand-subtitle {
+    display: none !important;
   }
   
   .brand-title {
     font-size: 0.95rem;
   }
   
+  .recent-jump-btn {
+    display: none !important;
+  }
+  
+  .ctrl-btn {
+    padding: 0 8px;
+    min-width: 34px;
+    height: 34px;
+    justify-content: center;
+  }
+  
+  .ctrl-btn span.btn-label {
+    display: none !important;
+  }
+  
+  .mobile-nav-toggle-btn {
+    display: none !important;
+  }
+}
+
+/* 直屏超窄螢幕 (<= 680px 且為直屏)：頂部列收合至展館導覽抽屜 */
+@media (max-width: 680px) and (orientation: portrait) {
+  .header-nav {
+    display: none !important;
+  }
+  
   .brand-subtitle {
-    display: none;
+    display: none !important;
+  }
+  
+  .brand-title {
+    font-size: 0.92rem;
+  }
+  
+  .recent-jump-btn {
+    display: none !important;
   }
   
   .ctrl-btn {
@@ -1087,7 +1184,17 @@ body[data-active-theme="show"] .indicator-dot.is-active {
   }
   
   .ctrl-btn span.btn-label {
-    display: none;
+    display: none !important;
+  }
+  
+  .mobile-nav-toggle-btn {
+    display: inline-flex !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-inner {
+    gap: 8px;
   }
   
   .pavilion-default-card {
@@ -1097,6 +1204,40 @@ body[data-active-theme="show"] .indicator-dot.is-active {
   #pavilions-container {
     gap: 60px;
   }
+}
+
+/* ==========================================================================
+   Slide 5: CYB Pavilion & Docked Footer Layout (全裝置與方向垂直全寬佈局修復)
+   ========================================================================== */
+#cyb.deck-slide {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  align-items: stretch !important;
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+}
+
+#cyb .pavilion-slot {
+  flex: 1 0 auto;
+  width: 100%;
+  min-height: calc(100dvh - 76px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+#cyb .hub-footer-docked {
+  flex-shrink: 0;
+  width: 100%;
+  position: relative;
+  margin-top: auto;
+  z-index: 10;
+  box-sizing: border-box;
 }
 
 /* ==========================================================================
@@ -1131,7 +1272,7 @@ html, body {
   position: relative;
   overflow: hidden;
   display: flex;
-  align-items: center;
+  align-items: safe center;
   justify-content: center;
 }
 
@@ -1141,9 +1282,39 @@ html, body {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: safe center;
   justify-content: center;
   position: relative;
+}
+
+/* 行動端極限矮橫屏 (Landscape: 高度 <= 520px) 解鎖自適應與自然滾動 */
+@media (orientation: landscape) and (max-height: 520px) {
+  .viewport-deck {
+    scroll-snap-type: none !important;
+  }
+  .deck-slide {
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+    display: block !important;
+  }
+  .hero-slide {
+    display: flex !important;
+    min-height: 100dvh !important;
+    height: auto !important;
+    padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 20px) !important;
+    padding-bottom: 40px !important;
+  }
+  .pavilion-slide {
+    height: auto !important;
+    min-height: 100dvh !important;
+  }
+  .pavilion-slot {
+    height: auto !important;
+    min-height: 100dvh !important;
+    display: block !important;
+  }
 }
 
 /* Slide 0: Hero Stage Styling */
@@ -1402,16 +1573,15 @@ body[data-active-theme="osk"] .indicator-dot::after {
    8. Docked Hub Footer (Inside Last Slide)
    ========================================================================== */
 .hub-footer-docked {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 12px 24px;
-  background: rgba(7, 10, 15, 0.88);
+  position: relative;
+  width: 100%;
+  padding: 16px 24px calc(16px + env(safe-area-inset-bottom, 0px));
+  background: rgba(7, 10, 15, 0.94);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-top: 1px solid rgba(0, 255, 157, 0.18);
   z-index: 10;
+  margin-top: auto;
 }
 
 .hub-footer-docked .footer-inner {
@@ -1450,9 +1620,142 @@ body[data-active-theme="osk"] .indicator-dot::after {
   color: #00ff9d;
 }
 
-@media (max-width: 640px) {
-  .hub-footer-docked {
-    position: relative;
-    padding: 16px;
+/* Visitor Counter Pill & Pulse Dot */
+.visitor-counter-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.76rem;
+  color: var(--text-primary);
+  margin-left: 4px;
+}
+
+.visitor-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00ff9d;
+  box-shadow: 0 0 8px rgba(0, 255, 157, 0.85);
+  animation: pulseVisitorDot 2.2s infinite alternate ease-in-out;
+  flex-shrink: 0;
+}
+
+@keyframes pulseVisitorDot {
+  0% { opacity: 0.45; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ==========================================================================
+   9. Mobile Quick Pavilion Popover Menu (行動端展館導覽抽屜)
+   ========================================================================== */
+.mobile-nav-toggle-btn {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .mobile-nav-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    min-height: 44px;
+    touch-action: manipulation;
   }
+}
+
+.mobile-nav-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: max(16px, env(safe-area-inset-right, 16px));
+  width: min(320px, calc(100vw - 32px));
+  background: var(--bg-surface-elevated, #161a24);
+  border: 1px solid var(--bg-glass-border, rgba(255, 255, 255, 0.12));
+  border-radius: var(--radius-md, 14px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 14px;
+  z-index: 1000;
+  display: none;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.mobile-nav-popover.is-open {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobile-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.mobile-nav-close {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mobile-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mobile-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm, 8px);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+
+.mobile-nav-item:hover, .mobile-nav-item.is-active {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--current-accent, #a855f7);
+}
+
+.mobile-nav-item .nav-badge {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--current-accent, #a855f7);
+}
+
+.mobile-nav-item .nav-title {
+  font-weight: 500;
 }

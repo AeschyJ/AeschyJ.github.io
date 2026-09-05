@@ -32,7 +32,14 @@ class EmakiMagazineApp {
     this.lightboxNextBtn = document.getElementById('btn-next-lightbox');
 
     // State
-    this.currentMode = localStorage.getItem('emaki_view_mode') || 'horizontal';
+    const savedMode = localStorage.getItem('emaki_view_mode');
+    if (savedMode && (savedMode === 'horizontal' || savedMode === 'vertical')) {
+      this.currentMode = savedMode;
+    } else {
+      // 智慧閱讀模式適配：初次進入未設定模式時，直屏預設 'vertical' (折本雜誌)，橫屏預設 'horizontal' (橫展繪卷)
+      const isPortrait = window.matchMedia && window.matchMedia('(orientation: portrait)').matches;
+      this.currentMode = isPortrait ? 'vertical' : 'horizontal';
+    }
     this.stampedPhotos = new Set(JSON.parse(localStorage.getItem('shiori_emaki_stamps') || '[]'));
     this.currentLightboxList = [];
     this.currentLightboxIndex = 0;
@@ -1008,7 +1015,9 @@ class EmakiMagazineApp {
     this.soundActive = !this.soundActive;
     if (this.soundToggleBtn) {
       this.soundToggleBtn.classList.toggle('active', this.soundActive);
-      this.soundToggleBtn.innerHTML = this.soundActive ? '<span>🎐 靜音</span>' : '<span>🎐 雅樂</span>';
+      this.soundToggleBtn.innerHTML = this.soundActive 
+        ? '<span class="btn-icon">🎐</span><span class="btn-text">靜音</span>' 
+        : '<span class="btn-icon">🎐</span><span class="btn-text">雅樂</span>';
     }
 
     if (this.soundActive) {

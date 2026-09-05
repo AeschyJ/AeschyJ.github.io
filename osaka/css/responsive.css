@@ -130,17 +130,19 @@
     flex-direction: column;
     align-items: center;
     position: absolute;
-    bottom: 12px;
-    left: 12px;
-    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    left: calc(12px + env(safe-area-inset-left, 0px));
+    right: calc(68px + env(safe-area-inset-right, 0px)); /* 底部避讓微縮回航膠囊 (portal-pill)，杜絕誤觸 */
     background: rgba(255, 255, 255, 0.94);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: 0.65rem 1rem;
     z-index: 50;
     box-shadow: var(--shadow-float);
     cursor: pointer;
+    box-sizing: border-box;
   }
 
   .sheet-pill-bar {
@@ -221,3 +223,118 @@
     height: 16px;
   }
 }
+
+/* ==========================================================================
+   橫屏雙欄駕駛艙儀表板 (Cockpit Split View - Landscape <= 500px)
+   ========================================================================== */
+@media (orientation: landscape) and (max-height: 500px) {
+  .glass-header {
+    height: calc(42px + env(safe-area-inset-top, 0px)) !important;
+    padding-top: env(safe-area-inset-top, 0px) !important;
+    padding-left: max(0.6rem, env(safe-area-inset-left, 0px)) !important;
+    padding-right: max(0.6rem, env(safe-area-inset-right, 0px)) !important;
+  }
+
+  .header-inner {
+    padding: 0 0.4rem;
+  }
+
+  .brand-main {
+    font-size: 0.92rem;
+  }
+
+  .brand-seal {
+    width: 26px;
+    height: 26px;
+  }
+
+  .brand-seal span {
+    font-size: 0.82rem;
+  }
+
+  .btn-header-tool,
+  .btn-header-nlm,
+  .btn-mobile-tools-toggle {
+    padding: 0.2rem 0.45rem;
+    height: 28px;
+    font-size: 0.72rem;
+  }
+
+  .mobile-view-tabs {
+    top: calc(42px + env(safe-area-inset-top, 0px)) !important;
+    padding: 0.2rem 0.5rem !important;
+    padding-left: max(0.5rem, env(safe-area-inset-left, 0px)) !important;
+    padding-right: max(0.5rem, env(safe-area-inset-right, 0px)) !important;
+    gap: 0.25rem !important;
+  }
+
+  .mobile-tab-btn {
+    padding: 0.25rem 0.45rem !important;
+    font-size: 0.74rem !important;
+  }
+
+  /* 啟用駕駛艙雙欄：左欄 320px~42% 行程，右欄自適應地圖/手抄 */
+  .app-workspace-3col {
+    display: grid !important;
+    grid-template-columns: minmax(320px, 42%) 1fr !important;
+    grid-template-rows: 100% !important;
+    height: calc(100vh - 78px) !important;
+    height: calc(100dvh - 42px - 34px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) !important;
+    padding-left: env(safe-area-inset-left, 0px) !important;
+    padding-right: env(safe-area-inset-right, 0px) !important;
+    overflow: hidden !important;
+  }
+
+  /* 左欄：panel-itinerary 永遠常駐呈現 */
+  .panel-itinerary {
+    display: flex !important;
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    border-right: 1px solid var(--color-border) !important;
+  }
+
+  /* 右欄：預設或地圖視角時呈現 panel-map */
+  .panel-map {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+  }
+
+  /* 右欄：名所深度手抄 panel-details (當激活時切換為右欄) */
+  .panel-details {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: none !important;
+  }
+
+  .panel-details.mobile-active-view {
+    display: flex !important;
+    z-index: 10;
+  }
+
+  /* 當 details 為 active-view 時隱藏右欄 map */
+  .app-workspace-3col.details-active .panel-map,
+  .app-workspace-3col:has(.panel-details.mobile-active-view) .panel-map {
+    display: none !important;
+  }
+
+  /* 橫屏下的地圖底部把手微調 */
+  .mobile-sheet-drag-handle {
+    bottom: calc(8px + env(safe-area-inset-bottom, 0px)) !important;
+    left: calc(8px + env(safe-area-inset-left, 0px)) !important;
+    right: calc(64px + env(safe-area-inset-right, 0px)) !important;
+    padding: 0.4rem 0.75rem !important;
+  }
+
+  .leaflet-bottom.leaflet-right {
+    margin-bottom: 48px !important;
+    margin-right: 12px !important;
+  }
+}
+

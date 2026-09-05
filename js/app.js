@@ -34,6 +34,7 @@ class PortalApp {
     this._initDeckNavigation();
     this._initKeyboardNavigation();
     this._initBackToTop();
+    this._initVisitorCounter();
     this._syncRecentBadge();
     this._syncPinnedPopover();
 
@@ -191,6 +192,47 @@ class PortalApp {
           this._scrollToPavilion(recentId);
           this._playChime(700, 'sine', 0.15, 0.05);
         }
+      });
+    }
+
+    // 5. Mobile Pavilion Quick Nav Popover
+    const mobileNavBtn = document.getElementById('btn-mobile-nav');
+    const mobileNavPopover = document.getElementById('mobile-nav-popover');
+    const mobileNavClose = document.getElementById('btn-mobile-nav-close');
+
+    if (mobileNavBtn && mobileNavPopover) {
+      mobileNavBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = mobileNavPopover.classList.toggle('is-open');
+        mobileNavBtn.classList.toggle('active', isOpen);
+        if (isOpen) {
+          this._playChime(520, 'sine', 0.12, 0.04);
+        }
+      });
+
+      mobileNavClose?.addEventListener('click', () => {
+        mobileNavPopover.classList.remove('is-open');
+        mobileNavBtn.classList.remove('active');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!mobileNavPopover.contains(e.target) && !mobileNavBtn.contains(e.target)) {
+          mobileNavPopover.classList.remove('is-open');
+          mobileNavBtn.classList.remove('active');
+        }
+      });
+
+      mobileNavPopover.querySelectorAll('.mobile-nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = item.getAttribute('data-slide-id');
+          if (targetId) {
+            this._scrollToSlide(targetId);
+            mobileNavPopover.classList.remove('is-open');
+            mobileNavBtn.classList.remove('active');
+            this._playChime(620, 'sine', 0.12, 0.04);
+          }
+        });
       });
     }
   }
@@ -366,10 +408,14 @@ class PortalApp {
       dot.classList.toggle('is-active', target === slideId);
     });
 
-    // 3. Update Header Nav links active state
+    // 3. Update Header Nav links & Mobile Nav items active state
     document.querySelectorAll('.nav-link').forEach(link => {
       const target = link.getAttribute('data-slide-id') || link.getAttribute('href')?.replace('#', '');
       link.classList.toggle('is-active', target === slideId);
+    });
+    document.querySelectorAll('.mobile-nav-item').forEach(item => {
+      const target = item.getAttribute('data-slide-id');
+      item.classList.toggle('is-active', target === slideId);
     });
 
     // 4. Update browser URL hash cleanly without page jump
@@ -412,7 +458,7 @@ class PortalApp {
     window.addEventListener('keydown', (e) => {
       // Don't intercept if user is inside an input, textarea or modal
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) return;
-      if (document.querySelector('.pavilion-exp-modal.is-open')) return;
+      if (document.querySelector('.pavilion-exp-modal.is-open') || document.querySelector('.pavilion-tic-modal-backdrop.is-open')) return;
 
       const currentIndex = slideIds.indexOf(this._currentActivePavilionId || 'hero');
       if (currentIndex === -1) return;
@@ -456,6 +502,39 @@ class PortalApp {
       this._scrollToSlide('hero');
       this._playChime(600, 'sine', 0.12, 0.04);
     });
+  }
+
+  /**
+   * Setup Footer Visitor Counter (Non-blocking, Offline-safe & Hits.sh live beacon)
+   */
+  _initVisitorCounter() {
+    const countEl = document.getElementById('visitor-count');
+    if (!countEl) return;
+
+    const STORAGE_KEY = 'aeschy_visitor_count';
+    const SESSION_KEY = 'aeschy_session_counted';
+    const BASE_OFFSET = 2418;
+
+    let currentCount = parseInt(localStorage.getItem(STORAGE_KEY), 10);
+    if (isNaN(currentCount) || currentCount < BASE_OFFSET) {
+      currentCount = BASE_OFFSET;
+    }
+
+    if (!sessionStorage.getItem(SESSION_KEY)) {
+      currentCount += 1;
+      localStorage.setItem(STORAGE_KEY, currentCount.toString());
+      sessionStorage.setItem(SESSION_KEY, '1');
+    }
+
+    countEl.textContent = currentCount.toLocaleString('en-US');
+
+    // Trigger Hits.sh live count beacon for GitHub Pages asynchronously
+    try {
+      const beacon = new Image();
+      beacon.src = `https://hits.sh/aeschyj.github.io.svg?view=today-total&ts=${Date.now()}`;
+    } catch {
+      // Graceful offline fallback
+    }
   }
 
   /**

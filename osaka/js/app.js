@@ -10,7 +10,21 @@ document.addEventListener('DOMContentLoaded', () => {
     tripData = window.DEFAULT_TRIP_DATA || { days: [] };
   }
   let currentDayIndex = 1;
+  try {
+    const savedDay = localStorage.getItem('tabisync_current_day');
+    if (savedDay) {
+      const pDay = parseInt(savedDay, 10);
+      if (!isNaN(pDay) && tripData.days.some(d => d.dayIndex === pDay)) {
+        currentDayIndex = pDay;
+      }
+    }
+  } catch (e) {}
+
   let activeSpotId = null;
+  try {
+    activeSpotId = localStorage.getItem('tabisync_active_spot') || null;
+  } catch (e) {}
+
   let currentSpeechRate = 0.9;
   let currencyRate = tripData.currencyConfig ? tripData.currencyConfig.exchangeRate : 0.215;
 
@@ -154,6 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function switchActiveDay(dayIndex) {
     if (!dayIndex) return;
     currentDayIndex = dayIndex;
+    try {
+      localStorage.setItem('tabisync_current_day', dayIndex.toString());
+    } catch (e) {}
     renderDaysPills();
     renderActiveDay();
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
@@ -374,10 +391,12 @@ document.addEventListener('DOMContentLoaded', () => {
       mapManager.renderDaySpots(day.spots || [], day.mapCenter, day.mapZoom || 13);
     }
 
-    // 4. Right Panel: Select first scheduled spot by default
-    const firstSpot = (day.spots || []).find(s => s.isScheduled) || (day.spots || [])[0];
-    if (firstSpot) {
-      onSpotSelected(firstSpot.id, true);
+    // 4. Right Panel: Select remembered active spot or first scheduled spot
+    const targetSpot = (day.spots || []).find(s => s.id === activeSpotId) ||
+                       (day.spots || []).find(s => s.isScheduled) ||
+                       (day.spots || [])[0];
+    if (targetSpot) {
+      onSpotSelected(targetSpot.id, true);
     } else {
       renderEmptySpotGuide();
     }
@@ -519,6 +538,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function onSpotSelected(spotId, panMap = true) {
     activeSpotId = spotId;
+    try {
+      if (spotId) {
+        localStorage.setItem('tabisync_active_spot', spotId);
+      }
+    } catch (e) {}
     
     document.querySelectorAll('.itinerary-card').forEach(card => {
       if (card.getAttribute('data-spot-id') === spotId) {
@@ -865,6 +889,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    const workspace = document.getElementById('app-workspace-3col');
+    if (workspace) {
+      if (viewName === 'details') {
+        workspace.classList.add('details-active');
+      } else {
+        workspace.classList.remove('details-active');
+      }
+    }
+
     if (panelItinerary) panelItinerary.classList.remove('mobile-active-view');
     if (panelMap) panelMap.classList.remove('mobile-active-view');
     if (panelDetails) panelDetails.classList.remove('mobile-active-view');
@@ -889,6 +922,21 @@ document.addEventListener('DOMContentLoaded', () => {
       setMobileView('details');
     });
   }
+
+  // 旋轉與視窗尺寸變化監聽：自動刷新地圖渲染引擎
+  window.addEventListener('resize', () => {
+    if (mapManager && mapManager.invalidate) {
+      mapManager.invalidate();
+    }
+  });
+
+  window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+      if (mapManager && mapManager.invalidate) {
+        mapManager.invalidate();
+      }
+    }, 250);
+  });
 
   // --- STAFF FULLSCREEN MODAL ---
   function openStaffModal(jp, zh) {

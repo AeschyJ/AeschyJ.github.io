@@ -78,12 +78,24 @@ export const ticketPavilion = {
 
             <!-- Right Live Radar & Terminal Screen -->
             <div class="ticket-radar-terminal-box">
-              <div class="radar-mini-dish" aria-hidden="true">
-                <div class="radar-cross-v"></div>
-              </div>
               <div class="terminal-header">
-                <span class="terminal-title">TERMINAL // SURVEILLANCE FEED</span>
-                <span class="terminal-meta-ping">PING: 38ms</span>
+                <div class="terminal-title-group">
+                  <span class="terminal-status-dot" aria-hidden="true"></span>
+                  <span class="terminal-title">TERMINAL // SURVEILLANCE FEED</span>
+                </div>
+                <div class="terminal-hud-cluster">
+                  <span class="terminal-meta-ping" id="terminal-meta-ping">
+                    <span class="ping-pulse-dot" aria-hidden="true"></span>
+                    <span class="ping-label">PING:</span>
+                    <span class="ping-val" id="terminal-ping-val">38ms</span>
+                  </span>
+                  <div class="radar-mini-dish" aria-hidden="true" title="Air-Traffic Radar Surveillance Active">
+                    <div class="radar-sweep-beam"></div>
+                    <div class="radar-cross-v"></div>
+                    <div class="radar-cross-h"></div>
+                    <div class="radar-blip"></div>
+                  </div>
+                </div>
               </div>
               <div class="ticket-log-stream" id="ticket-log-terminal">
                 <div class="log-entry">
@@ -240,6 +252,9 @@ export const ticketPavilion = {
       const pings = [32, 36, 40, 38, 42];
       const ping = pings[Math.floor(Math.random() * pings.length)];
       
+      const pingValEl = this._slot ? this._slot.querySelector('#terminal-ping-val') : null;
+      if (pingValEl) pingValEl.textContent = `${ping}ms`;
+
       const logEntry = document.createElement('div');
       logEntry.className = 'log-entry';
       logEntry.innerHTML = `
@@ -323,6 +338,9 @@ export const ticketPavilion = {
     if (this._isSniping) return;
     this._isSniping = true;
     if (!this._snipeTimers) this._snipeTimers = [];
+
+    const pingValEl = this._slot ? this._slot.querySelector('#terminal-ping-val') : null;
+    if (pingValEl) pingValEl.textContent = '18ms';
 
     const logs = [
       { msg: '🚨 [ALERT] TARGET SEATS RELEASED: STAGE-A VIP ROW-01!', type: 'log-msg-amber', delay: 100 },

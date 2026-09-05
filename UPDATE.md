@@ -201,4 +201,38 @@ Github Page/
 
 ---
 
-*© 2026 AeschyJ. All rights reserved.*
+## 七、 v2.1 版本更新：雙向原生 RWD 與品牌躍升 (v2.1.0 Release)
+
+> **當前版本**：v2.1.0 (Dual-Orientation Native RWD & Brand Evolution)  
+> **更新日期**：2026 年 9 月 5 日  
+> **更新主旨**：品牌升級為 AESCHY、詩性文人內文、雙軌訪客計數器、主頁與 3 大子應用直/橫屏原生自由適配、搶票機器人模擬雷達 HUD 排版重構。
+
+### 7.1 品牌躍升與視覺哲思 (AESCHY)
+* **品牌命名升級**：由原技術導向名稱升華為當代精品黑標風格 **`AESCHY`**，副標為 `Works & Archive`。
+* **桌面端防折行鎖定**：全面注入 `white-space: nowrap` 與 `flex-shrink: 0`，根除寬螢幕斷行爆版。
+* **詩性 Hero 內文**：主標 `From Research to Wanderlust`，副標 *「研析成文，行旅作卷；當代造物，日用常行。」*。
+* **頁尾雙軌訪客計數器**：停泊列文案升級為 `AESCHY • From Research to Wanderlust • Since 2026 • 2,418 Visitors`，內建「localStorage 本地持久化記憶」與「Hits.sh 即時動態訊標（呼吸綠燈）」無伺服器雙軌架構。
+
+### 7.2 全站與子專案原生 RWD 適配
+* **主展館頂部導航欄**：手機橫屏（<=520px）自適應切換為純 SVG 向量圖示膠囊模式，寬度劇降至 <500px，排版從容單行。
+* **主展館 Slide 5 頁尾**：解除 Flex row 左右對分 Bug，強制作為垂直欄位確保貼附底端。
+* **OSAKA 繪卷 (`magazine.html`)**：
+  * 直屏頂欄切換為極簡圖示膠囊（📜/📖、🎐/💮）。
+  * 橫屏採用 100dvh 邊界控制與題頭欄內部觸控捲動，根除上下裁切。
+  * 軸棒避讓 safe-area-inset-bottom，修復印章按鈕與里程碑圓點 44px 觸控熱區。
+* **TabiSync 助手 (`osaka/index.html`)**：手機橫屏啟用「雙欄駕駛艙 (Cockpit Split View)」，支援天數與景點 localStorage 記憶。
+* **賽博日常 (`cyber-routine`)**：解鎖 PWA `orientation: any`，修復按鈕污染、彈窗負座標截斷與 3 欄緊湊統計。
+* **當代藝廊 (`showcase`)**：小卡片恢復直屏雙欄，橫屏壓縮首屏邊距，Modal 雙欄獨立捲動。
+
+### 7.3 搶票機器人模擬雷達 HUD 排版重構 (Ticket Pavilion HUD)
+* 將原先以絕對定位浮動的旋轉雷達盤收納進頂部標題列的 `.terminal-hud-cluster` 彈性容器中，與綠色 Ping 值標籤並列。
+* 物理隔絕排版碰撞，底線統一延展於下方，日誌區域獲取 100% 完整寬度。
+* 心跳探針每 4 秒動態更新 Ping 延遲，模擬搶票觸發瞬間降至 18ms，極致強化科技感。
+* 手機窄屏（<=480px）雷達縮減至 36px 並簡化為 `● 38ms`；矮螢幕縮減至 32px。
+
+### 7.4 賽博日常展館邊緣殘留 HUD 框線清除
+* 徹底清除殘留在展館四周的 4 個絕對定位 `.hud-corner` 框線元素及其 CSS 規則。
+
+---
+
+*© 2026 AESCHY. All rights reserved.*

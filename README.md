@@ -1,14 +1,17 @@
-# 🏛️ AeschyJ Hub — 中央多專案主題展覽館
+# 🏛️ AESCHY — Works & Archive (中央多專案主題展覽館)
 
 [![GitHub Pages Deployment](https://img.shields.io/badge/Deploy-GitHub%20Pages-10b981?logo=github&logoColor=white)](https://aeschyj.github.io/)
-[![Version](https://img.shields.io/badge/Version-v2.0.0-f59e0b)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v2.1.0-f59e0b)](CHANGELOG.md)
 [![PWA Ready](https://img.shields.io/badge/PWA-100%25%20Offline-00ff9d?logo=pwa&logoColor=black)](https://aeschyj.github.io/manifest.json)
 [![License](https://img.shields.io/badge/License-MIT-38bdf8)](LICENSE)
 [![Built with Modern Web](https://img.shields.io/badge/Stack-ES%20Modules%20%7C%20Web%20Audio%20%7C%20HTML5%20Canvas-a855f7)](https://aeschyj.github.io/)
 
-歡迎來到 **AeschyJ Hub**！本儲存庫為個人作品集與多 Web 應用的公開發布託管站點（`https://aeschyj.github.io`）。
+歡迎來到 **AESCHY**！本儲存庫為個人作品集與多 Web 應用的公開發布託管站點（`https://aeschyj.github.io`）。
 
-全站採用 **100vw × 100dvh 整面無外框畫布（Full-Bleed Canvas Deck）** 與 **全域氛圍即時連動機制（Dynamic Atmosphere Linkage）**，支援原生 `scroll-snap` 滑一次精準切換一個專案。在單一頂級網域下集中託管多個獨立應用，並為非前端網頁專案（後端自動化機器人、學術 AI 科研）提供高擬真的沉浸式沙盒展示。
+> *「研析成文，行旅作卷；當代造物，日用常行。」*  
+> *AESCHY • From Research to Wanderlust • Since 2026*
+
+全站採用 **100vw × 100dvh 整面無外框畫布（Full-Bleed Canvas Deck）** 與 **全域氛圍即時連動機制（Dynamic Atmosphere Linkage）**，支援原生 `scroll-snap` 滑一次精準切換一個專案。在單一頂級網域下集中託管多個獨立應用，並全面支援**直屏 (Portrait) 與橫屏 (Landscape) 原生自由適配**，為非前端網頁專案（後端自動化機器人、學術 AI 科研）提供高擬真的沉浸式沙盒展示。
 
 ---
 
@@ -18,16 +21,33 @@
 
 | 展館代號 | 專案名稱 | 主題視覺與色溫 | 核心特色與微互動 | 跳轉路徑 / 展示方式 |
 | :---: | :--- | :--- | :--- | :--- |
-| **Hero** | **門戶星雲大廳** | 深太空黑 `#08090d`<br/>天青藍 `#38bdf8` | 全站 PWA、最近造訪快速通道、釘選抽屜、Web Audio 微頻合成音 | 滑動即吸附切換 |
+| **Hero** | **門戶星雲大廳** | 深太空黑 `#08090d`<br/>天青藍 `#38bdf8` | 全站 PWA、最近造訪快速通道、釘選抽屜、Web Audio 微頻合成音、雙軌即時訪客計數器 | 滑動即吸附切換 |
 | **`exp`** | **Experiment**<br/>(科研實驗室) | 神經元量子紫 `#a855f7`<br/>冰霜銀白 `#e2e8f0` | 幾何拓撲座標網格、LaTeX 公式浮水印、**部分忠實度剖析（Partial Fidelity）**、**Strong Baseline 對比長條圖** | 彈出研究論文架構白皮書 |
 | **`osk`** | **Osaka Trip**<br/>(夏之栞・名阪行旅手帖) | 鳥之子紙淡黃 `#FAF8F2`<br/>薄櫻粉 `#F4A7B9`<br/>松煙墨 `#1A1715` | 越前和紙長纖維噪點、**三欄橫向對開手帳**、**手作和紙拍立得相片拼貼框**、**關西三景切換膠囊**、**御朱印互動蓋章 (音效+落款動畫)** | **雙入口**：<br/>⛩️ [TabiSync 助手](./osaka/)<br/>📜 [夏之栞繪卷](./osaka/magazine.html) |
 | **`show`**| **Showcase**<br/>(當代收藏品藝廊) | 黑曜微晶琉璃 `#0B0C10`<br/>**香檳流金 `#DFBA73` / `#C5A059`** | 雙層 80px 藍圖工程網格 (Blueprint Grid)、**HTML5 Canvas 隨機格線流金脈衝引擎**、**3D 視差陀螺儀卡片** | 進入應用 ➔ [`./showcase/`](./showcase/) |
-| **`tic`** | **Ticket Bot**<br/>(雷達票務獵手) | 航管琥珀橘 `#f59e0b`<br/>暗夜黑 `#0a0b0e` | CRT 掃描線、LED 狀態燈、**模擬搶票毫秒日誌串流瀑布**、Webhook 模擬推播、全螢幕無框畫布鋪展 | 彈出系統架構白皮書 |
+| **`tic`** | **Ticket Bot**<br/>(雷達票務獵手) | 航管琥珀橘 `#f59e0b`<br/>暗夜黑 `#0a0b0e` | CRT 掃描線、**整合式 HUD 擬真旋轉雷達盤**、**即時動態延遲聯動 (38ms~18ms)**、LED 狀態燈、模擬搶票毫秒日誌串流瀑布 | 彈出系統架構白皮書 |
 | **`cyb`** | **Cyber-Routine**<br/>(賽博日常儀表板) | 霓虹螢光綠 `#00ff9d`<br/>終端黑 `#0a0e14` | CRT 終端打字機、**連擊充能 (+1)**、Canvas 2D 金色粒子爆破、8-bit 雙方波金幣音效、全螢幕無框畫布鋪展 | 進入應用 ➔ [`./cyber-routine/`](./cyber-routine/) |
 
 ---
 
-## ⚡ v2.0 重大升級亮點
+## ⚡ v2.1 升級亮點 (Dual-Orientation RWD & Brand Evolution)
+
+1. **品牌躍升與極簡視覺重構 (Brand Evolution to AESCHY)**：
+   - 品牌名稱全面更名為 **`AESCHY`**，副標題設定為簡潔有力的 `Works & Archive`。
+   - 首頁 Hero 文案精煉為詩性筆觸 *「研析成文，行旅作卷；當代造物，日用常行。」*。
+   - 停泊頁尾重構為 `AESCHY • From Research to Wanderlust • Since 2026 • 2,418 Visitors`，內建前端基準記憶 + Hits.sh 即時動態訊標雙軌計數器。
+2. **全站與子頁面直屏與橫屏原生 RWD 自由適配**：
+   - **主頁頂端列**：手機橫屏自適應切換為純 SVG 向量圖示膠囊模式，寬度劇降至 <500px，杜絕文字立體折行。
+   - **主頁 Slide 5 頁尾排版**：解除 Flex row 左右對分問題，強制作為垂直欄位確保全螢幕 100% 貼附底端。
+   - **OSAKA 繪卷 (`magazine.html`)**：直屏頂欄切換為極簡圖示膠囊（📜/📖、🎐/💮）；橫屏採用 100dvh 邊界精準控制與題頭欄內部觸控捲動，根除上下截斷。
+   - **TabiSync 助手 (`osaka/index.html`)**：手機橫屏解鎖「雙欄駕駛艙儀表板 (Cockpit Split View)」，天數與景點進度支援 `localStorage` 本地記憶。
+   - **賽博日常 (`cyber-routine`)**：解鎖 PWA `orientation: any` 旋轉自由，修復全域按鈕污染、彈窗負座標截斷與 3 欄緊湊統計。
+   - **當代藝廊 (`showcase`)**：支援 `viewport-fit=cover` 全屏延展，小卡片恢復直屏雙欄，橫屏壓縮首屏邊距直接看見展品，詳情 Modal 橫屏雙欄獨立捲動。
+3. **搶票機器人模擬雷達與 Ping 值重疊修復 (Ticket Pavilion HUD)**：
+   - 將旋轉雷達盤收納進頂部標題列的 `.terminal-hud-cluster` 彈性排版容器中，與綠色 Ping 值膠囊並列，徹底杜絕絕對定位造成的座標重疊。
+   - 心跳探針每 4 秒動態更新 Ping 延遲，模擬搶票觸發時瞬間降至極限 18ms，極致強化科技感。
+4. **賽博日常展館邊緣殘留 HUD 框線清除**：
+   - 徹底清除殘留在展館四周的 4 個絕對定位 `.hud-corner` 框線元素，恢復純淨現代視野。
 
 1. **整面無外框畫布（Full-Bleed Canvas Deck）**：
    - 告別舊版容器卡片瀑布流，各展館全尺寸鋪展至 100vw × 100dvh。

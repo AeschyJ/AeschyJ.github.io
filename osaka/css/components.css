@@ -2204,7 +2204,8 @@ body.journal-mode-active .journal-header-element {
   border: 2px solid #D8CBB2;
   width: 100%;
   max-width: 580px;
-  max-height: 85vh;
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -2310,6 +2311,10 @@ body.journal-mode-active .journal-header-element {
   border: 3px solid #D5C29E;
   max-width: 520px;
   width: 100%;
+  max-height: min(90vh, 480px);
+  max-height: min(90dvh, 480px);
+  overflow-y: auto;
+  box-sizing: border-box;
   padding: 2.25rem 1.75rem;
   text-align: center;
   box-shadow: 
@@ -2359,6 +2364,31 @@ body.journal-mode-active .journal-header-element {
   border-radius: var(--radius-full);
   cursor: pointer;
   width: 100%;
+}
+
+@media (max-height: 500px) {
+  .staff-modal-content {
+    padding: 1rem 1.25rem;
+    max-height: calc(100dvh - 24px);
+  }
+  .staff-modal-label {
+    margin-bottom: 0.35rem;
+    font-size: 0.72rem;
+  }
+  .staff-modal-jp {
+    font-size: 1.22rem;
+    padding: 0.55rem;
+    margin-bottom: 0.55rem;
+    line-height: 1.35;
+  }
+  .staff-modal-zh {
+    font-size: 0.82rem;
+    margin-bottom: 0.75rem;
+  }
+  .btn-close-modal {
+    padding: 0.5rem 1.5rem;
+    font-size: 0.85rem;
+  }
 }
 
 /* 9. Toast Notification */

@@ -254,10 +254,21 @@
     startIdleCountdown();
   };
 
+  let scrollIdleTimer = null;
+  const onScroll = () => {
+    // 滾動中主動維持 .is-idle，避免使用者滾動時膠囊自動展開遮擋卡片操作按鈕
+    container.classList.add('is-idle');
+    clearTimeout(idleTimer);
+    clearTimeout(scrollIdleTimer);
+    scrollIdleTimer = setTimeout(() => {
+      startIdleCountdown();
+    }, 1200);
+  };
+
   container.addEventListener('mouseenter', wakeUp);
   container.addEventListener('mouseleave', startIdleCountdown);
   container.addEventListener('touchstart', wakeUp, { passive: true });
-  window.addEventListener('scroll', wakeUp, { passive: true });
+  window.addEventListener('scroll', onScroll, { passive: true });
 
   startIdleCountdown();
 
