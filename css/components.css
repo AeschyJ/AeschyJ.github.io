@@ -17,7 +17,7 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--bg-glass-border);
-  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  transition: background 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s ease, box-shadow 0.5s ease, transform 0.3s ease;
 }
 
 .header-inner {
@@ -26,6 +26,176 @@
   justify-content: space-between;
   height: 100%;
   gap: 16px;
+  width: 100%;
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* ==========================================================================
+   Dynamic Header & Atmosphere Linkage (全域頂部欄動態風格連動系統)
+   ========================================================================== */
+
+/* 1. 日本館 (Osaka) 連動：越前和紙生成色、松煙墨、朱泥落款印、薄櫻粉高光 */
+body[data-active-theme="osk"] .hub-header {
+  background: rgba(250, 248, 242, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(225, 82, 109, 0.22);
+  box-shadow: 0 4px 20px rgba(85, 78, 70, 0.08);
+}
+
+body[data-active-theme="osk"] .brand-title {
+  color: #1F1C19;
+  font-family: var(--font-mincho);
+  letter-spacing: 0.04em;
+}
+
+body[data-active-theme="osk"] .brand-subtitle {
+  color: #8F8578;
+}
+
+body[data-active-theme="osk"] .brand-symbol {
+  background: #C53D2A; /* 朱泥正紅印 */
+  border-color: #A32F1E;
+  box-shadow: 0 2px 12px rgba(197, 61, 42, 0.35);
+}
+
+body[data-active-theme="osk"] .header-nav {
+  background: rgba(239, 231, 213, 0.65);
+  border: 1px solid rgba(225, 82, 109, 0.2);
+}
+
+body[data-active-theme="osk"] .nav-link {
+  color: #554E46;
+}
+
+body[data-active-theme="osk"] .nav-link:hover {
+  color: #1F1C19;
+  background: rgba(245, 163, 179, 0.25);
+}
+
+body[data-active-theme="osk"] .nav-link.is-active {
+  color: #C53D2A;
+  background: #FFFFFF;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(85, 78, 70, 0.12);
+}
+
+body[data-active-theme="osk"] .ctrl-btn,
+body[data-active-theme="osk"] .recent-jump-btn {
+  background: rgba(239, 231, 213, 0.7);
+  border-color: rgba(225, 82, 109, 0.2);
+  color: #554E46;
+}
+
+body[data-active-theme="osk"] .ctrl-btn:hover,
+body[data-active-theme="osk"] .recent-jump-btn:hover {
+  color: #1F1C19;
+  background: #FFFFFF;
+  border-color: #F4A7B9;
+}
+
+body[data-active-theme="osk"] .ctrl-btn.active {
+  color: #C53D2A;
+  border-color: #C53D2A;
+  background: rgba(197, 61, 42, 0.1);
+}
+
+/* 2. Showcase (當代藏品) 連動：黑曜微晶琉璃、香檳流金高光、奢華襯線字 */
+body[data-active-theme="show"] .hub-header {
+  background: rgba(11, 12, 16, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(197, 160, 89, 0.38);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(197, 160, 89, 0.18);
+}
+
+body[data-active-theme="show"] .brand-title {
+  color: #F3F4F6;
+  font-family: var(--font-serif-luxury);
+  letter-spacing: 0.05em;
+}
+
+body[data-active-theme="show"] .brand-subtitle {
+  color: var(--color-show-gold-light);
+}
+
+body[data-active-theme="show"] .brand-symbol {
+  background: linear-gradient(135deg, #C5A059 0%, #1c2330 100%);
+  border-color: rgba(197, 160, 89, 0.5);
+  box-shadow: 0 0 16px rgba(197, 160, 89, 0.45);
+}
+
+body[data-active-theme="show"] .header-nav {
+  background: rgba(20, 24, 33, 0.75);
+  border: 1px solid rgba(197, 160, 89, 0.25);
+}
+
+body[data-active-theme="show"] .nav-link {
+  color: #9CA3AF;
+}
+
+body[data-active-theme="show"] .nav-link:hover {
+  color: #F3F4F6;
+  background: rgba(197, 160, 89, 0.15);
+}
+
+body[data-active-theme="show"] .nav-link.is-active {
+  color: #FFFFFF;
+  background: rgba(197, 160, 89, 0.32);
+  border: 1px solid rgba(197, 160, 89, 0.5);
+  box-shadow: 0 0 12px rgba(197, 160, 89, 0.4);
+}
+
+body[data-active-theme="show"] .ctrl-btn,
+body[data-active-theme="show"] .recent-jump-btn {
+  background: rgba(20, 24, 33, 0.65);
+  border-color: rgba(197, 160, 89, 0.28);
+  color: #D1D5DB;
+}
+
+body[data-active-theme="show"] .ctrl-btn:hover,
+body[data-active-theme="show"] .recent-jump-btn:hover {
+  color: #FFFFFF;
+  background: rgba(197, 160, 89, 0.18);
+  border-color: #C5A059;
+}
+
+body[data-active-theme="show"] .ctrl-btn.active {
+  color: #C5A059;
+  border-color: #C5A059;
+  box-shadow: 0 0 10px rgba(197, 160, 89, 0.35);
+}
+
+/* 3. EXP (量子科研 / 臺大碩論) 連動：深空紫光、學術精度細線 */
+body[data-active-theme="exp"] .hub-header {
+  border-bottom: 1px solid rgba(168, 85, 247, 0.32);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(168, 85, 247, 0.18);
+}
+body[data-active-theme="exp"] .brand-symbol {
+  background: linear-gradient(135deg, #a855f7 0%, #3b0764 100%);
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.45);
+}
+
+/* 4. TIC (航管雷達) 連動：戰術琥珀橘 */
+body[data-active-theme="tic"] .hub-header {
+  border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(245, 158, 11, 0.15);
+}
+body[data-active-theme="tic"] .brand-symbol {
+  background: linear-gradient(135deg, #f59e0b 0%, #78350f 100%);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.45);
+}
+
+/* 5. CYB (賽博習慣) 連動：螢光矩陣綠 */
+body[data-active-theme="cyb"] .hub-header {
+  border-bottom: 1px solid rgba(0, 255, 157, 0.3);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 157, 0.15);
+}
+body[data-active-theme="cyb"] .brand-symbol {
+  background: linear-gradient(135deg, #00ff9d 0%, #064e3b 100%);
+  box-shadow: 0 0 16px rgba(0, 255, 157, 0.45);
 }
 
 /* Brand Identity */
@@ -46,7 +216,7 @@
   justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 0 16px var(--current-glow-1);
-  transition: box-shadow var(--duration-color-shift) ease, background var(--duration-color-shift) ease;
+  transition: box-shadow var(--duration-color-shift) ease, background var(--duration-color-shift) ease, border-color 0.4s ease;
 }
 
 .brand-symbol svg {
@@ -65,6 +235,7 @@
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary);
+  transition: color 0.4s ease;
 }
 
 .brand-subtitle {
@@ -72,6 +243,7 @@
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  transition: color 0.4s ease;
 }
 
 /* Center Navigation Links */
@@ -83,6 +255,7 @@
   padding: 4px 6px;
   border-radius: var(--radius-pill);
   border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.4s ease;
 }
 
 .nav-link {
@@ -91,7 +264,7 @@
   padding: 6px 14px;
   border-radius: var(--radius-pill);
   color: var(--text-secondary);
-  transition: color 0.2s ease, background 0.2s ease;
+  transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
   position: relative;
 }
 
@@ -401,25 +574,213 @@
 
 
 /* ==========================================================================
-   3. Pavilions Container & Default Universal Skeleton Cards
+   3. Viewport Deck & Full-Bleed Snap Slide Architecture (整面滿版吸附引擎)
    ========================================================================== */
-#pavilions-container {
+.viewport-deck {
+  width: 100vw;
+  height: 100dvh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
   position: relative;
   z-index: 10;
-  display: flex;
-  flex-direction: column;
-  gap: 120px;
-  padding-bottom: 120px;
+  /* Hide standard scrollbars for a clean presentation deck */
+  scrollbar-width: none;
+}
+.viewport-deck::-webkit-scrollbar {
+  display: none;
 }
 
-.pavilion-section {
+.deck-slide {
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
   position: relative;
-  scroll-margin-top: calc(var(--header-height) + 20px);
-  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.hero-slide {
+  padding-top: var(--header-height);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.pavilion-slide {
+  width: 100vw;
+  height: 100dvh;
 }
 
 .pavilion-slot {
   width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Right Floating Viewport Indicator Dock */
+.viewport-indicator-dock {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 8px;
+  background: rgba(14, 17, 24, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-pill);
+  transition: all 0.4s ease;
+}
+
+.indicator-dot {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.indicator-dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: scale(1.3);
+}
+
+.indicator-dot.is-active {
+  background: var(--current-accent, #a855f7);
+  box-shadow: 0 0 12px var(--current-accent, #a855f7);
+  transform: scale(1.35);
+}
+
+.indicator-dot::after {
+  content: attr(data-label);
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%) translateX(8px);
+  padding: 4px 10px;
+  background: rgba(10, 12, 18, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.indicator-dot:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* Dynamic theme adaptations for right dock */
+body[data-active-theme="osk"] .viewport-indicator-dock {
+  background: rgba(250, 248, 242, 0.85);
+  border-color: rgba(225, 82, 109, 0.25);
+  box-shadow: 0 4px 16px rgba(85, 78, 70, 0.1);
+}
+body[data-active-theme="osk"] .indicator-dot {
+  background: rgba(85, 78, 70, 0.25);
+  border-color: rgba(85, 78, 70, 0.2);
+}
+body[data-active-theme="osk"] .indicator-dot.is-active {
+  background: #C53D2A;
+  box-shadow: 0 0 10px rgba(197, 61, 42, 0.5);
+}
+body[data-active-theme="osk"] .indicator-dot::after {
+  background: #FAF8F2;
+  border-color: #F4A7B9;
+  color: #1F1C19;
+}
+
+body[data-active-theme="show"] .viewport-indicator-dock {
+  background: rgba(11, 12, 16, 0.8);
+  border-color: rgba(197, 160, 89, 0.35);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+body[data-active-theme="show"] .indicator-dot {
+  background: rgba(197, 160, 89, 0.25);
+  border-color: rgba(197, 160, 89, 0.2);
+}
+body[data-active-theme="show"] .indicator-dot.is-active {
+  background: #C5A059;
+  box-shadow: 0 0 14px rgba(197, 160, 89, 0.65);
+}
+
+/* Docked Footer */
+.hub-footer-docked {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 12px 32px;
+  background: rgba(8, 9, 13, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 20;
+}
+.hub-footer-docked .footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.hub-footer-docked .footer-nav-links {
+  display: flex;
+  gap: 16px;
+}
+.hub-footer-docked .footer-nav-links a:hover {
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .viewport-indicator-dock {
+    right: 8px;
+    padding: 8px 4px;
+    gap: 8px;
+  }
+  .indicator-dot {
+    width: 8px;
+    height: 8px;
+  }
+  .indicator-dot::after {
+    display: none;
+  }
+  .hub-footer-docked {
+    padding: 10px 16px;
+  }
+  .hub-footer-docked .footer-inner {
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+  }
 }
 
 /* Universal Fallback Skeleton Card */
@@ -735,5 +1096,363 @@
   
   #pavilions-container {
     gap: 60px;
+  }
+}
+
+/* ==========================================================================
+   6. 100dvh Full-Bleed Viewport Deck (One Project per Viewport)
+   ========================================================================== */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Main page scrolling handled entirely by #viewport-deck */
+}
+
+.viewport-deck {
+  width: 100vw;
+  height: 100dvh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  z-index: 1;
+}
+
+/* Individual Full-Screen Deck Slide */
+.deck-slide {
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100dvh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Slide Content Slot */
+.slide-slot,
+.pavilion-slot {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Slide 0: Hero Stage Styling */
+.hero-slide {
+  background: radial-gradient(circle at 50% 40%, rgba(56, 189, 248, 0.1) 0%, rgba(8, 9, 13, 0.95) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-slide .hero-inner {
+  max-width: 880px;
+  padding: clamp(60px, 10vh, 100px) 24px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.hero-slide .hero-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+  text-transform: uppercase;
+}
+
+.hero-slide .hero-title {
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  background: linear-gradient(135deg, #FFFFFF 30%, #94A3B8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+
+.hero-slide .hero-subtitle {
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  line-height: 1.7;
+  color: #94A3B8;
+  max-width: 680px;
+  margin: 0;
+}
+
+.hero-slide .hero-cta-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.hero-slide .hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.hero-slide .hero-btn-primary {
+  background: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4);
+}
+
+.hero-slide .hero-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(56, 189, 248, 0.6);
+  filter: brightness(1.1);
+}
+
+.hero-slide .hero-btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #F8FAFC;
+}
+
+.hero-slide .hero-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.hero-slide .scroll-cue {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px;
+  text-decoration: none;
+  color: #64748B;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  transition: color 0.25s ease;
+}
+
+.hero-slide .scroll-cue:hover {
+  color: #38bdf8;
+}
+
+.hero-slide .scroll-cue-arrow {
+  animation: scrollBounce 2s infinite ease-in-out;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ==========================================================================
+   7. Right Floating Viewport Indicator Dock (極簡全景錨點切換器)
+   ========================================================================== */
+.viewport-indicator-dock {
+  position: fixed;
+  right: clamp(14px, 2.2vw, 28px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px 7px;
+  border-radius: var(--radius-pill);
+  background: rgba(14, 16, 22, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  transition: all 0.4s ease;
+}
+
+/* Active Theme Atmosphere Linkage for Indicator Dock */
+body[data-active-theme="osk"] .viewport-indicator-dock {
+  background: rgba(250, 248, 242, 0.85);
+  border-color: rgba(200, 160, 130, 0.4);
+  box-shadow: 0 8px 30px rgba(60, 45, 30, 0.12);
+}
+
+body[data-active-theme="show"] .viewport-indicator-dock {
+  background: rgba(11, 12, 16, 0.85);
+  border-color: rgba(197, 160, 89, 0.35);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(197, 160, 89, 0.15);
+}
+
+.indicator-dot {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.28);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body[data-active-theme="osk"] .indicator-dot {
+  background: rgba(90, 74, 66, 0.25);
+}
+
+body[data-active-theme="show"] .indicator-dot {
+  background: rgba(197, 160, 89, 0.3);
+}
+
+.indicator-dot:hover {
+  transform: scale(1.3);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+body[data-active-theme="osk"] .indicator-dot:hover {
+  background: #C73E3A;
+}
+
+body[data-active-theme="show"] .indicator-dot:hover {
+  background: var(--color-show-gold-light, #DFBA73);
+}
+
+.indicator-dot.is-active {
+  height: 24px;
+  border-radius: 6px;
+  background: var(--current-accent, #a855f7);
+  box-shadow: 0 0 12px var(--current-accent, #a855f7);
+}
+
+body[data-active-theme="osk"] .indicator-dot.is-active {
+  background: #C73E3A;
+  box-shadow: 0 0 10px rgba(199, 62, 58, 0.5);
+}
+
+body[data-active-theme="show"] .indicator-dot.is-active {
+  background: #C5A059;
+  box-shadow: 0 0 12px rgba(197, 160, 89, 0.6);
+}
+
+/* Dot Tooltip on Hover */
+.indicator-dot::after {
+  content: attr(data-label);
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  background: rgba(14, 16, 22, 0.85);
+  color: #FFFFFF;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+body[data-active-theme="osk"] .indicator-dot::after {
+  background: #FFFFFF;
+  color: #2B2523;
+  border-color: rgba(200, 160, 130, 0.4);
+  box-shadow: 0 4px 14px rgba(60, 45, 30, 0.1);
+}
+
+.indicator-dot:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
+}
+
+@media (max-width: 640px) {
+  .viewport-indicator-dock {
+    display: none; /* Auto-hide indicator dock on small mobile screens to free up screen width */
+  }
+}
+
+/* ==========================================================================
+   8. Docked Hub Footer (Inside Last Slide)
+   ========================================================================== */
+.hub-footer-docked {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 24px;
+  background: rgba(7, 10, 15, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(0, 255, 157, 0.18);
+  z-index: 10;
+}
+
+.hub-footer-docked .footer-inner {
+  max-width: 1340px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.hub-footer-docked .footer-brand-claim {
+  font-size: 0.8rem;
+  color: #94A3B8;
+}
+
+.hub-footer-docked .footer-brand-claim strong {
+  color: #F8FAFC;
+}
+
+.hub-footer-docked .footer-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.78rem;
+}
+
+.hub-footer-docked .footer-nav-links a {
+  color: #94A3B8;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.hub-footer-docked .footer-nav-links a:hover {
+  color: #00ff9d;
+}
+
+@media (max-width: 640px) {
+  .hub-footer-docked {
+    position: relative;
+    padding: 16px;
   }
 }

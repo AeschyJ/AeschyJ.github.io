@@ -1,43 +1,45 @@
 /**
- * Pavilion 01: Quantum Lab & Algorithmic Playground (EXP)
- * Interactive Controller & Component Lifecycle
- * Visual Style: Academic Futurism & Neural Quantum Optics
+ * Pavilion 01: Recipe KGAT Lab (EXP) - 國立臺灣大學工學院碩士論文成果展館
+ * 題目：應用知識圖注意力網路於食譜推薦之效能評估與可解釋性研究
+ * Performance Evaluation and Explainability Study of Knowledge Graph Attention Network for Recipe Recommendation
+ * 指導教授：張瑞益 博士 | 作者：廖健合 (Jian-He Liao, R12525066)
+ * 視覺風格：Academic Futurism & Knowledge Graph Optics (滿版無框設計)
  */
 
 import { pavilionRegistry } from './registry.js';
 import { portalStorage } from '../storage.js';
 
-// Research Benchmark Dataset (Baseline vs Proposed Model)
+// 真實研究 Benchmark 數據集 (三次獨立運行平均值)
 const BENCHMARK_DATA = {
   baseline: {
-    name: 'DenseNet-201 Baseline',
+    name: 'LightGCN (Strong Baseline)',
     metrics: [
-      { id: 'acc', label: 'Top-1 Accuracy / F1', val: 82.4, unit: '%', pct: 82.4 },
-      { id: 'faith', label: 'XAI Faithfulness Metric', val: 58.1, unit: '%', pct: 58.1 },
-      { id: 'sparse', label: 'Latent Sparsity Index', val: 41.2, unit: '%', pct: 41.2 },
-      { id: 'fps', label: 'Inference Throughput', val: 38, unit: ' FPS', pct: 28 }
+      { id: 'hr20', label: 'Hit Ratio @ 20 (HR@20)', val: 66.7, unit: '%', pct: 66.7 },
+      { id: 'ndcg20', label: 'Ranking Quality (NDCG@20)', val: 38.4, unit: '%', pct: 38.4 },
+      { id: 'hr10', label: 'Hit Ratio @ 10 (HR@10)', val: 53.2, unit: '%', pct: 53.2 },
+      { id: 'coverage', label: 'XAI Path Coverage', val: 0.0, unit: '%', pct: 0 }
     ]
   },
   proposed: {
-    name: 'NeuroTopo-XAI (Proposed)',
+    name: 'KGAT-3L (Ours / 本研究)',
     metrics: [
-      { id: 'acc', label: 'Top-1 Accuracy / F1', val: 97.6, unit: '%', pct: 97.6 },
-      { id: 'faith', label: 'XAI Faithfulness Metric', val: 94.8, unit: '%', pct: 94.8 },
-      { id: 'sparse', label: 'Latent Sparsity Index', val: 89.3, unit: '%', pct: 89.3 },
-      { id: 'fps', label: 'Inference Throughput', val: 136, unit: ' FPS', pct: 100 }
+      { id: 'hr20', label: 'Hit Ratio @ 20 (HR@20)', val: 87.8, unit: '%', pct: 87.8 }, // 0.8775 (+31.6%)
+      { id: 'ndcg20', label: 'Ranking Quality (NDCG@20)', val: 53.1, unit: '%', pct: 53.1 }, // 0.5309 (+38.4%)
+      { id: 'hr10', label: 'Hit Ratio @ 10 (HR@10)', val: 73.5, unit: '%', pct: 73.5 }, // 0.7348 (+38.1%)
+      { id: 'coverage', label: 'XAI Path Coverage', val: 55.6, unit: '%', pct: 55.6 } // 500 位抽樣覆蓋率 55.6%
     ]
   }
 };
 
-const BIBTEX_CODE = `@article{liao2026neurotopo,
-  title={NeuroTopo-XAI: Persistent Homology and Latent Space Topology for Faithful Neural Interpretability},
-  author={Liao, Aeschylus J. and Collaborative Lab},
-  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI)},
+const BIBTEX_CODE = `@mastersthesis{liao2026kgat,
+  title={應用知識圖注意力網路於食譜推薦之效能評估與可解釋性研究},
+  author={廖健合 (Liao, Jian-He)},
+  school={國立臺灣大學工學院工程科學及海洋工程學系},
   year={2026},
-  volume={48},
-  number={4},
-  pages={1120--1135}
-}`;
+  type={碩士學位論文},
+  address={台北市, 台灣},
+  keywords={知識圖, 注意力機制, 食譜推薦, 深度學習, 協同過濾, 可解釋性}
+};`;
 
 class ExperimentPavilionComponent {
   constructor() {
@@ -99,27 +101,24 @@ class ExperimentPavilionComponent {
     const orderFormatted = '01';
 
     this._slotElement.innerHTML = `
-      <div class="pavilion-exp" data-pavilion-id="exp">
-        <!-- HUD Corner Accents -->
-        <div class="exp-hud-corner exp-hud-tl"></div>
-        <div class="exp-hud-corner exp-hud-tr"></div>
-        <div class="exp-hud-corner exp-hud-bl"></div>
-        <div class="exp-hud-corner exp-hud-br"></div>
+      <div class="pavilion-exp full-bleed-surface" data-pavilion-id="exp">
+        <!-- Ambient Quantum Optics Background -->
+        <div class="exp-ambient-mesh" aria-hidden="true"></div>
 
-        <div class="exp-inner">
-          <!-- 1. Header Meta Bar -->
+        <div class="exp-container">
+          <!-- 1. Meta Status Bar -->
           <div class="exp-header-bar">
             <div class="exp-identity-group">
               <span class="exp-order-pill">NO. ${orderFormatted}</span>
               <span class="exp-status-chip">
                 <span class="pulse-dot" style="background:#a855f7; box-shadow:0 0 8px #a855f7;"></span>
-                IEEE TPAMI 2026 SOTA
+                AI RESEARCH & BENCHMARK
               </span>
-              <span class="exp-arxiv-pill" title="Preprint Identifier">
-                arXiv:2604.09821 [cs.LG]
+              <span class="exp-arxiv-pill" title="研究主題">
+                Knowledge Graph Attention Network
               </span>
             </div>
-            <button class="exp-pin-btn ${isPinned ? 'is-pinned' : ''}" data-exp-pin title="${isPinned ? '取消釘選' : '釘選量子實驗館'}">
+            <button class="exp-pin-btn ${isPinned ? 'is-pinned' : ''}" data-exp-pin title="${isPinned ? '取消釘選' : '釘選實驗館'}">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="12" y1="17" x2="12" y2="22"></line>
                 <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a1 1 0 0 0 0-2H8a1 1 0 0 0 0 2h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"></path>
@@ -127,46 +126,61 @@ class ExperimentPavilionComponent {
             </button>
           </div>
 
-          <!-- 2. Main Body (Abstract Card & Benchmark Widget) -->
+          <!-- 2. Main Content Grid (Full Bleed Web Presentation) -->
           <div class="exp-main-body">
-            <!-- Left: Research & Abstract -->
+            <!-- Left Column: Concise & Impactful Highlights -->
             <div class="exp-research-summary">
               <span class="exp-sub-kicker">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18h12"/><path d="M10 2v7.5L4.5 18A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-3L14 9.5V2"/><path d="M8.5 2h7"/></svg>
-                NextGen Neural Architectures & Topology
+                Graph Neural Networks • Recipe Recommendation • XAI
               </span>
               
               <h2 class="exp-title">
-                NeuroTopo-XAI
-                <span class="exp-title-zh">神經拓撲感知與可解釋性潛空間投影</span>
+                Experiment
+                <span class="exp-title-zh">KGAT 知識圖注意力網路 · 食譜推薦實驗</span>
               </h2>
 
               <div class="exp-badges-row">
-                <span class="exp-badge exp-badge-sota">★ SOTA Top-1 Rank</span>
-                <span class="exp-badge">Persistent Homology</span>
-                <span class="exp-badge">Latent Manifold</span>
-                <span class="exp-badge">Faithful XAI</span>
+                <span class="exp-badge exp-badge-highlight">HR@20: 0.8775 (+31.6%)</span>
+                <span class="exp-badge">Food.com 7.2M Edges</span>
+                <span class="exp-badge">PyTorch Native</span>
+                <span class="exp-badge">Fidelity 忠實度檢驗</span>
               </div>
 
               <div class="exp-abstract-card">
-                <strong>Abstract 論文提要：</strong>
-                本研究提出基於代數拓撲（Algebraic Topology）與持續同調特徵的神經網絡可解釋性框架。藉由約束潛空間流形的 Betti 數與拓撲梯度損失函數，克服了傳統深層網絡黑盒的偽相關特徵缺陷，在 ImageNet-1K 與大型生物醫學信號基準測試中實現了可解釋性忠實度（Faithfulness）提升 63.2% 與推論加速 3.58× 的突破性進展。
-                <div class="exp-abstract-fade">
-                  公式核心：\(\mathcal{L}_{total} = \mathcal{L}_{task} + \lambda_{topo} \mathcal{D}_{Wasserstein}(\mathrm{Dgm}(f), \mathrm{Dgm}_{target})\)
+                <p class="exp-pitch-text">
+                  基於 Food.com 720 萬條邊之協同知識圖（CKG），透過系統性消融實證多跳知識傳播之顯著增益，並首度量化檢驗注意力路徑之「部分忠實性」。
+                </p>
+                <div class="exp-findings-grid">
+                  <div class="exp-finding-item">
+                    <span class="exp-finding-tag">+31.6% 顯著增益</span>
+                    <p>三層架構 HR@20 達 0.8775，較單層提升逾 29%，相對最強基準模型 LightGCN 顯著提升 31.6%。</p>
+                  </div>
+                  <div class="exp-finding-item">
+                    <span class="exp-finding-tag">資訊污染揭密</span>
+                    <p>證實單層 (L=1) 加圖反而因雜訊稀釋訊號下降 4.7%，破除「加圖必增益」迷思。</p>
+                  </div>
+                  <div class="exp-finding-item">
+                    <span class="exp-finding-tag">部分忠實度剖析</span>
+                    <p>500 人抽樣驗證顯示 94.2% 路徑具正向必要性 (F⁺>0)，但 KG 語意路徑充分性偏低，打破注意力即因果之假說。</p>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <!-- Right: Interactive Benchmark Comparative Bar Widget -->
+            <!-- Right Column: Interactive Benchmark Widget -->
             <div class="exp-benchmark-widget">
               <div class="exp-benchmark-header">
-                <span class="exp-benchmark-title">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                  Benchmark 對比
-                </span>
+                <div class="exp-benchmark-title-wrap">
+                  <span class="exp-benchmark-title">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    實驗效能量化對比
+                  </span>
+                  <span class="exp-benchmark-sub">Food.com Dataset (3 Runs Avg)</span>
+                </div>
                 <div class="exp-benchmark-toggle-group">
-                  <button class="exp-toggle-btn" data-model="baseline">Baseline</button>
-                  <button class="exp-toggle-btn is-active" data-model="proposed">Our SOTA</button>
+                  <button class="exp-toggle-btn" data-model="baseline">LightGCN</button>
+                  <button class="exp-toggle-btn is-active" data-model="proposed">KGAT-3L (Ours)</button>
                 </div>
               </div>
 
@@ -183,24 +197,31 @@ class ExperimentPavilionComponent {
                   </div>
                 `).join('')}
               </div>
+
+              <!-- Depth Progress Insight Bar -->
+              <div class="exp-depth-insight">
+                <span class="exp-depth-label">傳播深度消融進程：</span>
+                <div class="exp-depth-steps">
+                  <span class="exp-depth-pill">L=1 (0.6761)</span>
+                  <span class="exp-depth-arrow">→</span>
+                  <span class="exp-depth-pill">L=2 (0.7711)</span>
+                  <span class="exp-depth-arrow">→</span>
+                  <span class="exp-depth-pill is-highlight">L=3 (0.8775 ★)</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- 3. Actions Group -->
+          <!-- 3. Actions Group (No 404 links) -->
           <div class="exp-actions-group">
-            <a href="${this._meta.launchUrl || './lab/'}" class="exp-btn-primary" data-exp-action="launch">
-              <span>啟動實驗沙盒 (Launch Lab)</span>
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-            
-            <button type="button" class="exp-btn-secondary" id="btn-open-research-modal">
+            <button type="button" class="exp-btn-primary" id="btn-open-research-modal">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-              <span>檢視研究架構與發表細節 (Research Brief)</span>
+              <span>檢視論文架構與 Fidelity 案例 (Research Brief)</span>
             </button>
 
-            <a href="${this._meta.secondaryLaunchUrl || 'https://github.com/AeschyJ'}" target="_blank" rel="noopener noreferrer" class="exp-btn-tertiary">
+            <a href="https://github.com/AeschyJ/Recipe-Recommendation-KGAT" target="_blank" rel="noopener noreferrer" class="exp-btn-secondary" data-exp-action="launch">
               <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-              <span>GitHub 源碼</span>
+              <span>GitHub 演算法源碼倉庫</span>
             </a>
           </div>
         </div>
@@ -336,15 +357,15 @@ class ExperimentPavilionComponent {
         </button>
 
         <div class="exp-modal-title-group">
-          <span class="exp-modal-kicker">Peer-Reviewed Research Architecture</span>
-          <h3 class="exp-modal-title">NeuroTopo-XAI: Persistent Homology & Latent Space Topology</h3>
+          <span class="exp-modal-kicker">演算法核心架構與反事實評估</span>
+          <h3 class="exp-modal-title">KGAT 食譜推薦四階段傳播架構與反事實 Fidelity 量化</h3>
         </div>
 
-        <!-- High-Precision Pure SVG Neural Topology Architecture Diagram -->
+        <!-- High-Precision Pure SVG KGAT 4-Stage Architecture Diagram -->
         <div class="exp-modal-diagram">
-          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:#c084fc; font-weight:600; text-transform:uppercase; letter-spacing:0.06em;">
-            <span>System Dataflow & Manifold Projections</span>
-            <span>Scale: 100% Vector</span>
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:#a855f7; font-weight:600; text-transform:uppercase; letter-spacing:0.06em;">
+            <span>KGAT 四階段傳播流程 (CKG Embedding → Attentive Propagation → Aggregation → Prediction)</span>
+            <span>7.2M Edges · Vector Schema</span>
           </div>
           <svg class="exp-diagram-svg" viewBox="0 0 680 180" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -359,60 +380,64 @@ class ExperimentPavilionComponent {
             <rect width="680" height="180" rx="8" fill="#120c1f" />
             <path d="M 0 45 L 680 45 M 0 90 L 680 90 M 0 135 L 680 135" stroke="rgba(168,85,247,0.08)" stroke-dasharray="4 4" />
 
-            <!-- Block 1: Input Tensor -->
-            <rect x="20" y="40" width="100" height="100" rx="6" fill="#1e1533" stroke="#a855f7" stroke-width="1.5" />
-            <text x="70" y="85" fill="#f8fafc" font-size="11" font-weight="700" text-anchor="middle">Input Domain</text>
-            <text x="70" y="105" fill="#a855f7" font-size="9" text-anchor="middle">X ∈ ℝ^(B×C×H×W)</text>
+            <!-- Block 1: CKG Embedding (TransR) -->
+            <rect x="20" y="30" width="135" height="120" rx="6" fill="#1e1533" stroke="#a855f7" stroke-width="1.5" />
+            <text x="87" y="55" fill="#f8fafc" font-size="11" font-weight="700" text-anchor="middle">Stage 1: 嵌入表示</text>
+            <text x="87" y="75" fill="#c084fc" font-size="9.5" text-anchor="middle">TransR (e_h + W_r ≈ e_t)</text>
+            <text x="87" y="98" fill="#94a3b8" font-size="8.5" text-anchor="middle">用戶 · 食譜 · 食材</text>
+            <text x="87" y="115" fill="#94a3b8" font-size="8.5" text-anchor="middle">標籤 · 技法 · 設備</text>
+            <text x="87" y="133" fill="#a855f7" font-size="8.5" font-weight="600" text-anchor="middle">231K 實體 · 7.2M 邊</text>
 
             <!-- Arrow 1 -->
-            <path d="M 125 90 L 165 90" stroke="url(#exp-flow-grad)" stroke-width="2" marker-end="url(#arrow)" />
-            <polygon points="168,90 160,86 160,94" fill="#38bdf8" />
+            <path d="M 155 90 L 185 90" stroke="url(#exp-flow-grad)" stroke-width="2" />
+            <polygon points="188,90 180,86 180,94" fill="#38bdf8" />
 
-            <!-- Block 2: Backbone & Simplicial Complex -->
-            <rect x="175" y="30" width="140" height="120" rx="6" fill="#1e1533" stroke="#38bdf8" stroke-width="1.5" />
-            <text x="245" y="65" fill="#f8fafc" font-size="11" font-weight="700" text-anchor="middle">Vietoris-Rips Complex</text>
-            <text x="245" y="85" fill="#94a3b8" font-size="9" text-anchor="middle">VR(Z, ε) Filtered Graph</text>
-            <!-- Neural nodes inside -->
-            <circle cx="215" cy="115" r="5" fill="#a855f7" />
-            <circle cx="245" cy="105" r="5" fill="#38bdf8" />
-            <circle cx="275" cy="120" r="5" fill="#c084fc" />
-            <line x1="215" y1="115" x2="245" y2="105" stroke="rgba(255,255,255,0.4)" />
-            <line x1="245" y1="105" x2="275" y2="120" stroke="rgba(255,255,255,0.4)" />
+            <!-- Block 2: Attentive Propagation -->
+            <rect x="190" y="30" width="145" height="120" rx="6" fill="#1e1533" stroke="#38bdf8" stroke-width="1.5" />
+            <text x="262" y="55" fill="#f8fafc" font-size="11" font-weight="700" text-anchor="middle">Stage 2: 注意力傳播</text>
+            <text x="262" y="75" fill="#38bdf8" font-size="9.5" text-anchor="middle">π(h, r, t) 注意力權重</text>
+            <text x="262" y="98" fill="#cbd5e1" font-size="8.5" text-anchor="middle">一階關係投影評分</text>
+            <text x="262" y="115" fill="#94a3b8" font-size="8.5" text-anchor="middle">鄰域資訊加權聚集</text>
+            <text x="262" y="133" fill="#38bdf8" font-size="8.5" font-weight="600" text-anchor="middle">e_{N_h} = ∑ π·e_t</text>
 
             <!-- Arrow 2 -->
-            <path d="M 320 90 L 360 90" stroke="url(#exp-flow-grad)" stroke-width="2" />
-            <polygon points="363,90 355,86 355,94" fill="#38bdf8" />
+            <path d="M 335 90 L 365 90" stroke="url(#exp-flow-grad)" stroke-width="2" />
+            <polygon points="368,90 360,86 360,94" fill="#38bdf8" />
 
-            <!-- Block 3: Topological Loss Engine -->
-            <rect x="370" y="30" width="130" height="120" rx="6" fill="#1e1533" stroke="#c084fc" stroke-width="1.5" />
-            <text x="435" y="65" fill="#f8fafc" font-size="11" font-weight="700" text-anchor="middle">Betti Loss Engine</text>
-            <text x="435" y="85" fill="#c084fc" font-size="9" text-anchor="middle">H_0, H_1 Persistence</text>
-            <text x="435" y="115" fill="#cbd5e1" font-size="8.5" text-anchor="middle">Wasserstein Dist</text>
+            <!-- Block 3: Aggregation (L-Layers) -->
+            <rect x="370" y="30" width="140" height="120" rx="6" fill="#1e1533" stroke="#c084fc" stroke-width="1.5" />
+            <text x="440" y="55" fill="#f8fafc" font-size="11" font-weight="700" text-anchor="middle">Stage 3: 階層聚集</text>
+            <text x="440" y="75" fill="#c084fc" font-size="9.5" text-anchor="middle">Bi-Interaction 聚合</text>
+            <text x="440" y="98" fill="#94a3b8" font-size="8.5" text-anchor="middle">L=1: 0.6761 (雜訊污染)</text>
+            <text x="440" y="115" fill="#94a3b8" font-size="8.5" text-anchor="middle">L=2: 0.7711 (跨域傳播)</text>
+            <text x="440" y="133" fill="#34d399" font-size="8.5" font-weight="700" text-anchor="middle">L=3: 0.8775 (高階突破)</text>
 
             <!-- Arrow 3 -->
-            <path d="M 505 90 L 545 90" stroke="url(#exp-flow-grad)" stroke-width="2" />
-            <polygon points="548,90 540,86 540,94" fill="#c084fc" />
+            <path d="M 510 90 L 540 90" stroke="url(#exp-flow-grad)" stroke-width="2" />
+            <polygon points="543,90 535,86 535,94" fill="#c084fc" />
 
-            <!-- Block 4: Faithful Attribution -->
-            <rect x="555" y="40" width="105" height="100" rx="6" fill="#1e1533" stroke="#a855f7" stroke-width="1.5" />
-            <text x="607" y="80" fill="#f8fafc" font-size="11" font-weight="700" text-anchor="middle">Faithful Heatmap</text>
-            <text x="607" y="100" fill="#38bdf8" font-size="9" text-anchor="middle">Sparsity: 89.3%</text>
-            <text x="607" y="118" fill="#34d399" font-size="9" font-weight="600" text-anchor="middle">SOTA Verified</text>
+            <!-- Block 4: Counterfactual Fidelity -->
+            <rect x="545" y="30" width="120" height="120" rx="6" fill="#1e1533" stroke="#a855f7" stroke-width="1.5" />
+            <text x="605" y="55" fill="#f8fafc" font-size="11" font-weight="700" text-anchor="middle">Stage 4: 忠實度檢驗</text>
+            <text x="605" y="75" fill="#34d399" font-size="9.5" text-anchor="middle">Fidelity (必要/充分性)</text>
+            <text x="605" y="98" fill="#cbd5e1" font-size="8.5" text-anchor="middle">500 人均勻抽樣</text>
+            <text x="605" y="115" fill="#38bdf8" font-size="8.5" text-anchor="middle">94.2% F+ > 0 正向必要</text>
+            <text x="605" y="133" fill="#a855f7" font-size="8.5" font-weight="600" text-anchor="middle">揭示部分忠實性</text>
           </svg>
         </div>
 
         <div class="exp-contributions-list">
-          <strong>Key Novel Contributions (核心創新突破)：</strong>
+          <strong>Key Research Findings & Contributions (論文核心成果與發現)：</strong>
           <ul>
-            <li><strong>代數拓撲持續同調（Persistent Homology）引入：</strong>首次將多維代數拓撲之 Vietoris-Rips 複合形引入深度表徵學習，為潛空間流形提供不可變的拓撲不變量保證。</li>
-            <li><strong>抗擾動之忠實度證明：</strong>以嚴格的數學證明排除梯度雜訊（Gradient Shattering），大幅消除傳統 Grad-CAM / Integrated Gradients 出現的偽顯著區域。</li>
-            <li><strong>極限推論吞吐效能：</strong>整合稀疏拓撲投影核心，保持 Top-1 準確率 97.6% 的同時，推論延遲大幅降低至 7.35ms (136 FPS)。</li>
+            <li><strong>真實巨量知識圖驗證：</strong>基於 Food.com 22.6 萬用戶與 23.1 萬食譜，修剪並建構出包含 7,206,786 條關係邊之協同知識圖（CKG），涵蓋食材、標籤、技法與器具等多維實體。</li>
+            <li><strong>揭示單層知識圖「資訊污染（Information Pollution）」效應：</strong>消融實驗發現，引入 1 層 KG 的表現（0.6761）反而比純協同過濾基準衰退 4.7%，證實淺層知識圖引入的噪音會稀釋用戶行為訊號；唯有堆疊至 3 層（HR@20: 0.8775）才能完全發揮高階語意傳播優勢（相對最強基準模型 LightGCN +31.6%）。</li>
+            <li><strong>反事實注意力忠實度檢驗（Fidelity Evaluation）：</strong>對 500 位抽樣用戶進行反事實邊遮蔽（Fidelity+ / Fidelity-），實證揭露注意力解釋僅具「部分忠實性」：94.2% 的萃取路徑雖展現正向必要性（F+ > 0），但 KG 語意路徑充分性偏低（F- = 0.2449），打破了注意力權重等同於完整決策因果的既定假設。</li>
           </ul>
         </div>
 
         <div style="display:flex; flex-direction:column; gap:8px;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:0.75rem; font-weight:700; color:#c084fc; text-transform:uppercase;">BibTeX Citation</span>
+            <span style="font-size:0.75rem; font-weight:700; color:#c084fc; text-transform:uppercase;">BibTeX Citation (論文引用格式)</span>
             <button id="btn-copy-bibtex" style="font-size:0.75rem; padding:3px 10px; border-radius:4px; background:rgba(168,85,247,0.15); color:#e9d5ff; border:1px solid rgba(168,85,247,0.3); cursor:pointer;">
               複製 BibTeX
             </button>
@@ -421,9 +446,9 @@ class ExperimentPavilionComponent {
         </div>
 
         <div class="exp-modal-footer">
-          <a href="./lab/" class="exp-btn-primary" style="padding: 8px 18px; font-size: 0.84rem;">
-            <span>在實驗室中運行此模型</span>
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <a href="https://github.com/AeschyJ/Recipe-Recommendation-KGAT" target="_blank" rel="noopener noreferrer" class="exp-btn-primary" style="padding: 8px 18px; font-size: 0.84rem;">
+            <span>在 GitHub 上檢視演算法實作</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
           </a>
           <button class="exp-btn-secondary" data-close-modal style="padding: 8px 16px; font-size: 0.84rem;">
             <span>返回展廳</span>

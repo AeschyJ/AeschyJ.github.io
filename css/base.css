@@ -18,13 +18,39 @@
   --current-accent: #a855f7;
   --current-accent-secondary: #c084fc;
 
+  /* Font Families */
+  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', sans-serif;
+  --font-serif-luxury: 'Playfair Display', Georgia, serif;
+  --font-mincho: 'Shippori Mincho', 'Noto Serif TC', serif;
+  --font-mono: 'SF Mono', 'Fira Code', monospace;
+
   /* Static Exhibition Palette Tokens */
   --color-exp-quantum: #a855f7;
   --color-exp-secondary: #c084fc;
-  --color-osk-torii: #e11d48;
-  --color-osk-sakura: #f43f5e;
-  --color-show-ice: #60a5fa;
-  --color-show-secondary: #38bdf8;
+  
+  /* Japan / Osaka Pavilion Washi & Sakura Tokens */
+  --color-osk-paper: #FAF8F2;
+  --color-osk-torinoko: #F6F2E7;
+  --color-osk-paper-sun: #FFFDF7;
+  --color-osk-paper-aged: #ECE4D3;
+  --color-osk-sakura: #F4A7B9;
+  --color-osk-sakura-light: #FDE8EC;
+  --color-osk-sakura-deep: #E1526D;
+  --color-osk-hanko: #C53D2A;
+  --color-osk-sumi: #1F1C19;
+  --color-osk-sumi-muted: #554E46;
+  --color-osk-gold-leaf: #C69A45;
+
+  /* Showcase Pavilion Flowing Gold Tokens */
+  --color-show-gold: #C5A059;
+  --color-show-gold-rgb: 197, 160, 89;
+  --color-show-gold-light: #DFC48B;
+  --color-show-gold-glow: rgba(197, 160, 89, 0.45);
+  --color-show-bg: #0B0C10;
+  --color-show-card-bg: rgba(20, 24, 33, 0.72);
+  --color-show-border: rgba(197, 160, 89, 0.25);
+
+  /* Ticket Radar & Cyber Tokens */
   --color-tic-radar: #f59e0b;
   --color-tic-secondary: #fbbf24;
   --color-cyb-neon: #00ff9d;
@@ -37,16 +63,16 @@
   --text-inverse: #08090d;
 
   /* Structural Dimensions */
-  --header-height: 72px;
-  --max-width-content: 1200px;
+  --header-height: 70px;
+  --max-width-content: 1360px;
   --radius-sm: 8px;
   --radius-md: 14px;
-  --radius-lg: 20px;
+  --radius-lg: 24px;
   --radius-pill: 9999px;
 
   /* Transitions */
   --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
-  --duration-color-shift: 800ms;
+  --duration-color-shift: 600ms;
 }
 
 /* Reset & Box Sizing */

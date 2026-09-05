@@ -26,12 +26,13 @@ class PortalApp {
    * Initialize Core Hub Application
    */
   async init() {
-    console.log('[PortalApp] Initializing Central Exhibition Hub Core...');
+    console.log('[PortalApp] Initializing Central Exhibition Hub Core (Deck Edition)...');
     this._initServiceWorker();
     this._applyPreferences();
-    this._renderPavilions();
+    this._mountDeckPavilions();
     this._initHeaderControls();
-    this._initIntersectionObserver();
+    this._initDeckNavigation();
+    this._initKeyboardNavigation();
     this._initBackToTop();
     this._syncRecentBadge();
     this._syncPinnedPopover();
@@ -46,7 +47,7 @@ class PortalApp {
       }
     });
 
-    console.log('[PortalApp] Central Exhibition Hub initialized successfully.');
+    console.log('[PortalApp] Central Exhibition Hub Deck initialized successfully.');
   }
 
   /**
@@ -119,13 +120,10 @@ class PortalApp {
   }
 
   /**
-   * Render pavilion container sections and mount slots
+   * Mount pavilion slots inside 100dvh Deck slides
    */
-  _renderPavilions() {
-    const container = document.getElementById('pavilions-container');
-    if (container) {
-      pavilionRegistry.renderPavilions(container, PAVILIONS_DATA);
-    }
+  _mountDeckPavilions() {
+    pavilionRegistry.mountDeckSlots(PAVILIONS_DATA);
   }
 
   /**
@@ -283,110 +281,160 @@ class PortalApp {
   }
 
   /**
-   * Smoothly scroll to a target pavilion
+   * Smoothly scroll to a target slide/pavilion
    */
-  _scrollToPavilion(id) {
-    const el = document.getElementById(`pavilion-${id}`);
+  _scrollToSlide(slideId) {
+    const el = document.getElementById(slideId) || document.getElementById(`slot-${slideId}`);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      // Temporary highlight pulse
-      const card = el.querySelector('.pavilion-default-card');
-      if (card) {
-        card.style.transform = 'scale(1.02)';
-        card.style.borderColor = 'rgba(255, 255, 255, 0.5)';
-        setTimeout(() => {
-          card.style.transform = '';
-          card.style.borderColor = '';
-        }, 800);
-      }
+      el.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
-  /**
-   * IntersectionObserver: Detect pavilion viewport entries at 40% threshold
-   * Drives chromatic shifts: Quantum Violet -> Torii Vermilion -> Ice Blue -> Radar Orange -> Cyber Green
-   */
-  _initIntersectionObserver() {
-    const sections = document.querySelectorAll('.pavilion-section');
-    const heroSection = document.getElementById('hero-section');
+  _scrollToPavilion(id) {
+    this._scrollToSlide(id);
+  }
 
+  /**
+   * Deck Slide Snap Observer & Dynamic Global Atmosphere Linkage Engine
+   * Shifts body[data-active-theme] across: hero -> exp -> osk -> show -> tic -> cyb
+   */
+  _initDeckNavigation() {
+    const slides = document.querySelectorAll('.deck-slide');
+    const indicatorDots = document.querySelectorAll('.indicator-dot');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    // 1. IntersectionObserver to detect currently active 100dvh slide (threshold: 0.55)
     const observerOptions = {
       root: null,
-      threshold: 0.4
+      threshold: 0.55
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        const targetId = entry.target.getAttribute('data-pavilion-id');
-        if (entry.isIntersecting) {
-          if (targetId) {
-            this._handlePavilionEnter(targetId, entry.target);
-          }
-        } else {
-          if (targetId) {
-            pavilionRegistry.notifyLeave(targetId);
-          }
+        if (!entry.isIntersecting) {
+          const slideId = entry.target.id;
+          pavilionRegistry.notifyLeave(slideId);
+          return;
         }
+
+        const slideId = entry.target.id;
+        const theme = entry.target.getAttribute('data-slide-theme') || slideId;
+        this._handleSlideEnter(slideId, theme);
       });
     }, observerOptions);
 
-    sections.forEach(section => observer.observe(section));
+    slides.forEach(slide => observer.observe(slide));
 
-    // Observe Hero section to reset ambient back to neutral violet/blue
-    if (heroSection) {
-      const heroObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            this._resetAmbientHero();
-          }
-        });
-      }, { threshold: 0.5 });
-      heroObserver.observe(heroSection);
-    }
+    // 2. Right Floating Indicator Dock Dot clicks
+    indicatorDots.forEach(dot => {
+      dot.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetSlide = dot.getAttribute('data-target-slide');
+        if (targetSlide) {
+          this._scrollToSlide(targetSlide);
+          this._playChime(620, 'sine', 0.12, 0.04);
+        }
+      });
+    });
+
+    // 3. Top Header Nav link clicks
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetSlide = link.getAttribute('data-slide-id') || link.getAttribute('href')?.replace('#', '');
+        if (targetSlide) {
+          this._scrollToSlide(targetSlide);
+          this._playChime(620, 'sine', 0.12, 0.04);
+        }
+      });
+    });
   }
 
   /**
-   * Shift ambient dynamic light and notify plugins
+   * Handle slide enter: update body[data-active-theme], indicators, colors, and notify plugins
    */
-  _handlePavilionEnter(id, element) {
-    if (this._currentActivePavilionId === id) return;
-    this._currentActivePavilionId = id;
+  _handleSlideEnter(slideId, theme) {
+    if (this._currentActivePavilionId === slideId) return;
+    this._currentActivePavilionId = slideId;
 
-    const meta = getPavilionById(id);
-    if (!meta) return;
+    // 1. Dynamic Central Theme Switch on Body (Links Header, Dock, and Pavilion atmosphere)
+    document.body.dataset.activeTheme = theme;
 
-    // 1. Shift Root CSS Dynamic Ambient Tokens
-    const root = document.documentElement;
-    root.style.setProperty('--current-accent', meta.themeColor);
-    root.style.setProperty('--current-accent-secondary', meta.secondaryColor);
-    root.style.setProperty('--current-glow-1', meta.ambientGlow);
-    root.style.setProperty('--current-glow-2', `rgba(${this._hexToRgb(meta.secondaryColor)}, 0.25)`);
-
-    // 2. Update Header active link
-    document.querySelectorAll('.nav-link').forEach(link => {
-      const target = link.getAttribute('href');
-      link.classList.toggle('is-active', target === `#pavilion-${id}`);
+    // 2. Update Right Indicator Dock active state
+    document.querySelectorAll('.indicator-dot').forEach(dot => {
+      const target = dot.getAttribute('data-target-slide');
+      dot.classList.toggle('is-active', target === slideId);
     });
 
-    // 3. Play subtle chromatic chime
-    this._playChime(540, 'sine', 0.15, 0.03);
+    // 3. Update Header Nav links active state
+    document.querySelectorAll('.nav-link').forEach(link => {
+      const target = link.getAttribute('data-slide-id') || link.getAttribute('href')?.replace('#', '');
+      link.classList.toggle('is-active', target === slideId);
+    });
 
-    // 4. Notify registered pavilion plugin
-    pavilionRegistry.notifyEnter(id);
+    // 4. Update browser URL hash cleanly without page jump
+    if (window.location.hash !== `#${slideId}`) {
+      history.replaceState(null, '', `#${slideId}`);
+    }
+
+    // 5. Update Ambient CSS variables & Trigger specialized notifications
+    const meta = getPavilionById(slideId);
+    if (meta) {
+      const root = document.documentElement;
+      root.style.setProperty('--current-accent', meta.themeColor);
+      root.style.setProperty('--current-accent-secondary', meta.secondaryColor);
+      root.style.setProperty('--current-glow-1', meta.ambientGlow);
+      root.style.setProperty('--current-glow-2', `rgba(${this._hexToRgb(meta.secondaryColor)}, 0.25)`);
+      this._playChime(540, 'sine', 0.15, 0.03);
+      pavilionRegistry.notifyEnter(slideId);
+    } else if (slideId === 'hero') {
+      this._resetAmbientHero();
+    }
   }
 
   /**
    * Reset ambient light to default Hero state
    */
   _resetAmbientHero() {
-    this._currentActivePavilionId = null;
     const root = document.documentElement;
     root.style.setProperty('--current-accent', '#a855f7');
     root.style.setProperty('--current-accent-secondary', '#60a5fa');
     root.style.setProperty('--current-glow-1', 'rgba(168, 85, 247, 0.35)');
     root.style.setProperty('--current-glow-2', 'rgba(96, 165, 250, 0.25)');
+  }
 
-    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('is-active'));
+  /**
+   * Keyboard Arrow and Page Navigation for Deck Slides
+   */
+  _initKeyboardNavigation() {
+    const slideIds = ['hero', 'exp', 'osk', 'show', 'tic', 'cyb'];
+
+    window.addEventListener('keydown', (e) => {
+      // Don't intercept if user is inside an input, textarea or modal
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) return;
+      if (document.querySelector('.pavilion-exp-modal.is-open')) return;
+
+      const currentIndex = slideIds.indexOf(this._currentActivePavilionId || 'hero');
+      if (currentIndex === -1) return;
+
+      if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+        if (currentIndex < slideIds.length - 1) {
+          e.preventDefault();
+          this._scrollToSlide(slideIds[currentIndex + 1]);
+        }
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        if (currentIndex > 0) {
+          e.preventDefault();
+          this._scrollToSlide(slideIds[currentIndex - 1]);
+        }
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        this._scrollToSlide(slideIds[0]);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        this._scrollToSlide(slideIds[slideIds.length - 1]);
+      }
+    });
   }
 
   /**
@@ -405,7 +453,7 @@ class PortalApp {
     }, { passive: true });
 
     btn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      this._scrollToSlide('hero');
       this._playChime(600, 'sine', 0.12, 0.04);
     });
   }

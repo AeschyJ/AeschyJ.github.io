@@ -29,8 +29,8 @@
    開發過程、Git Commit 歷史、私人筆記與機密環境變數完全保留於**私有倉庫**。公開倉庫僅存放編譯混淆後的純靜態產物（dist），物理隔離外洩風險。
 2. **零伺服器零成本集中託管（Zero-Cost Static Hosting）**：
    完全捨棄 Vercel、Netlify 等第三方平台之商用限制與頻寬收費隱患，善用 GitHub Pages 提供的高可用性靜態 CDN。
-3. **沉浸式動態多主題展館（Ambient Pavilion System）**：
-   拒絕千篇一律的卡片排版。全站以深太空黑（`#08090d`）為基底，結合 `IntersectionObserver` 視窗監聽，隨訪客滾動依序過渡專屬主題色溫（量子紫 ➔ 鳥居櫻紅 ➔ 建築冰藍 ➔ 航管雷達橘 ➔ 賽博螢光綠），賦予每個專案獨一無二的美學與互動靈魂。
+3. **整面無外框畫布與動態全域氛圍連動（Full-Bleed Deck & Atmosphere Linkage）**：
+   徹底告別千篇一律的卡片排版。全站改由 `100vw × 100dvh` 整面無外框畫布構成，結合原生 `scroll-snap-type: y mandatory`，實現滑動一次精準切換一整座展館的俐落節奏。透過 `IntersectionObserver` 捕捉當前展館，頂部導航欄、背景環境光與右側全景指示條即時動態過渡專屬主題色溫（量子紫 ➔ 鳥之子和風淡黃/櫻粉 ➔ 黑曜晶/香檳流金 ➔ 航管雷達橘 ➔ 賽博螢光綠），賦予每個專案獨一無二的美學與互動靈魂。
 4. **同源環境下的嚴格安全防禦（Shared Origin Sandbox）**：
    針對 GitHub Pages 子目錄共用 Origin 之限制，建立嚴格的 Service Worker 快取前綴隔離與 LocalStorage 命名空間規範，杜絕應用間快取互踩與狀態污染。
 
@@ -68,19 +68,19 @@ graph TD
 展覽館展示順序嚴格遵循由學術深度、文化旅情，經當代美學、後端高頻架構，至高能量自律控制台之動線排布：
 
 ```
-[Hero 星雲] ➔ 1. [exp 量子紫] ➔ 2. [osk 鳥居紅] ➔ 3. [show 建築藍] ➔ 4. [tic 航管橘] ➔ 5. [cyb 賽博綠]
+[Hero 星雲] ➔ 1. [exp 量子紫] ➔ 2. [osk 鳥之子和風淡黃/櫻粉] ➔ 3. [show 黑曜微晶/香檳流金] ➔ 4. [tic 航管橘] ➔ 5. [cyb 賽博綠]
 ```
 
 ### 展館視覺與微互動規格表
 
 | 序號 | 展館 ID | 名稱與核心理念 | 代表色票 (Design Tokens) | 特色裝飾與視覺語彙 | 專屬簽名微互動 (Signature Micro-Interaction) |
 | :---: | :---: | :--- | :--- | :--- | :--- |
-| **-** | **Hero** | **門戶星雲大廳**<br/>高冷暗黑科技感 | 背景 `#08090d`<br/>文字 `#f0f2f5`<br/>天青藍 `#38bdf8` | 流體動態光球、頂部懸浮毛玻璃導航欄、最近造訪快速直達標籤、釘選抽屜 | Web Audio 微頻音效、滾動指引呼吸動態、全站 PWA 安裝 |
-| **1** | **`exp`** | **Experiment**<br/>學術未來主義 | 量子紫 `#a855f7`<br/>冰霜銀白 `#e2e8f0` | 幾何拓撲網格、HUD 科技角標、LaTeX 公式浮水印、SOTA/arXiv 徽章 | **互動 Benchmark 長條圖**（切換 Baseline vs Ours 數值平滑遞增）、論文研究架構拓撲彈窗 |
-| **2** | **`osk`** | **Osaka Trip**<br/>日系和風行旅雜誌 | 鳥居朱紅 `#e11d48`<br/>櫻花粉 `#f43f5e`<br/>深炭墨黑 `#18181b` | 越前和紙底紋、直書排版（`writing-mode: vertical-rl`）、金箔漂浮粒子 | **御朱印互動蓋章**（點擊觸發水墨落款動畫 + 木擊沉著音效 + LocalStorage 狀態儲存）、**雙入口啟動按鈕**、迷你繪卷折本預覽 |
-| **3** | **`show`**| **Showcase**<br/>包浩斯當代藝廊 | 建築冰藍 `#60a5fa`<br/>石板霧黑 `#0f172a` | 雙層藍圖工程網格（Blueprint Grid）、極光流星流光邊框（`@property` 驅動） | **3D 視差陀螺儀卡片**（滑鼠座標插值傾斜 + 鏡面反光 Sheen）、一鍵進入應用 |
-| **4** | **`tic`** | **Ticket Bot**<br/>暗夜航管雷達系統 | 琥珀金橘 `#f59e0b`<br/>航管黑 `#0a0b0e` | CRT 掃描線、閃爍 LED 狀態燈（`[STANDBY]` ➔ `[ACTIVE]`）、雷達掃描盤 | **微型終端日誌瀑布**（點擊觸發模擬搶票毫秒日誌噴發 + Webhook 模擬推播彈窗）、系統架構白皮書彈窗 |
-| **5** | **`cyb`** | **Cyber-Routine**<br/>賽博龐克極客風 | 終端黑 `#0a0e14`<br/>霓虹螢光綠 `#00ff9d`<br/>警示金 `#ffb700` | 像素點陣紋理、CRT 打字機終端、習慣矩陣 HUD 角標 | **連擊充能 (Combo +1)**（數值跳動記憶 + Canvas 2D 金色星芒粒子爆破 + 原生 8-bit 雙方波琶音金幣音效） |
+| **-** | **Hero** | **門戶星雲大廳**<br/>高冷暗黑科技感 | 背景 `#08090d`<br/>文字 `#f0f2f5`<br/>天青藍 `#38bdf8` | 流體動態光球、頂部懸浮毛玻璃導航欄、最近造訪快速直達標籤、釘選抽屜 | Web Audio 微頻音效、滾動指引呼吸動態、全站 PWA 安裝、右側全景指示條 |
+| **1** | **`exp`** | **Experiment**<br/>學術未來主義 | 量子紫 `#a855f7`<br/>冰霜銀白 `#e2e8f0` | 幾何拓撲網格、HUD 科技角標、LaTeX 公式浮水印、**無容器滿版鋪展** | **部分忠實度（Partial Fidelity）剖析晶片**、**Strong Baseline 對比長條圖**（+31.6% 顯著增益）、論文架構拓撲彈窗 |
+| **2** | **`osk`** | **Osaka Trip**<br/>日系和紙行旅手帖 | 鳥之子淡黃 `#FAF8F2`<br/>薄櫻粉 `#F4A7B9`<br/>松煙墨 `#1A1715` | 越前和紙長纖維底紋、直書排版（`writing-mode: vertical-rl`）、**三欄橫向對開手帳佈局**、櫻花飄落粒子 | **手作和紙相片拼貼框**（主拍立得 235px 微傾、疊合相框 106px、和紙膠帶、三景切換）、**御朱印互動蓋章**（點擊觸發水墨落款動畫 + 木擊沉著音效 + LocalStorage 狀態儲存）、雙入口啟動按鈕 |
+| **3** | **`show`**| **Showcase**<br/>包浩斯當代藝廊 | 黑曜微晶琉璃 `#0B0C10`<br/>**香檳流金 `#DFBA73` / `#C5A059`** | 雙層 80px 藍圖工程網格（Blueprint Grid）、全螢幕無框畫布、工程精度標尺 | **HTML5 Canvas 80px 經緯隨機流金脈衝引擎**（650~950px/s 高速平滑收束、GPU 節能暫停）、**3D 視差陀螺儀卡片**（鏡面反光 Sheen）、一鍵進入應用 |
+| **4** | **`tic`** | **Ticket Bot**<br/>暗夜航管雷達系統 | 琥珀金橘 `#f59e0b`<br/>航管黑 `#0a0b0e` | CRT 掃描線、閃爍 LED 狀態燈（`[STANDBY]` ➔ `[ACTIVE]`）、雷達掃描盤、**全螢幕無框鋪展** | **微型終端日誌瀑布**（點擊觸發模擬搶票毫秒日誌噴發 + Webhook 模擬推播彈窗）、系統架構白皮書彈窗 |
+| **5** | **`cyb`** | **Cyber-Routine**<br/>賽博龐克極客風 | 終端黑 `#0a0e14`<br/>霓虹螢光綠 `#00ff9d`<br/>警示金 `#ffb700` | 像素點陣紋理、CRT 打字機終端、習慣矩陣 HUD 角標、**全螢幕無框鋪展** | **連擊充能 (Combo +1)**（數值跳動記憶 + Canvas 2D 金色星芒粒子爆破 + 原生 8-bit 雙方波琶音金幣音效） |
 
 ### 插件化展館外掛架構 (Plugin Architecture)
 主頁核心引擎（`js/app.js`）與展館外掛完全解耦，每個展館實作標準生命週期合約：
@@ -100,6 +100,32 @@ export const myPavilion = {
   }
 };
 ```
+
+### 3.1 整面無外框畫布合約 (Full-Bleed Deck Contract)
+1. **尺寸與吸附邊界**：
+   - 頂層容器 `#viewport-deck` 鎖定 `width: 100vw; height: 100dvh; overflow-y: auto; scroll-snap-type: y mandatory;`。
+   - 每個展館容器 `.deck-slide` 必須嚴格聲明 `width: 100vw; height: 100dvh; scroll-snap-align: start; scroll-snap-stop: always;`。
+2. **零內部溢出（Zero-Scroll Inside 100dvh）**：
+   - 各展館內部畫布 `.pavilion-*` 採用全域標準外距 `padding: clamp(70px, 8vh, 100px) clamp(24px, 5vw, 80px);`。
+   - 所有內部內容組件必須精確佈局於 `max-width: 1340px` 之中，嚴禁在常規筆電螢幕（高度 ≥ 768px）產生內部垂直滾動條。
+3. **無容器主義（Borderless Exhibition）**：
+   - 展館不應被卡片邊框、外部陰影或外圍間隙（舊式 `gap: 120px`）限制，背景網格、座標標線、紋理與粒材質感必須直接鋪展至 100vw × 100dvh 的全螢幕邊界。
+
+### 3.2 全域氛圍連動協議 (Atmosphere Linkage Contract)
+1. **動態主體掛載**：
+   主頁 `IntersectionObserver` 於閾值 `0.55` 偵測中心展館，動態賦予 `document.body.dataset.activeTheme = themeId`。
+2. **連動樣式規範**：
+   - **頂部欄 (`.hub-header`)**：依據主題即時變換背景材質（如日本館之越前和紙生成色、Showcase 之黑曜琉璃）、底框漸層光軌與品牌文字字型。
+   - **右側指示條 (`.viewport-indicator-dock`)**：各館微型指示燈的亮起顏色、膠囊呼吸光與懸浮 Tooltip 必須與當前展館代表色 100% 同步。
+   - **鍵盤與路由支援**：切換時透過 `history.replaceState` 無感同步 URL Hash，並支援 `PageDown`/`PageUp`/方向鍵即時換館。
+
+### 3.3 本地免安裝預覽標準 (Local Preview & CORS Defense)
+1. **CORS 原理防禦**：
+   現代瀏覽器在 `file:///` 協議下將 Origin 視為 `null` 並阻擋 ES 模組（`js/app.js`）。
+2. **標準啟動工具 (`啟動預覽.bat`)**：
+   專案根目錄必須維持具備容錯之 `啟動預覽.bat`，自動探測 `python` / `node` / `uv` 於背景啟動本地伺服器（`http://localhost:8000`）並調用預設瀏覽器。
+3. **友善指引橫幅**：
+   `index.html` 內建協議偵測，若以 `file:` 協定啟動時，自動浮現琥珀金橫幅引導執行批次檔。
 
 ---
 

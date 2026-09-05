@@ -9,31 +9,76 @@ import { portalStorage } from '../storage.js';
 
 const STORAGE_KEY_GOSHUIN = 'hub_osaka_goshuin_stamped';
 
-// Curated 3 Kansai Highlights for the Mini Emaki Folding Scroll
+// Curated 3 Kansai Highlights with Photos for Washi Collage Frame
 const EMAKI_ITEMS = [
   {
     id: 'aoniyoshi',
     title: '近鐵特急・青丹吉',
     subtitle: '古都紫調・移動茶室',
     tag: '鐵道旅美學',
-    thumb: './osaka/Photos_web/AONIYOSHI/IMG_20260824_090312_thumb.jpg',
-    lead: '穿越千年的近鐵觀光特急「青丹吉」，在深紫天鵝絨座椅與和風花窗間，緩緩駛向斑鳩之里與奈良古都。'
+    spot: '奈良・斑鳩之里',
+    date: '8月24日 09:21',
+    lead: '穿越千年的近鐵觀光特急「青丹吉」，在深紫天鵝絨座椅與和風花窗間，緩緩駛向斑鳩之里與奈良古都。',
+    photos: [
+      {
+        src: './osaka/Photos_web/AONIYOSHI/IMG_20260824_092146_thumb.jpg',
+        caption: '車室深紫天鵝絨茶席'
+      },
+      {
+        src: './osaka/Photos_web/AONIYOSHI/IMG_20260824_090312_thumb.jpg',
+        caption: '觀光特急青丹吉外觀'
+      },
+      {
+        src: './osaka/Photos_web/AONIYOSHI/IMG_20260824_092632_thumb.jpg',
+        caption: '天平花窗透光車景'
+      }
+    ]
   },
   {
     id: 'club_harie',
     title: '近江八幡・草屋根',
     subtitle: '藤森建築・童話綠丘',
-    tag: '風土甜點美學',
-    thumb: './osaka/Photos_web/Club%20Harie/IMG_20260826_104239_thumb.jpg',
-    lead: '坐落於近江八幡的 La Collina，綠意昂然的草屋根與現烤年輪蛋糕香氣，交織出自然與烘焙的和諧樂章。'
+    tag: '風土建築美學',
+    spot: '滋賀・近江八幡',
+    date: '8月26日 10:42',
+    lead: '坐落於近江八幡的 La Collina，綠意昂然的草屋根與現烤年輪蛋糕香氣，交織出自然與烘焙的和諧樂章。',
+    photos: [
+      {
+        src: './osaka/Photos_web/Club%20Harie/IMG_20260826_104239_thumb.jpg',
+        caption: '藤森照信・童話草屋根'
+      },
+      {
+        src: './osaka/Photos_web/Club%20Harie/IMG_20260826_105512_thumb.jpg',
+        caption: '工坊現烤年輪蛋糕'
+      },
+      {
+        src: './osaka/Photos_web/Club%20Harie/IMG_20260826_110149_thumb.jpg',
+        caption: '生機盎然生態水田'
+      }
+    ]
   },
   {
     id: 'harbs',
     title: '心齋橋・法式千層',
     subtitle: '夏日果實・薄餅雲朵',
     tag: '旬味名店',
-    thumb: './osaka/Photos_web/Harbs%20%E5%A4%A7%E4%B8%B8/IMG_20260824_162354_thumb.jpg',
-    lead: '嚴選六種當令旬果與六層如雲朵般輕盈的鮮奶油千層薄餅，在繁華的心齋橋漫步午後綻放極致甘甜。'
+    spot: '大阪・心齋橋大丸',
+    date: '8月24日 16:23',
+    lead: '嚴選六種當令旬果與六層如雲朵般輕盈的鮮奶油千層薄餅，在繁華的心齋橋漫步午後綻放極致甘甜。',
+    photos: [
+      {
+        src: './osaka/Photos_web/Harbs%20%E5%A4%A7%E4%B8%B8/IMG_20260824_162354_thumb.jpg',
+        caption: '招牌六層旬果鮮奶油千層'
+      },
+      {
+        src: './osaka/Photos_web/Harbs%20%E5%A4%A7%E4%B8%B8/IMG_20260824_162312_thumb.jpg',
+        caption: '大丸心齋橋午茶時光'
+      },
+      {
+        src: './osaka/Photos_web/Harbs%20%E5%A4%A7%E4%B8%B8/IMG_20260824_161944~2_thumb.jpg',
+        caption: '店內手繪冷藏櫃菜單'
+      }
+    ]
   }
 ];
 
@@ -125,7 +170,7 @@ class OsakaPavilionComponent {
   }
 
   /**
-   * Render HTML Template
+   * Render HTML Template (Magazine 3-Column Spread)
    */
   _render() {
     const isPinned = portalStorage.isPinned('osk');
@@ -133,7 +178,7 @@ class OsakaPavilionComponent {
 
     this._slotElement.innerHTML = `
       <div class="pavilion-osk" data-pavilion-id="osk">
-        <!-- Floating Gold Particles -->
+        <!-- Floating Gold Particles / Sakura -->
         <div class="osk-gold-particle osk-p1"></div>
         <div class="osk-gold-particle osk-p2"></div>
         <div class="osk-gold-particle osk-p3"></div>
@@ -161,27 +206,28 @@ class OsakaPavilionComponent {
             </button>
           </div>
 
-          <!-- 2. Main Body: Japanese Magazine Column + Goshuin Washi Stamp -->
+          <!-- 2. Main Body: Magazine 3-Column Spread (和風行旅三欄橫向對開) -->
           <div class="osk-main-body">
-            <!-- Left: Editorial + Mini Emaki Scroll -->
+            <!-- ─── Left Column: Editorial, Points Selector & Launch Actions ─── -->
             <div class="osk-editorial-col">
-              <!-- Vertical Japanese Pillar -->
+              <!-- Vertical Japanese Calligraphic Pillar -->
               <div class="osk-vertical-script" aria-hidden="true">
                 <span class="osk-script-stamp">夏之栞</span>
                 <span>關西行旅・一期一會</span>
               </div>
 
-              <!-- Main Narrative -->
+              <!-- Main Narrative & Integrated Actions -->
               <div class="osk-narrative-group">
-                <span class="osk-kicker">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="12 8 8 12 12 16 12 8"/></svg>
-                  Kansai Odyssey & Travelogue
-                </span>
-
-                <h2 class="osk-title">
-                  Osaka Odyssey
-                  <span class="osk-title-zh">關西極致旅誌・夏之栞</span>
-                </h2>
+                <div class="osk-title-wrap">
+                  <span class="osk-kicker">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="12 8 8 12 12 16 12 8"/></svg>
+                    Kansai Odyssey
+                  </span>
+                  <h2 class="osk-title">
+                    Osaka Odyssey
+                    <span class="osk-title-zh">關西極致旅誌・夏之栞</span>
+                  </h2>
+                </div>
 
                 <div class="osk-tags-row">
                   <span class="osk-tag">日系行旅雜誌</span>
@@ -191,33 +237,84 @@ class OsakaPavilionComponent {
                 </div>
 
                 <p class="osk-description-lead" id="osk-lead-text">
-                  日系行旅雜誌風離線隨身導覽。將京都古雅幽香與大阪都會熱鬧收攏於指尖，支援離線路線繪製、高解析度精選相冊繪卷與御朱印刻印體驗。
+                  ${EMAKI_ITEMS[0].lead}
                 </p>
 
-                <!-- Mini Emaki Folding Scroll Showcase -->
-                <div class="osk-emaki-preview">
-                  <div class="osk-emaki-header">
-                    <span class="osk-emaki-label">
-                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
-                      夏之栞・精選折本繪卷 (點擊切換)
-                    </span>
-                  </div>
+                <!-- 關西三景切換膠囊標籤 (.osk-points-bar) -->
+                <div class="osk-points-bar" role="tablist" aria-label="關西三景切換">
+                  ${EMAKI_ITEMS.map((item, idx) => `
+                    <button type="button" class="osk-point-pill ${idx === 0 ? 'is-active' : ''}" data-point-index="${idx}" role="tab" aria-selected="${idx === 0 ? 'true' : 'false'}" title="${item.title}・${item.subtitle}">
+                      <span class="osk-point-idx">0${idx + 1}</span>
+                      <span class="osk-point-title">${item.title}</span>
+                    </button>
+                  `).join('')}
+                </div>
 
-                  <div class="osk-emaki-cards">
-                    ${EMAKI_ITEMS.map((item, idx) => `
-                      <div class="osk-emaki-card ${idx === 0 ? 'is-active' : ''}" data-emaki-index="${idx}" title="${item.title}">
-                        <img src="${item.thumb}" alt="${item.title}" class="osk-emaki-img" loading="lazy" />
-                        <div class="osk-emaki-overlay">
-                          <span class="osk-emaki-caption">${item.title}</span>
-                        </div>
+                <!-- 底部啟動按鈕整合 (直接收攏於左欄底部，節省整整一行縱向空間) -->
+                <div class="osk-actions-group">
+                  <a href="./osaka/" class="osk-btn-primary" data-osk-action="launch-app">
+                    <span>⛩️ 啟動 TabiSync 行程助手</span>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </a>
+                  <a href="./osaka/magazine.html" class="osk-btn-secondary" data-osk-action="launch-mag">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <span>📜 翻閱夏之栞繪卷</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- ─── Center Column: Visual Hero (手作和紙相片拼貼手帳框) ─── -->
+            <div class="osk-collage-col">
+              <div class="osk-collage-board" id="osk-collage-board">
+                <!-- 右上角櫻粉半透明和紙膠帶 -->
+                <div class="osk-washi-tape" aria-hidden="true"></div>
+
+                <!-- Collage Meta Header -->
+                <div class="osk-collage-header">
+                  <div class="osk-collage-meta">
+                    <span class="osk-collage-loc-badge" id="osk-collage-spot">${EMAKI_ITEMS[0].spot}</span>
+                    <span class="osk-collage-date-text" id="osk-collage-date">${EMAKI_ITEMS[0].date}</span>
+                  </div>
+                  <div class="osk-collage-stamp-group">
+                    <span class="osk-collage-stamp-tag" id="osk-collage-tag">${EMAKI_ITEMS[0].tag}</span>
+                    <span class="osk-collage-hanko" aria-hidden="true">旅録</span>
+                  </div>
+                </div>
+
+                <!-- Collage Deck (1 大主拍立得 + 2 錯落疊合拍立得) -->
+                <div class="osk-collage-deck">
+                  <!-- Main Hero Polaroid (-1.5° 微傾) -->
+                  <figure class="osk-polaroid osk-polaroid-hero">
+                    <div class="osk-polaroid-img-box">
+                      <img src="${EMAKI_ITEMS[0].photos[0].src}" alt="${EMAKI_ITEMS[0].photos[0].caption}" class="osk-polaroid-img" id="osk-photo-0" loading="lazy" />
+                    </div>
+                    <figcaption class="osk-polaroid-cap" id="osk-cap-0">${EMAKI_ITEMS[0].photos[0].caption}</figcaption>
+                  </figure>
+
+                  <!-- 2 Staggered Side Polaroids (+2° / -2° 錯落疊放) -->
+                  <div class="osk-polaroid-stack">
+                    <!-- Side Polaroid 1 (+2.5° 微傾) -->
+                    <figure class="osk-polaroid osk-polaroid-side1">
+                      <div class="osk-polaroid-img-box">
+                        <img src="${EMAKI_ITEMS[0].photos[1].src}" alt="${EMAKI_ITEMS[0].photos[1].caption}" class="osk-polaroid-img" id="osk-photo-1" loading="lazy" />
                       </div>
-                    `).join('')}
+                      <figcaption class="osk-polaroid-cap" id="osk-cap-1">${EMAKI_ITEMS[0].photos[1].caption}</figcaption>
+                    </figure>
+
+                    <!-- Side Polaroid 2 (-2° 微傾) -->
+                    <figure class="osk-polaroid osk-polaroid-side2">
+                      <div class="osk-polaroid-img-box">
+                        <img src="${EMAKI_ITEMS[0].photos[2].src}" alt="${EMAKI_ITEMS[0].photos[2].caption}" class="osk-polaroid-img" id="osk-photo-2" loading="lazy" />
+                      </div>
+                      <figcaption class="osk-polaroid-cap" id="osk-cap-2">${EMAKI_ITEMS[0].photos[2].caption}</figcaption>
+                    </figure>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Right: Interactive Goshuin Stamp Paper -->
+            <!-- ─── Right Column: Interactive Goshuin Stamp Paper (御朱印體驗) ─── -->
             <div class="osk-goshuin-col">
               <div class="osk-goshuin-paper">
                 <div class="osk-goshuin-head">
@@ -232,7 +329,7 @@ class OsakaPavilionComponent {
                 <!-- Stamp Slot Target -->
                 <div class="osk-stamp-slot">
                   <div class="osk-stamp-placeholder" id="osk-stamp-placeholder">
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="12" r="4"/></svg>
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="12" r="4"/></svg>
                     <span>待刻印</span>
                   </div>
 
@@ -253,23 +350,10 @@ class OsakaPavilionComponent {
 
               <!-- Stamp Action Trigger Button -->
               <button type="button" class="osk-stamp-trigger-btn" id="btn-osk-stamp">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 <span id="osk-stamp-btn-label">⛩️ 奉拜・落款刻印</span>
               </button>
             </div>
-          </div>
-
-          <!-- 3. Dual Launchers Group -->
-          <div class="osk-actions-group">
-            <a href="./osaka/" class="osk-btn-primary" data-osk-action="launch-app">
-              <span>⛩️ 啟動 TabiSync 行程助手</span>
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-
-            <a href="./osaka/magazine.html" class="osk-btn-secondary" data-osk-action="launch-mag">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-              <span>📜 翻閱 夏之栞・行旅繪卷</span>
-            </a>
           </div>
         </div>
       </div>
@@ -280,21 +364,60 @@ class OsakaPavilionComponent {
    * Bind DOM Events
    */
   _bindEvents() {
-    // 1. Mini Emaki Scroll Switching
-    const emakiCards = this._slotElement.querySelectorAll('.osk-emaki-card');
+    // 1. Points Capsule Buttons & Photo Collage Switching
+    const pointPills = this._slotElement.querySelectorAll('.osk-point-pill');
     const leadText = this._slotElement.querySelector('#osk-lead-text');
+    const spotEl = this._slotElement.querySelector('#osk-collage-spot');
+    const dateEl = this._slotElement.querySelector('#osk-collage-date');
+    const tagEl = this._slotElement.querySelector('#osk-collage-tag');
+    const photo0 = this._slotElement.querySelector('#osk-photo-0');
+    const photo1 = this._slotElement.querySelector('#osk-photo-1');
+    const photo2 = this._slotElement.querySelector('#osk-photo-2');
+    const cap0 = this._slotElement.querySelector('#osk-cap-0');
+    const cap1 = this._slotElement.querySelector('#osk-cap-1');
+    const cap2 = this._slotElement.querySelector('#osk-cap-2');
 
-    emakiCards.forEach(card => {
-      card.addEventListener('click', () => {
-        const index = parseInt(card.getAttribute('data-emaki-index'), 10);
+    pointPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const index = parseInt(pill.getAttribute('data-point-index'), 10);
         if (isNaN(index)) return;
 
-        emakiCards.forEach(c => c.classList.toggle('is-active', c === card));
+        pointPills.forEach(p => {
+          const isActive = p === pill;
+          p.classList.toggle('is-active', isActive);
+          p.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
         this._activeEmakiIndex = index;
         const currentItem = EMAKI_ITEMS[index];
-        if (currentItem && leadText) {
-          leadText.textContent = `${currentItem.lead} 【${currentItem.subtitle}】`;
+        if (!currentItem) return;
+
+        if (leadText) {
+          leadText.textContent = currentItem.lead;
         }
+        if (spotEl) spotEl.textContent = currentItem.spot;
+        if (dateEl) dateEl.textContent = currentItem.date;
+        if (tagEl) tagEl.textContent = currentItem.tag;
+
+        // Smooth cross-fade transition for the 3 collage photos
+        const photos = [photo0, photo1, photo2];
+        const caps = [cap0, cap1, cap2];
+        photos.forEach((img, i) => {
+          if (img && currentItem.photos[i]) {
+            img.style.opacity = '0.25';
+            img.style.transform = 'scale(0.97)';
+            setTimeout(() => {
+              img.src = currentItem.photos[i].src;
+              img.alt = currentItem.photos[i].caption;
+              img.style.opacity = '1';
+              img.style.transform = 'scale(1)';
+            }, 140);
+          }
+        });
+        caps.forEach((cap, i) => {
+          if (cap && currentItem.photos[i]) {
+            cap.textContent = currentItem.photos[i].caption;
+          }
+        });
       });
     });
 

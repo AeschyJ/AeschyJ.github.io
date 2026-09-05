@@ -11,12 +11,23 @@ export const showcasePavilion = {
   _slot: null,
   _meta: null,
   _cardWrapper: null,
+  _canvas: null,
+  _ctx: null,
+  _pulses: [],
   _rafId: null,
-  _targetRotateX: 0,
-  _targetRotateY: 0,
-  _currentRotateX: 0,
-  _currentRotateY: 0,
-  _isHovered: false,
+  _lastTime: 0,
+  _timeSinceLastSpawn: 0,
+  _nextSpawnInterval: 600,
+  _canvasWidth: 0,
+  _canvasHeight: 0,
+  _dpr: 1,
+  _resizeObserver: null,
+  _onResize: null,
+  _handleResize: null,
+  _isActive: false,
+  _lastHorizontalRow: -1,
+  _lastVerticalCol: -1,
+  _handlers: null,
   _isMobile: false,
 
   /**
@@ -34,6 +45,7 @@ export const showcasePavilion = {
         <!-- Blueprint Dual-Layer Background -->
         <div class="showcase-blueprint-layer" aria-hidden="true">
           <div class="showcase-grid-mesh"></div>
+          <canvas class="showcase-grid-canvas" id="showcase-grid-canvas"></canvas>
           <div class="showcase-ruler-top">
             <span>[AXIS: 00-384]</span>
             <span>SCALE: 1:1 BAUHAUS-GRID</span>
@@ -41,23 +53,19 @@ export const showcasePavilion = {
           </div>
         </div>
 
-        <!-- 3D Card Interactive Shell -->
-        <div class="showcase-card-wrapper" id="showcase-card-3d">
-          <!-- Aurora Tracing Flowing Edge -->
-          <div class="showcase-aurora-stream" aria-hidden="true"></div>
+        <!-- Showcase Borderless Stage -->
+        <div class="showcase-card-wrapper" id="showcase-stage">
           <div class="showcase-glow-halo" aria-hidden="true"></div>
 
-          <!-- Glassmorphic Interior -->
+          <!-- Exhibition Stage with Grid Pulse Canvas -->
           <div class="showcase-card">
-            <!-- Dynamic Specular Reflection Layer -->
-            <div class="showcase-specular-sheen" id="showcase-specular-layer" aria-hidden="true"></div>
 
             <!-- Card Header -->
             <header class="showcase-header">
               <div class="showcase-identity">
                 <span class="showcase-order-tag">NO. 03</span>
                 <span class="showcase-badge-pill">
-                  <span class="pulse-dot-ice"></span>
+                  <span class="pulse-dot-gold"></span>
                   ${meta.status || 'DESIGN GALLERY'}
                 </span>
               </div>
@@ -144,15 +152,16 @@ export const showcasePavilion = {
       </div>
     `;
 
-    this._cardWrapper = this._slot.querySelector('#showcase-card-3d');
-    this._specularLayer = this._slot.querySelector('#showcase-specular-layer');
+    this._cardWrapper = this._slot.querySelector('#showcase-stage');
     this._initInteractions();
     this._bindPin();
     this._bindLaunch();
+    this._initCanvas();
+    this._startAnimation();
   },
 
   /**
-   * Setup 3D Tilt & Specular Physics
+   * Setup Elegant Hover Sheen (No 3D tilt, pure liquid gold light)
    */
   _initInteractions() {
     if (!this._cardWrapper) return;
@@ -168,60 +177,20 @@ export const showcasePavilion = {
       const percentX = (x / rect.width) * 100;
       const percentY = (y / rect.height) * 100;
 
-      // Update Specular Sheen center
-      this._cardWrapper.style.setProperty('--sheen-x', `${percentX.toFixed(2)}%`);
-      this._cardWrapper.style.setProperty('--sheen-y', `${percentY.toFixed(2)}%`);
-
-      // 3D Tilt calculation (max 9 deg)
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      this._targetRotateY = ((x - centerX) / centerX) * 8;
-      this._targetRotateX = -((y - centerY) / centerY) * 8;
-      this._isHovered = true;
-
-      if (!this._rafId) {
-        this._rafId = requestAnimationFrame(this._tickPhysics.bind(this));
-      }
+      // Soft ambient light focus without any 3D tilt distortion
+      this._cardWrapper.style.setProperty('--light-x', `${percentX.toFixed(2)}%`);
+      this._cardWrapper.style.setProperty('--light-y', `${percentY.toFixed(2)}%`);
     };
 
     const onMouseLeave = () => {
-      this._isHovered = false;
-      this._targetRotateX = 0;
-      this._targetRotateY = 0;
-      if (!this._rafId) {
-        this._rafId = requestAnimationFrame(this._tickPhysics.bind(this));
-      }
+      this._cardWrapper.style.setProperty('--light-x', '50%');
+      this._cardWrapper.style.setProperty('--light-y', '30%');
     };
 
     this._cardWrapper.addEventListener('mousemove', onMouseMove, { passive: true });
     this._cardWrapper.addEventListener('mouseleave', onMouseLeave, { passive: true });
 
-    // Store handlers for unmount
     this._handlers = { onMouseMove, onMouseLeave };
-  },
-
-  /**
-   * Physics interpolation loop for 60-120 FPS buttery smooth tilt
-   */
-  _tickPhysics() {
-    if (!this._cardWrapper) return;
-
-    // Smooth Lerp (0.12 factor)
-    const factor = 0.12;
-    this._currentRotateX += (this._targetRotateX - this._currentRotateX) * factor;
-    this._currentRotateY += (this._targetRotateY - this._currentRotateY) * factor;
-
-    const scale = this._isHovered ? 1.015 : 1.0;
-    this._cardWrapper.style.transform = `perspective(1000px) rotateX(${this._currentRotateX.toFixed(3)}deg) rotateY(${this._currentRotateY.toFixed(3)}deg) scale3d(${scale}, ${scale}, 1)`;
-
-    // Continue loop if not settled
-    const diff = Math.abs(this._targetRotateX - this._currentRotateX) + Math.abs(this._targetRotateY - this._currentRotateY);
-    if (this._isHovered || diff > 0.02) {
-      this._rafId = requestAnimationFrame(this._tickPhysics.bind(this));
-    } else {
-      this._cardWrapper.style.transform = '';
-      this._rafId = null;
-    }
   },
 
   /**
@@ -258,20 +227,258 @@ export const showcasePavilion = {
   },
 
   /**
-   * Viewport lifecycle: resume or throttle effects
+   * Initialize HTML5 Canvas Grid Stream Pulse Layer
    */
-  onEnterViewport() {
-    // Re-enable smooth transitions when entering
-    if (this._cardWrapper) {
-      this._cardWrapper.style.willChange = 'transform';
+  _initCanvas() {
+    this._canvas = this._slot.querySelector('#showcase-grid-canvas');
+    if (!this._canvas) return;
+    this._ctx = this._canvas.getContext('2d');
+    if (!this._ctx) return;
+
+    this._handleResize = () => {
+      if (!this._canvas || !this._ctx) return;
+      const rect = this._canvas.getBoundingClientRect();
+      const width = Math.floor(rect.width);
+      const height = Math.floor(rect.height);
+      if (width === 0 || height === 0) return;
+
+      this._dpr = Math.min(window.devicePixelRatio || 1, 2);
+      this._canvasWidth = width;
+      this._canvasHeight = height;
+
+      this._canvas.width = Math.round(width * this._dpr);
+      this._canvas.height = Math.round(height * this._dpr);
+      this._ctx.setTransform(this._dpr, 0, 0, this._dpr, 0, 0);
+    };
+
+    if (window.ResizeObserver) {
+      this._resizeObserver = new ResizeObserver(() => {
+        this._handleResize();
+      });
+      this._resizeObserver.observe(this._canvas.parentElement || this._canvas);
+    } else {
+      this._onResize = () => this._handleResize();
+      window.addEventListener('resize', this._onResize, { passive: true });
+    }
+
+    this._handleResize();
+    this._pulses = [];
+    this._timeSinceLastSpawn = 0;
+    this._nextSpawnInterval = this._getRandomInterval();
+    this._lastHorizontalRow = -1;
+    this._lastVerticalCol = -1;
+
+    // Spawn initial prewarm pulse so canvas is lively on first view
+    this._spawnPulse(true);
+  },
+
+  /**
+   * Random spawn interval between 400ms and 900ms
+   */
+  _getRandomInterval() {
+    return 400 + Math.random() * 500;
+  },
+
+  /**
+   * Spawn a high-speed champagne gold light pulse on an 80px blueprint grid line
+   * @param {boolean} isPrewarm
+   */
+  _spawnPulse(isPrewarm = false) {
+    if (!this._canvasWidth || !this._canvasHeight) return;
+
+    const GRID_SIZE = 80;
+    const isHorizontal = Math.random() < 0.6; // 60% horizontal, 40% vertical
+    const length = 160 + Math.random() * 80; // 160 ~ 240px
+    const speed = 650 + Math.random() * 300; // 650 ~ 950px/s
+    const lineWidth = 1.5 + Math.random() * 0.5; // 1.5 ~ 2px
+
+    if (isHorizontal) {
+      const maxRows = Math.floor(this._canvasHeight / GRID_SIZE);
+      if (maxRows <= 0) return;
+      let row = Math.floor(Math.random() * maxRows) + 1;
+      if (row === this._lastHorizontalRow && maxRows > 1) {
+        row = (row % maxRows) + 1;
+      }
+      this._lastHorizontalRow = row;
+
+      const y = row * GRID_SIZE;
+      const direction = Math.random() > 0.5 ? 1 : -1; // Left-to-right or right-to-left
+      let head;
+      if (isPrewarm) {
+        head = direction === 1 
+          ? this._canvasWidth * (0.2 + Math.random() * 0.5)
+          : this._canvasWidth * (0.8 - Math.random() * 0.5);
+      } else {
+        head = direction === 1 ? -10 : this._canvasWidth + 10;
+      }
+
+      this._pulses.push({
+        type: 'horizontal',
+        direction,
+        y,
+        head,
+        length,
+        speed,
+        lineWidth
+      });
+    } else {
+      // Vertical grid line (top to bottom)
+      const maxCols = Math.floor(this._canvasWidth / GRID_SIZE);
+      if (maxCols <= 0) return;
+      let col = Math.floor(Math.random() * maxCols) + 1;
+      if (col === this._lastVerticalCol && maxCols > 1) {
+        col = (col % maxCols) + 1;
+      }
+      this._lastVerticalCol = col;
+
+      const x = col * GRID_SIZE;
+      const direction = 1; // Top to bottom
+      let head;
+      if (isPrewarm) {
+        head = this._canvasHeight * (0.2 + Math.random() * 0.4);
+      } else {
+        head = -10;
+      }
+
+      this._pulses.push({
+        type: 'vertical',
+        direction,
+        x,
+        head,
+        length,
+        speed,
+        lineWidth
+      });
     }
   },
 
-  onLeaveViewport() {
-    // Release GPU memory when outside viewport
+  /**
+   * Render frame: update physics and draw seamless champagne gold light pulses
+   * @param {number} timestamp
+   */
+  _renderFrame(timestamp) {
+    if (!this._ctx || !this._canvasWidth || !this._canvasHeight) return;
+
+    if (!this._lastTime) this._lastTime = timestamp;
+    const dt = Math.min((timestamp - this._lastTime) / 1000, 0.1);
+    this._lastTime = timestamp;
+
+    this._timeSinceLastSpawn += dt * 1000;
+    if (this._timeSinceLastSpawn >= this._nextSpawnInterval) {
+      this._spawnPulse(false);
+      this._timeSinceLastSpawn = 0;
+      this._nextSpawnInterval = this._getRandomInterval();
+    }
+
+    const ctx = this._ctx;
+    ctx.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
+
+    for (let i = this._pulses.length - 1; i >= 0; i--) {
+      const p = this._pulses[i];
+      p.head += p.direction * p.speed * dt;
+
+      let x1, y1, x2, y2;
+      let isDead = false;
+
+      if (p.type === 'horizontal') {
+        const tail = p.head - p.direction * p.length;
+        if (p.direction === 1 && tail > this._canvasWidth + 20) {
+          isDead = true;
+        } else if (p.direction === -1 && tail < -20) {
+          isDead = true;
+        }
+
+        if (isDead) {
+          this._pulses.splice(i, 1);
+          continue;
+        }
+
+        x1 = tail;
+        y1 = p.y;
+        x2 = p.head;
+        y2 = p.y;
+      } else {
+        const tail = p.head - p.length;
+        if (tail > this._canvasHeight + 20) {
+          this._pulses.splice(i, 1);
+          continue;
+        }
+
+        x1 = p.x;
+        y1 = tail;
+        x2 = p.x;
+        y2 = p.head;
+      }
+
+      // Linear gradient along pulse vector (from tail to head)
+      ctx.save();
+      const grad = ctx.createLinearGradient(x1, y1, x2, y2);
+      // Smooth tail fade out to 0% opacity (no hard clipping)
+      grad.addColorStop(0.0, 'rgba(197, 160, 89, 0)');
+      grad.addColorStop(0.2, 'rgba(197, 160, 89, 0.4)');
+      grad.addColorStop(0.55, 'rgba(223, 186, 115, 0.85)');
+      // High-intensity white core near front head (85%)
+      grad.addColorStop(0.85, '#FFFFFF');
+      grad.addColorStop(0.93, 'rgba(223, 186, 115, 0.7)');
+      // Smooth head fade out to 0% opacity (no hard clipping)
+      grad.addColorStop(1.0, 'rgba(223, 186, 115, 0)');
+
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = p.lineWidth;
+      ctx.lineCap = 'round';
+      ctx.shadowColor = 'rgba(223, 186, 115, 0.75)';
+      ctx.shadowBlur = 6;
+      ctx.stroke();
+      ctx.restore();
+    }
+  },
+
+  /**
+   * Start requestAnimationFrame loop
+   */
+  _startAnimation() {
+    if (this._rafId) return;
+    this._isActive = true;
+    this._lastTime = performance.now();
+    const loop = (timestamp) => {
+      if (!this._isActive) return;
+      this._renderFrame(timestamp);
+      this._rafId = requestAnimationFrame(loop);
+    };
+    this._rafId = requestAnimationFrame(loop);
+  },
+
+  /**
+   * Stop requestAnimationFrame loop
+   */
+  _stopAnimation() {
+    this._isActive = false;
     if (this._rafId) {
       cancelAnimationFrame(this._rafId);
       this._rafId = null;
+    }
+  },
+
+  /**
+   * Viewport lifecycle: resume or throttle effects
+   */
+  onEnterViewport() {
+    if (this._cardWrapper) {
+      this._cardWrapper.style.willChange = 'transform';
+    }
+    if (this._handleResize) {
+      this._handleResize();
+    }
+    this._startAnimation();
+  },
+
+  onLeaveViewport() {
+    this._stopAnimation();
+    if (this._ctx && this._canvasWidth && this._canvasHeight) {
+      this._ctx.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
     }
     if (this._cardWrapper) {
       this._cardWrapper.style.transform = '';
@@ -280,17 +487,27 @@ export const showcasePavilion = {
   },
 
   /**
-   * Clean up all event listeners and animation frames
+   * Clean up all event listeners, animation frames and observers
    */
   unmount() {
-    if (this._rafId) {
-      cancelAnimationFrame(this._rafId);
-      this._rafId = null;
+    this._stopAnimation();
+    if (this._resizeObserver) {
+      this._resizeObserver.disconnect();
+      this._resizeObserver = null;
+    }
+    if (this._onResize) {
+      window.removeEventListener('resize', this._onResize);
+      this._onResize = null;
     }
     if (this._cardWrapper && this._handlers) {
       this._cardWrapper.removeEventListener('mousemove', this._handlers.onMouseMove);
       this._cardWrapper.removeEventListener('mouseleave', this._handlers.onMouseLeave);
+      this._handlers = null;
     }
+    this._pulses = [];
+    this._canvas = null;
+    this._ctx = null;
+    this._handleResize = null;
     this._slot = null;
     this._meta = null;
     this._cardWrapper = null;

@@ -48,7 +48,31 @@ class PavilionRegistry {
   }
 
   /**
-   * Render pavilion container sections and mount slots
+   * Mount pavilion slots inside pre-defined Deck Slides (100dvh Full-Bleed layout)
+   * @param {Array<Object>} pavilionsData
+   */
+  mountDeckSlots(pavilionsData) {
+    if (!Array.isArray(pavilionsData)) return;
+    this._pavilionsData = pavilionsData;
+
+    pavilionsData.forEach((data, index) => {
+      const slot = document.getElementById(`slot-${data.id}`);
+      if (!slot) return;
+
+      this._mountedSlots.set(data.id, slot);
+
+      const plugin = this._plugins.get(data.id);
+      if (plugin && typeof plugin.mount === 'function') {
+        slot.innerHTML = '';
+        plugin.mount(slot, data);
+      } else {
+        this._renderDefaultSkeleton(slot, data, index + 1);
+      }
+    });
+  }
+
+  /**
+   * Render pavilion container sections and mount slots (Legacy Fallback)
    * @param {HTMLElement} container - The wrapper element (#pavilions-container)
    * @param {Array<Object>} pavilionsData - Array of pavilion configurations
    */

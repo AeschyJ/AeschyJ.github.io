@@ -11,6 +11,11 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%2308090d'/><circle cx='50' cy='50' r='30' fill='none' stroke='%23a855f7' stroke-width='8'/><circle cx='50' cy='50' r='14' fill='%2360a5fa'/></svg>">
 
+  <!-- Google Fonts: Luxury Serif, Japanese Mincho & Modern Display Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Shippori+Mincho:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet">
+
   <!-- Core Design System & Ambient Optics -->
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/ambient.css">
@@ -22,8 +27,19 @@
   <link rel="stylesheet" href="css/pavilions/showcase.css">
   <link rel="stylesheet" href="css/pavilions/ticket.css">
   <link rel="stylesheet" href="css/pavilions/cyber.css">
+  <script>
+    // Protocol Origin Check (Detect file:/// direct opening and provide prompt)
+    if (window.location.protocol === 'file:') {
+      window.addEventListener('DOMContentLoaded', function() {
+        var banner = document.createElement('div');
+        banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:linear-gradient(135deg,#e11d48,#be123c);color:#ffffff;padding:14px 24px;font-family:sans-serif;font-size:14px;box-shadow:0 8px 32px rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:space-between;gap:16px;line-height:1.5;';
+        banner.innerHTML = '<div style="display:flex;align-items:center;gap:12px;"><span style="font-size:22px;">⚠️</span><div><strong>瀏覽器 CORS 安全限制提醒：</strong><br><span style="font-size:13px;opacity:0.95;">您目前透過 <code>file://</code> 協定直接開啟。因現代瀏覽器安全政策，ES Module 模組與 PWA 快取需在 HTTP 伺服器下運行。請雙擊目錄下的 <strong>「啟動預覽.bat」</strong>（或執行 <code>python -m http.server</code>），即可在 <code>http://localhost:8000</code> 完美體驗全功能！</span></div></div><button onclick="this.parentElement.remove()" style="background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.5);color:#fff;padding:6px 14px;border-radius:4px;cursor:pointer;font-weight:600;white-space:nowrap;">我知道了</button>';
+        document.body.prepend(banner);
+      });
+    }
+  </script>
 </head>
-<body>
+<body data-active-theme="hero">
 
   <!-- Dynamic Ambient Glow Canvas Overlay -->
   <div id="ambient-glow" aria-hidden="true">
@@ -32,11 +48,11 @@
     <div class="ambient-orb ambient-orb-3"></div>
   </div>
 
-  <!-- Floating Header Navigation -->
-  <header class="hub-header">
-    <div class="page-container header-inner">
+  <!-- Floating Header Navigation (Morphs dynamically with active pavilion) -->
+  <header class="hub-header" id="hub-header">
+    <div class="header-inner">
       <!-- Brand Logo -->
-      <a href="#" class="brand-group" aria-label="回到首頁">
+      <a href="#hero" class="brand-group" data-slide-id="hero" aria-label="回到首頁">
         <div class="brand-symbol">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
@@ -50,13 +66,14 @@
         </div>
       </a>
 
-      <!-- Pavilion Anchors Navigation (Strict Order: EXP -> OSK -> SHOW -> TIC -> CYB) -->
+      <!-- Pavilion Anchors Navigation (Strict Order: HERO -> EXP -> OSK -> SHOW -> TIC -> CYB) -->
       <nav class="header-nav" aria-label="展館導航">
-        <a href="#pavilion-exp" class="nav-link" data-pavilion="exp">量子實驗</a>
-        <a href="#pavilion-osk" class="nav-link" data-pavilion="osk">大阪旅誌</a>
-        <a href="#pavilion-show" class="nav-link" data-pavilion="show">當代藝廊</a>
-        <a href="#pavilion-tic" class="nav-link" data-pavilion="tic">雷達票務</a>
-        <a href="#pavilion-cyb" class="nav-link" data-pavilion="cyb">賽博矩陣</a>
+        <a href="#hero" class="nav-link is-active" data-slide-id="hero">門戶核心</a>
+        <a href="#exp" class="nav-link" data-slide-id="exp">01. 碩論科研</a>
+        <a href="#osk" class="nav-link" data-slide-id="osk">02. 關西旅誌</a>
+        <a href="#show" class="nav-link" data-slide-id="show">03. 藏品藝廊</a>
+        <a href="#tic" class="nav-link" data-slide-id="tic">04. 票務獵手</a>
+        <a href="#cyb" class="nav-link" data-slide-id="cyb">05. 賽博矩陣</a>
       </nav>
 
       <!-- Global Controls & Shortcuts -->
@@ -108,81 +125,87 @@
     </div>
   </header>
 
-  <!-- Main Portal Body -->
-  <main>
-    <!-- Hero Section -->
-    <section id="hero-section" class="hero-section page-container">
-      <div class="hero-badge-pill">
-        <span class="pulse-dot"></span>
-        <span>CENTRAL INNOVATION PORTAL</span>
-      </div>
-      <h1 class="hero-title">AeschyJ's Space of Innovations</h1>
-      <p class="hero-subtitle">
-        收納前瞻演算法原型、沉浸式離線雜誌、包浩斯建築當代藝廊與航管雷達系統的多維主題展覽中心。
-      </p>
+  <!-- Main Full-Bleed 100dvh Viewport Deck (One Project per Viewport) -->
+  <main id="viewport-deck" class="viewport-deck">
+    <!-- Slide 0: Hero Section -->
+    <section id="hero" class="deck-slide hero-slide" data-slide-theme="hero" data-theme-id="hero" data-theme-color="#38bdf8" data-secondary-color="#818cf8">
+      <div class="hero-inner page-container">
+        <div class="hero-badge-pill">
+          <span class="pulse-dot"></span>
+          <span>CENTRAL INNOVATION PORTAL</span>
+        </div>
+        <h1 class="hero-title">AeschyJ's Space of Innovations</h1>
+        <p class="hero-subtitle">
+          收納前瞻演算法原型、沉浸式離線雜誌、包浩斯建築當代藝廊與航管雷達系統的多維主題展覽中心。
+        </p>
 
-      <div class="hero-cta-group">
-        <a href="#pavilion-exp" class="hero-btn hero-btn-primary">
-          <span>啟程巡覽展館</span>
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a href="https://github.com/AeschyJ" target="_blank" rel="noopener noreferrer" class="hero-btn hero-btn-secondary">
-          <span>GitHub Profile</span>
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+        <div class="hero-cta-group">
+          <a href="#exp" class="hero-btn hero-btn-primary" data-slide-id="exp">
+            <span>啟程巡覽展館</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="https://github.com/AeschyJ" target="_blank" rel="noopener noreferrer" class="hero-btn hero-btn-secondary">
+            <span>GitHub Profile</span>
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </a>
+        </div>
+
+        <a href="#exp" class="scroll-cue" data-slide-id="exp" aria-label="向下滾動查看展館">
+          <span>EXPLORE PAVILIONS</span>
+          <svg class="scroll-cue-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
         </a>
       </div>
-
-      <a href="#pavilion-exp" class="scroll-cue" aria-label="向下滾動查看展館">
-        <span>EXPLORE PAVILIONS</span>
-        <svg class="scroll-cue-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
-      </a>
     </section>
 
-    <!-- Pavilions Container (Ordered: EXP -> OSK -> SHOW -> TIC -> CYB) -->
-    <div id="pavilions-container" class="page-container">
-      <!-- Semantic sections dynamically initialized & hydrated by pavilionRegistry -->
-      <section id="pavilion-exp" class="pavilion-section theme-exp" data-pavilion-id="exp" data-theme-color="#a855f7" data-secondary-color="#c084fc">
-        <div class="pavilion-slot" id="slot-exp"></div>
-      </section>
+    <!-- Slide 1: EXP (NTU Thesis KGAT Recipe Lab) -->
+    <section id="exp" class="deck-slide pavilion-slide theme-exp" data-slide-theme="exp" data-pavilion-id="exp" data-theme-color="#a855f7" data-secondary-color="#c084fc">
+      <div class="pavilion-slot slide-slot" id="slot-exp"></div>
+    </section>
 
-      <section id="pavilion-osk" class="pavilion-section theme-osaka" data-pavilion-id="osk" data-theme-color="#e11d48" data-secondary-color="#f43f5e">
-        <div class="pavilion-slot" id="slot-osk"></div>
-      </section>
+    <!-- Slide 2: OSK (TabiSync & Kansai Emaki Washi Paper Journal) -->
+    <section id="osk" class="deck-slide pavilion-slide theme-osaka" data-slide-theme="osk" data-pavilion-id="osk" data-theme-color="#F4A7B9" data-secondary-color="#FAF8F2">
+      <div class="pavilion-slot slide-slot" id="slot-osk"></div>
+    </section>
 
-      <section id="pavilion-show" class="pavilion-section theme-showcase" data-pavilion-id="show" data-theme-color="#60a5fa" data-secondary-color="#38bdf8">
-        <div class="pavilion-slot" id="slot-show"></div>
-      </section>
+    <!-- Slide 3: SHOW (MUSEUM Flowing Gold Curated Gallery) -->
+    <section id="show" class="deck-slide pavilion-slide theme-showcase" data-slide-theme="show" data-pavilion-id="show" data-theme-color="#C5A059" data-secondary-color="#DFC48B">
+      <div class="pavilion-slot slide-slot" id="slot-show"></div>
+    </section>
 
-      <section id="pavilion-tic" class="pavilion-section theme-ticket" data-pavilion-id="tic" data-theme-color="#f59e0b" data-secondary-color="#fbbf24">
-        <div class="pavilion-slot" id="slot-tic"></div>
-      </section>
+    <!-- Slide 4: TIC (Air-Traffic Radar Intelligence) -->
+    <section id="tic" class="deck-slide pavilion-slide theme-ticket" data-slide-theme="tic" data-pavilion-id="tic" data-theme-color="#f59e0b" data-secondary-color="#fbbf24">
+      <div class="pavilion-slot slide-slot" id="slot-tic"></div>
+    </section>
 
-      <section id="pavilion-cyb" class="pavilion-section theme-cyber" data-pavilion-id="cyb" data-theme-color="#00ff9d" data-secondary-color="#05f0a0">
-        <div class="pavilion-slot" id="slot-cyb"></div>
-      </section>
-    </div>
+    <!-- Slide 5: CYB (Cyberpunk Routine Matrix & Docked Footer) -->
+    <section id="cyb" class="deck-slide pavilion-slide theme-cyber" data-slide-theme="cyb" data-pavilion-id="cyb" data-theme-color="#00ff9d" data-secondary-color="#05f0a0">
+      <div class="pavilion-slot slide-slot" id="slot-cyb"></div>
+      
+      <!-- Docked Hub Footer inside last slide -->
+      <footer class="hub-footer-docked">
+        <div class="footer-inner">
+          <div class="footer-brand-claim">
+            <strong>AeschyJ Hub</strong> &copy; 2026. 零成本集中託管與個人專案主題展覽館架構。
+          </div>
+          <div class="footer-nav-links">
+            <a href="#hero" data-slide-id="hero">回到頂部</a>
+            <a href="https://github.com/AeschyJ" target="_blank" rel="noopener noreferrer">GitHub Profile</a>
+            <a href="./manifest.json" target="_blank">PWA Manifest</a>
+          </div>
+        </div>
+      </footer>
+    </section>
   </main>
 
-  <!-- Central Hub Footer -->
-  <footer class="hub-footer">
-    <div class="page-container footer-inner">
-      <div class="footer-brand-claim">
-        <strong>AeschyJ Hub</strong> &copy; 2026. 零成本集中託管與個人專案主題展覽館架構。
-      </div>
-      <div class="footer-nav-links">
-        <a href="#hero-section">回到頂部</a>
-        <a href="https://github.com/AeschyJ" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="./manifest.json" target="_blank">PWA Manifest</a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Floating Back-to-Top Indicator -->
-  <button id="back-to-top" class="back-to-top-btn" aria-label="回航至頂部">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
-      <path d="m18 15-6-6-6 6"/>
-    </svg>
-  </button>
+  <!-- Right Floating Viewport Indicator Dock (極簡全景錨點切換器) -->
+  <aside id="viewport-indicator-dock" class="viewport-indicator-dock" aria-label="展館全景快速導航">
+    <button class="indicator-dot is-active" data-target-slide="hero" data-label="門戶核心" aria-label="前往門戶核心"></button>
+    <button class="indicator-dot" data-target-slide="exp" data-label="碩論科研 (EXP)" aria-label="前往知識圖推薦研究室"></button>
+    <button class="indicator-dot" data-target-slide="osk" data-label="關西旅誌 (OSK)" aria-label="前往夏之栞行旅手帖"></button>
+    <button class="indicator-dot" data-target-slide="show" data-label="藏品藝廊 (SHOW)" aria-label="前往當代典藏藝廊"></button>
+    <button class="indicator-dot" data-target-slide="tic" data-label="票務獵手 (TIC)" aria-label="前往航管雷達票務獵手"></button>
+    <button class="indicator-dot" data-target-slide="cyb" data-label="賽博矩陣 (CYB)" aria-label="前往賽博習慣矩陣"></button>
+  </aside>
 
   <!-- Hub Application Engine Entry Point -->
   <script type="module" src="js/app.js"></script>
