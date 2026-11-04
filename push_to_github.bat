@@ -33,7 +33,7 @@ git diff --cached --quiet
 if %ERRORLEVEL% neq 0 (
     echo Committing changes...
     git commit -m "feat(portal): migrate to 100dvh scroll-snap architecture and v3.0.0"
-    if %ERRORLEVEL% neq 0 (
+    if errorlevel 1 (
         echo.
         echo [ERROR] Git commit failed.
         pause
