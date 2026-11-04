@@ -138,7 +138,7 @@ Cross origin requests are only supported for protocol schemes: http, https...
 為提供最極致順暢的本機開發與預覽體驗，本專案實施兩道全方位防護：
 1. **Windows 一鍵啟動批次檔 (`啟動預覽.bat`)**：
    * 遵循 Windows 批次腳本防錯最高標準（UTF-8 編碼、`chcp 65001`、無中文亂碼路徑容錯）。
-   * **自動環境探測（Failover Fallback）**：依序偵測系統中是否安裝 `python` ➔ `py` ➔ `node` (http-server/serve) ➔ `uv`，自動選用最佳工具在後台啟動 `http://localhost:8000`。
+   * **自動環境探測（Failover Fallback）**：依序偵測系統中是否安裝 `python` ➔ `py` ➔ `node` (http-server/serve) ➔ `uv`，自動選用最佳工具在後台啟動 `http://localhost:5173`。
    * **自動開啟瀏覽器**：伺服器建立後自動開啟預設瀏覽器跳轉至首頁，完全免除 CORS 阻擋。
 2. **友善防呆指引橫幅 (`index.html`)**：
    * 若使用者依然直接透過 `file:///` 雙擊開啟 `index.html`，頁面頂部會自動偵測 `window.location.protocol === 'file:'`，並以高質感的琥珀金浮動橫幅溫馨提示使用者點擊 `啟動預覽.bat`。

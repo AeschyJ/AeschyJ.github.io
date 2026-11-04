@@ -72,8 +72,8 @@ def log_step(step_num: int, total_steps: int, title: str):
 # =============================================================================
 # 全域路徑設定與常數定義
 # =============================================================================
-BASE_DIR = Path(__file__).resolve().parent.parent  # d:\Liao\Documents\Antigravity\Github Page
-WORKSPACE_ROOT = BASE_DIR.parent                   # d:\Liao\Documents\Antigravity
+BASE_DIR = Path(__file__).resolve().parent.parent  # Github Page root
+WORKSPACE_ROOT = BASE_DIR.parent                   # Workspace root
 
 # 單檔大小安全閾值 (GitHub 單檔上限 100MB，設置 95MB 作為安全警戒線)
 MAX_FILE_SIZE_BYTES = 95 * 1024 * 1024

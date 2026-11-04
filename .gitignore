@@ -1,0 +1,7 @@
+# Internal handover snapshot
+HANDOVER.md
+
+# OS and temporary files
+*.log
+.DS_Store
+Thumbs.db

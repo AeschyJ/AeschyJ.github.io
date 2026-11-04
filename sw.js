@@ -1,10 +1,11 @@
 // Central Portal Hub - Dedicated Service Worker
 // Cache Name Scope: hub-portal-cache-* (Guaranteed not to clash with subproject caches)
-const CACHE_NAME = 'hub-portal-cache-v2';
+const CACHE_NAME = 'hub-portal-cache-v3';
 
 const PORTAL_ASSETS = [
   './',
   './index.html',
+  './index_legacy.html',
   './manifest.json',
   './css/base.css',
   './css/ambient.css',
@@ -45,7 +46,7 @@ self.addEventListener('activate', (event) => {
             console.log(`[Portal SW] Purging legacy hub cache: ${key}`);
             return caches.delete(key);
           }
-          // Preserve any other project caches intact (e.g. cyber-cache-*, osaka-cache-*)
+          // Preserve any other project caches intact (e.g. tabisync-*, museum-showcase-*, cyber-routine-cache-*)
           return Promise.resolve();
         })
       );

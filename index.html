@@ -1,310 +1,878 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#09090B" />
+  <link rel="manifest" href="manifest.json" />
   <title>AESCHY | From Research to Wanderlust</title>
-  <meta name="description" content="AESCHY — 研析成文，行旅作卷。聚合科研實驗、關西行旅繪卷、當代典藏藝廊與生活數位矩陣的個人策展全景。">
-  <meta name="theme-color" content="#08090d">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%2308090d'/><circle cx='50' cy='50' r='30' fill='none' stroke='%23a855f7' stroke-width='8'/><circle cx='50' cy='50' r='14' fill='%2360a5fa'/></svg>">
-
-  <!-- Google Fonts: Luxury Serif, Japanese Mincho & Modern Display Sans -->
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Shippori+Mincho:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Core Design System & Ambient Optics -->
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/ambient.css">
-  <link rel="stylesheet" href="css/components.css">
-
-  <!-- Individual Specialized Pavilions Stylesheets -->
-  <link rel="stylesheet" href="css/pavilions/experiment.css">
-  <link rel="stylesheet" href="css/pavilions/osaka.css">
-  <link rel="stylesheet" href="css/pavilions/showcase.css">
-  <link rel="stylesheet" href="css/pavilions/ticket.css">
-  <link rel="stylesheet" href="css/pavilions/cyber.css">
   <script>
-    // Protocol Origin Check (Detect file:/// direct opening and provide prompt)
-    if (window.location.protocol === 'file:') {
-      window.addEventListener('DOMContentLoaded', function() {
-        var banner = document.createElement('div');
-        banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:linear-gradient(135deg,#e11d48,#be123c);color:#ffffff;padding:14px 24px;font-family:sans-serif;font-size:14px;box-shadow:0 8px 32px rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:space-between;gap:16px;line-height:1.5;';
-        banner.innerHTML = '<div style="display:flex;align-items:center;gap:12px;"><span style="font-size:22px;">⚠️</span><div><strong>瀏覽器 CORS 安全限制提醒：</strong><br><span style="font-size:13px;opacity:0.95;">您目前透過 <code>file://</code> 協定直接開啟。因現代瀏覽器安全政策，ES Module 模組與 PWA 快取需在 HTTP 伺服器下運行。請雙擊目錄下的 <strong>「啟動預覽.bat」</strong>（或執行 <code>python -m http.server</code>），即可在 <code>http://localhost:8000</code> 完美體驗全功能！</span></div></div><button onclick="this.parentElement.remove()" style="background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.5);color:#fff;padding:6px 14px;border-radius:4px;cursor:pointer;font-weight:600;white-space:nowrap;">我知道了</button>';
-        document.body.prepend(banner);
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
+            serif: ['Playfair Display', 'Noto Serif TC', 'serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          transitionTimingFunction: {
+            'expo-out': 'cubic-bezier(0.16, 1, 0.3, 1)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .tabular-nums { font-variant-numeric: tabular-nums; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-[#09090B] text-[#F4F4F5] font-sans antialiased selection:bg-white/20 overflow-hidden">
+
+  <!-- =====================================================================
+       GLOBAL HUD NAVBAR (Mode D: Apple Fluid Glass)
+  ====================================================================== -->
+  <header class="fixed top-3 md:top-4 inset-x-0 z-50 flex justify-center px-3 pointer-events-none">
+    <nav class="pointer-events-auto relative flex items-center justify-between gap-1.5 p-1.5 rounded-3xl bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 ring-1 ring-inset ring-white/[0.15] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.7)] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/35 before:to-transparent max-w-full overflow-x-auto no-scrollbar">
+      
+      <a href="#hero" class="px-3.5 py-1.5 rounded-2xl text-xs font-serif tracking-[0.2em] text-white font-semibold hover:bg-white/[0.08] active:scale-[0.97] transition-all duration-200 shrink-0">
+        AESCHY
+      </a>
+
+      <div class="h-3.5 w-px bg-white/10 shrink-0 hidden sm:block"></div>
+
+      <div class="flex items-center gap-0.5 shrink-0">
+        <a href="#exp" class="nav-pill px-2.5 py-1.5 rounded-2xl text-xs text-zinc-300 hover:text-white hover:bg-white/[0.06] active:scale-[0.97] transition-all duration-200 flex items-center gap-1">
+          <span class="font-mono tabular-nums text-[10px] text-zinc-500">01</span>
+          <span>碩論科研</span>
+        </a>
+        <a href="#osk" class="nav-pill px-2.5 py-1.5 rounded-2xl text-xs text-zinc-300 hover:text-white hover:bg-white/[0.06] active:scale-[0.97] transition-all duration-200 flex items-center gap-1">
+          <span class="font-mono tabular-nums text-[10px] text-zinc-500">02</span>
+          <span>關西旅誌</span>
+        </a>
+        <a href="#show" class="nav-pill px-2.5 py-1.5 rounded-2xl text-xs text-zinc-300 hover:text-white hover:bg-white/[0.06] active:scale-[0.97] transition-all duration-200 flex items-center gap-1">
+          <span class="font-mono tabular-nums text-[10px] text-zinc-500">03</span>
+          <span>虛實典藏</span>
+        </a>
+        <a href="#ops" class="nav-pill px-2.5 py-1.5 rounded-2xl text-xs text-zinc-300 hover:text-white hover:bg-white/[0.06] active:scale-[0.97] transition-all duration-200 flex items-center gap-1">
+          <span class="font-mono tabular-nums text-[10px] text-zinc-500">04</span>
+          <span>自動腳本</span>
+        </a>
+        <a href="#ai" class="nav-pill px-2.5 py-1.5 rounded-2xl text-xs text-zinc-300 hover:text-white hover:bg-white/[0.06] active:scale-[0.97] transition-all duration-200 flex items-center gap-1">
+          <span class="font-mono tabular-nums text-[10px] text-zinc-500">05</span>
+          <span>本地智算</span>
+        </a>
+      </div>
+
+      <div class="h-3.5 w-px bg-white/10 shrink-0"></div>
+
+      <button onclick="toggleDrawer(true)" class="px-2.5 py-1.5 rounded-2xl text-xs text-zinc-300 hover:text-white hover:bg-white/[0.08] active:scale-[0.97] transition-all duration-200 flex items-center gap-1 shrink-0" aria-label="展館目錄">
+        <i data-lucide="compass" class="w-3.5 h-3.5 stroke-[1.5]"></i>
+        <span class="hidden md:inline font-mono tabular-nums text-[10px]">INDEX</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Right-Side Full-Page Snap Progress Indicator -->
+  <aside class="fixed right-4 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col gap-2.5">
+    <a href="#hero" data-dot="hero" class="snap-dot w-1.5 h-6 rounded-full bg-white transition-all duration-300" title="00. 門戶核心"></a>
+    <a href="#exp" data-dot="exp" class="snap-dot w-1.5 h-1.5 rounded-full bg-white/25 hover:bg-white/60 transition-all duration-300" title="01. 碩論科研"></a>
+    <a href="#osk" data-dot="osk" class="snap-dot w-1.5 h-1.5 rounded-full bg-white/25 hover:bg-white/60 transition-all duration-300" title="02. 關西旅誌"></a>
+    <a href="#show" data-dot="show" class="snap-dot w-1.5 h-1.5 rounded-full bg-white/25 hover:bg-white/60 transition-all duration-300" title="03. 虛實典藏"></a>
+    <a href="#ops" data-dot="ops" class="snap-dot w-1.5 h-1.5 rounded-full bg-white/25 hover:bg-white/60 transition-all duration-300" title="04. 自動腳本"></a>
+    <a href="#ai" data-dot="ai" class="snap-dot w-1.5 h-1.5 rounded-full bg-white/25 hover:bg-white/60 transition-all duration-300" title="05. 本地智算"></a>
+  </aside>
+
+  <!-- =====================================================================
+       MAIN FULL-PAGE SCROLL-SNAP CONTAINER (1 Pavilion = 100dvh)
+  ====================================================================== -->
+  <main id="snap-container" class="h-[100dvh] w-full overflow-y-scroll snap-y snap-mandatory scroll-smooth no-scrollbar">
+
+    <!-- ===================================================================
+         00. 門戶核心大廳 (#hero) — 100dvh Snap Slide
+    ==================================================================== -->
+    <section id="hero" class="snap-section h-[100dvh] w-full snap-start snap-always relative flex flex-col justify-center px-6 md:px-16 pt-14 bg-[#0D0D0C] text-[#EAE6DF] overflow-hidden border-b border-white/[0.06]">
+      <div class="absolute bottom-2 right-4 font-serif text-[19vw] leading-[0.8] tracking-[-0.06em] text-white/[0.025] select-none pointer-events-none z-0">
+        AESCHY
+      </div>
+
+      <div class="max-w-5xl mx-auto w-full relative z-10">
+        <div class="flex items-center gap-3.5 mb-6">
+          <span class="inline-flex border-[1.5px] border-[#D95338] text-[#D95338] px-1.5 py-1.5 font-serif text-[11px] [writing-mode:vertical-rl] tracking-widest leading-none select-none">
+            虛實造物
+          </span>
+          <div class="text-xs font-mono tabular-nums tracking-[0.2em] uppercase text-[#78756E]">
+            FROM RESEARCH TO WANDERLUST // PERSONAL ARCHIVE
+          </div>
+        </div>
+
+        <h1 class="font-serif text-3xl sm:text-5xl md:text-6xl font-light tracking-[-0.02em] leading-[1.18]">
+          研析成文，行旅作卷；<br />
+          <span class="text-[#9E9A90]">虛實入冊，造物常行。</span>
+        </h1>
+
+        <!-- 5-Pavilion Curatorial Taxonomy Matrix -->
+        <div class="mt-10 pt-6 border-t border-white/10 grid grid-cols-2 sm:grid-cols-5 gap-4 text-xs">
+          <a href="#exp" class="group p-3 bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.06] transition-all">
+            <div class="font-mono tabular-nums text-[10px] text-[#D95338]">01 // 研析成文</div>
+            <div class="font-medium text-[#EAE6DF] mt-1 group-hover:translate-x-0.5 transition-transform">碩論科研</div>
+            <div class="text-[11px] text-[#78756E] mt-0.5">GNN · XAI · CSR</div>
+          </a>
+          <a href="#osk" class="group p-3 bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.06] transition-all">
+            <div class="font-mono tabular-nums text-[10px] text-[#D95338]">02 // 行旅作卷</div>
+            <div class="font-medium text-[#EAE6DF] mt-1 group-hover:translate-x-0.5 transition-transform">關西旅誌</div>
+            <div class="text-[11px] text-[#78756E] mt-0.5">京都大阪獨立策展</div>
+          </a>
+          <a href="#show" class="group p-3 bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.06] transition-all">
+            <div class="font-mono tabular-nums text-[10px] text-[#C5A880]">03 // 虛實入冊</div>
+            <div class="font-medium text-[#EAE6DF] mt-1 group-hover:translate-x-0.5 transition-transform">虛實典藏</div>
+            <div class="text-[11px] text-[#78756E] mt-0.5">香氛器物 × 楓谷圖鑑</div>
+          </a>
+          <a href="#ops" class="group p-3 bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.06] transition-all">
+            <div class="font-mono tabular-nums text-[10px] text-[#FACC15]">04 // 造物常行 I</div>
+            <div class="font-medium text-[#EAE6DF] mt-1 group-hover:translate-x-0.5 transition-transform">自動腳本</div>
+            <div class="text-[11px] text-[#78756E] mt-0.5">票務獵手 × 封裝管線</div>
+          </a>
+          <a href="#ai" class="group p-3 bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.06] transition-all col-span-2 sm:col-span-1">
+            <div class="font-mono tabular-nums text-[10px] text-sky-400">05 // 造物常行 II</div>
+            <div class="font-medium text-[#EAE6DF] mt-1 group-hover:translate-x-0.5 transition-transform">本地智算</div>
+            <div class="text-[11px] text-[#78756E] mt-0.5">ASR 語音 × LLM 轉譯</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         01. 碩論科研 (#exp) — 100dvh Snap Slide (Mode C Academic + XAI)
+    ==================================================================== -->
+    <section id="exp" class="snap-section h-[100dvh] w-full snap-start snap-always relative flex flex-col justify-center px-6 md:px-16 pt-14 bg-[#11100F] text-[#F2EFE9] overflow-hidden border-b border-white/[0.06]">
+      <div class="absolute -top-4 left-4 font-serif text-[16vw] md:text-[12vw] leading-[0.8] tracking-[-0.05em] text-white/[0.03] select-none pointer-events-none z-0">
+        01 / THESIS
+      </div>
+
+      <div class="max-w-6xl mx-auto w-full relative z-10 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-10 items-center">
+        <!-- Left 5-Col Thesis Overview -->
+        <div class="md:col-span-5">
+          <div class="w-8 h-px bg-[#C5A880]/60 mb-3"></div>
+          <div class="text-[11px] font-mono tabular-nums tracking-[0.15em] uppercase text-[#8C867E]">
+            01 // ACADEMIC RESEARCH · 研析成文
+          </div>
+          <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-light tracking-[-0.02em] leading-snug mt-2">
+            應用知識圖注意力網路於食譜推薦之效能評估與可解釋性研究 (Recipe-Recommendation-KGAT)
+          </h2>
+          <p class="mt-3 text-xs leading-relaxed text-[#8C867E] line-clamp-3 md:line-clamp-none">
+            國立臺灣大學生物機電工程研究所 (NTU ESOE / BIME) 碩論，基於 GNN 關係感知注意力與 CSR 稀疏矩陣之高擴展推薦架構。
+          </p>
+
+          <div class="mt-5 pt-4 border-t border-white/[0.08] grid grid-cols-2 gap-2 text-[11px] font-mono tabular-nums text-[#8C867E]">
+            <div>INSTITUTION: <span class="text-[#F2EFE9]">NTU ESOE (國立臺灣大學生物機電工程研究所)</span></div>
+            <div>MATRIX: <span class="text-[#C5A880]">CSR O(|E|)</span></div>
+          </div>
+
+          <div class="mt-5 flex flex-wrap gap-2.5">
+            <a href="https://github.com/AeschyJ/Recipe-Recommendation-KGAT" target="_blank" rel="noopener" class="px-3.5 py-2 bg-[#F2EFE9] text-[#11100F] text-xs font-mono font-medium rounded hover:bg-[#C5A880] active:scale-[0.98] transition-all flex items-center gap-1.5">
+              <span>互動 Demo 網站</span>
+              <i data-lucide="external-link" class="w-3.5 h-3.5 stroke-[1.5]"></i>
+            </a>
+            <a href="https://github.com/AeschyJ/Recipe-Recommendation-KGAT" target="_blank" rel="noopener" class="px-3.5 py-2 border border-white/15 text-[#F2EFE9] text-xs font-mono rounded hover:bg-white/[0.05] active:scale-[0.98] transition-all">
+              PAPER / GITHUB
+            </a>
+          </div>
+        </div>
+
+        <!-- Right 7-Col Compact Interactive XAI & CSR Panel -->
+        <div class="md:col-span-7 bg-[#181715] p-5 border border-white/[0.07] space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-white/[0.06]">
+            <span class="text-xs font-mono tabular-nums text-[#C5A880]">XAI ATTENTION PATH // 推理路徑聚光燈</span>
+            <div class="flex gap-1.5">
+              <button onclick="switchXaiPath(1)" id="xai-btn-1" class="px-2.5 py-1 text-[11px] font-mono tabular-nums bg-white/10 text-white rounded-[2px]">Path α (0.84)</button>
+              <button onclick="switchXaiPath(2)" id="xai-btn-2" class="px-2.5 py-1 text-[11px] font-mono tabular-nums text-[#8C867E] hover:text-white rounded-[2px]">Path β (0.62)</button>
+            </div>
+          </div>
+
+          <div class="h-36 md:h-44 flex items-center justify-center bg-[#11100F] border border-white/[0.04] px-3">
+            <svg class="w-full h-full max-w-md" viewBox="0 0 400 140">
+              <line x1="60" y1="70" x2="200" y2="120" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="3 3" />
+              <line x1="200" y1="120" x2="340" y2="70" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="3 3" />
+              <line id="edge-p1-a" x1="60" y1="70" x2="200" y2="25" stroke="#C5A880" stroke-width="2" />
+              <line id="edge-p1-b" x1="200" y1="25" x2="340" y2="70" stroke="#C5A880" stroke-width="2" />
+              <line id="edge-p2-a" x1="60" y1="70" x2="200" y2="70" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+              <line id="edge-p2-b" x1="200" y1="70" x2="340" y2="70" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" />
+              <circle cx="60" cy="70" r="15" fill="#181715" stroke="#F2EFE9" stroke-width="1.5" />
+              <text x="60" y="73" text-anchor="middle" fill="#F2EFE9" font-size="8" font-family="JetBrains Mono">User</text>
+              <circle id="node-e1" cx="200" cy="25" r="16" fill="#181715" stroke="#C5A880" stroke-width="2" />
+              <text x="200" y="28" text-anchor="middle" fill="#C5A880" font-size="8" font-family="JetBrains Mono">Entity_1</text>
+              <circle id="node-e2" cx="200" cy="70" r="14" fill="#181715" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" />
+              <text x="200" y="73" text-anchor="middle" fill="#8C867E" font-size="8" font-family="JetBrains Mono">Entity_2</text>
+              <circle cx="340" cy="70" r="15" fill="#181715" stroke="#F2EFE9" stroke-width="1.5" />
+              <text x="340" y="73" text-anchor="middle" fill="#F2EFE9" font-size="8" font-family="JetBrains Mono">Item</text>
+            </svg>
+          </div>
+
+          <!-- Compact CSR Bar -->
+          <div class="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-mono tabular-nums">
+            <span class="text-[#8C867E]">CSR SPARSE MATRIX MEMORY</span>
+            <span class="text-[#C5A880]">56.74 MB (精省 92.8%) · 190.82 ms (~68x 提速) · Fidelity+ 94.2%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         02. 關西旅誌 (#osk) — 100dvh Snap Slide (Mode B: Japanese Zine)
+    ==================================================================== -->
+    <section id="osk" class="snap-section h-[100dvh] w-full snap-start snap-always relative flex flex-col justify-center px-4 md:px-16 pt-14 bg-[#F4F1EA] text-[#1C1B18] overflow-hidden">
+      <div class="max-w-5xl mx-auto w-full border-t-[1.5px] border-b-[1.5px] border-[#1C1B18] py-6 md:py-10 relative">
+        
+        <div class="absolute top-3 right-2 md:top-6 md:right-4 z-20 bg-[#F4F1EA]/90 py-1 px-1 [writing-mode:vertical-rl] tracking-[0.25em] text-[10px] font-serif uppercase opacity-70 select-none">
+          <span>02 // KANSAI CHRONICLE · 行旅作卷</span>
+        </div>
+
+        <div class="flex items-center justify-between border-b border-[#1C1B18]/15 pb-3 mb-6 pr-8">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex border-[1.5px] border-[#B8332A] text-[#B8332A] px-1.5 py-1 font-serif text-[10px] [writing-mode:vertical-rl] tracking-widest leading-none select-none">
+              關西紀行
+            </span>
+            <div>
+              <div class="font-mono tabular-nums text-[10px] tracking-widest text-[#6E6A63]">02 // TRAVELOGUE ARCHIVE</div>
+              <h2 class="font-serif text-xl md:text-2xl font-medium tracking-tight">關西旅誌：古都街廓與日常切面</h2>
+            </div>
+          </div>
+          <span class="font-mono tabular-nums text-xs text-[#6E6A63] hidden sm:inline">35.0116° N, 135.7681° E</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 items-center">
+          <div class="md:col-span-7 border-r border-[#1C1B18]/15 md:pr-5">
+            <div class="aspect-[16/9] max-h-[38dvh] md:max-h-[46dvh] w-full bg-[#1C1B18] overflow-hidden rounded-none relative">
+              <img src="./osaka/Photos_web/金閣寺/IMG_20260827_111809_thumb.jpg" alt="金閣寺" class="w-full h-full object-cover contrast-110 transition-transform duration-700 hover:scale-[1.02]" />
+              <span class="absolute bottom-2 left-2 bg-[#F4F1EA] px-2 py-0.5 text-[10px] font-mono tabular-nums text-[#1C1B18]">
+                金閣寺 鹿苑寺・鏡湖池舍利殿 (2026 夏)
+              </span>
+            </div>
+          </div>
+
+          <div class="md:col-span-5 bg-[#F4F1EA] p-4 md:p-6 border border-[#1C1B18]/20 rounded-none -mt-6 mx-3 md:mt-0 md:mx-0 md:-ml-12 z-10">
+            <div class="text-[10px] font-mono tabular-nums text-[#B8332A] mb-1">KYOTO · OSAKA // 2026 盛夏 · 11 日全紀行 · 305 幀</div>
+            <h3 class="font-serif text-lg md:text-2xl font-medium tracking-tight leading-snug">
+              名阪京奈 夏日巡行手帖：古都街廓與日常切面
+            </h3>
+            <p class="mt-2.5 text-xs leading-relaxed text-[#6E6A63] line-clamp-3">
+              穿梭於鴨川晚風、伏見稻荷千本鳥居與金閣寺鏡湖金光，記錄名阪京奈十一日漫遊手帖。收錄 305 幀高畫質實訪紀行寫真，以和紙浮世繪風格呈現日本歷史街廓的深沉寧靜。
+            </p>
+            <div class="my-3.5 h-px bg-gradient-to-r from-transparent via-[#1C1B18]/30 to-transparent"></div>
+            <div class="flex items-center gap-4">
+              <a href="./osaka/" class="group inline-flex items-center gap-2 text-xs font-mono tabular-nums text-[#1C1B18]">
+                <span class="relative pb-0.5">
+                  閱讀完整旅誌卷軸 (305 幀)
+                  <span class="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#B8332A] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-expo-out"></span>
+                </span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5 stroke-[1.5] text-[#B8332A]"></i>
+              </a>
+              <a href="./osaka/magazine.html" class="group inline-flex items-center gap-1.5 text-xs font-mono tabular-nums text-[#6E6A63] hover:text-[#1C1B18]">
+                <span>繪卷雜誌</span>
+                <i data-lucide="book-open" class="w-3.5 h-3.5 stroke-[1.5]"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         03. 虛實典藏 (#show) — 100dvh Snap Slide 【展示類：實體選物 ⇄ 楓之谷裝備】
+         Sub-Mode 3A: 實體選物 (Mode C: Quiet Luxury Salon)
+         Sub-Mode 3B: 數位圖鑑・楓之谷裝備 (Mode A: High-Density Telemetry)
+    ==================================================================== -->
+    <section id="show" class="snap-section h-[100dvh] w-full snap-start snap-always relative flex flex-col justify-center px-4 md:px-16 pt-14 bg-[#11100F] text-[#F2EFE9] overflow-hidden border-b border-white/[0.06] transition-colors duration-500">
+      <div class="max-w-5xl mx-auto w-full relative z-10">
+        
+        <!-- Pavilion 03 Header + Physical/Digital Showcase Switcher -->
+        <div class="flex flex-wrap items-end justify-between gap-4 pb-5 border-b border-white/[0.08]">
+          <div>
+            <div class="text-[11px] font-mono tabular-nums tracking-[0.15em] uppercase text-[#8C867E]">
+              03 // CURATED SHOWCASE · 虛實入冊 (展示與圖鑑類)
+            </div>
+            <h2 class="font-serif text-2xl md:text-4xl font-light tracking-[-0.02em] mt-1">
+              虛實典藏：器物美學與數據圖鑑
+            </h2>
+          </div>
+
+          <!-- Switcher: Physical Objects (Mode C) vs. MapleStory Armory (Mode A) -->
+          <div class="flex p-1 rounded-xl bg-black/40 border border-white/10">
+            <button onclick="switchShowcase('physical')" id="btn-show-phys" class="px-3 py-1.5 rounded-lg text-xs font-mono tabular-nums bg-[#C5A880] text-[#11100F] font-medium transition-all flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 stroke-[1.5]"></i>
+              <span>實體器物 (香氛·聲學)</span>
+            </button>
+            <button onclick="switchShowcase('maple')" id="btn-show-maple" class="px-3 py-1.5 rounded-lg text-xs font-mono tabular-nums text-zinc-400 hover:text-white transition-all flex items-center gap-1.5">
+              <i data-lucide="grid" class="w-3.5 h-3.5 stroke-[1.5]"></i>
+              <span>數位圖鑑 (楓之谷裝備)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- SUB-PANEL 3A: 實體選物藝廊 (Mode C: Museum Plaques) -->
+        <div id="showcase-physical" class="mt-6 flex md:grid md:grid-cols-12 overflow-x-auto md:overflow-visible snap-x snap-mandatory gap-6 md:gap-10 no-scrollbar items-center">
+          <div class="snap-center shrink-0 w-[78vw] md:w-auto md:col-span-6">
+            <div class="aspect-[16/10] max-h-[36dvh] w-full overflow-hidden bg-[#181715]">
+              <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=900&q=80" alt="Fragrances" class="w-full h-full object-cover transition-transform duration-700 hover:scale-[1.03] opacity-90" />
+            </div>
+            <div class="w-4/5 md:w-[70%] ml-auto mt-3 pt-2">
+              <div class="w-8 h-px bg-[#C5A880]/60 mb-2"></div>
+              <div class="text-[10px] tracking-[0.15em] uppercase text-[#8C867E] font-mono tabular-nums">01 / OLFACTORY ARCHIVE</div>
+              <div class="font-serif text-lg text-[#F2EFE9]">Le Labo · Guerlain · ELDO · Masque Milano</div>
+              <p class="text-xs text-[#8C867E] mt-1 line-clamp-2">珍藏 Le Labo Santal 33 煙燻雪松皮革香調、Guerlain 經典沙龍香氣、ELDO 與 Masque Milano 歌劇詠嘆調系列，構築專屬嗅覺記憶空間。</p>
+            </div>
+          </div>
+
+          <div class="snap-center shrink-0 w-[78vw] md:w-auto md:col-span-6 md:mt-10">
+            <div class="aspect-[16/10] max-h-[36dvh] w-full overflow-hidden bg-[#181715]">
+              <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=900&q=80" alt="Acoustic" class="w-full h-full object-cover transition-transform duration-700 hover:scale-[1.03] opacity-90" />
+            </div>
+            <div class="w-4/5 md:w-[70%] ml-auto mt-3 pt-2">
+              <div class="w-8 h-px bg-[#C5A880]/60 mb-2"></div>
+              <div class="text-[10px] tracking-[0.15em] uppercase text-[#8C867E] font-mono tabular-nums">02 / ACOUSTIC &amp; CRAFT</div>
+              <div class="font-serif text-lg text-[#F2EFE9]">Beyerdynamic DT 770 Pro &amp; Daily Craft</div>
+              <p class="text-xs text-[#8C867E] mt-1 line-clamp-2">德製 Beyerdynamic DT 770 Pro 專業監聽耳機，純淨聲學分析與寬闊音場，搭配台灣高山茶器工藝與日常手作革履。</p>
+              <a href="./showcase/" class="inline-flex items-center gap-1.5 text-xs font-mono text-[#C5A880] hover:underline mt-2">
+                <span>典藏藝廊直通</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5 stroke-[1.5]"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUB-PANEL 3B: 數位角色圖鑑 — 楓之谷裝備遙測 (Mode A: High-Density Telemetry) -->
+        <div id="showcase-maple" style="display: none;" class="mt-6 grid grid-cols-1 md:grid-cols-[210px_1fr] gap-5 items-start">
+          <div class="bg-[#121215] p-3 rounded border border-white/[0.06] border-t-white/[0.12] mx-auto md:mx-0 w-full max-w-[230px]">
+            <div class="flex justify-between text-[10px] font-mono tabular-nums text-[#71717A] pb-1.5 border-b border-white/[0.06]">
+              <span>5x6 EQUIP MATRIX</span>
+              <span>STARFORCE</span>
+            </div>
+            <div id="maple-grid" class="grid grid-cols-5 gap-1 mt-2"></div>
+            <div class="mt-3 pt-2 border-t border-white/[0.06]">
+              <div class="flex justify-between text-[10px] font-mono tabular-nums text-[#71717A] mb-1">
+                <span>SYMBOLS (6)</span>
+                <span class="text-zinc-300">MAX</span>
+              </div>
+              <div class="grid grid-cols-6 gap-1 h-1.5">
+                <div class="bg-white/25 rounded-[1px]"></div>
+                <div class="bg-white/25 rounded-[1px]"></div>
+                <div class="bg-white/25 rounded-[1px]"></div>
+                <div class="bg-white/25 rounded-[1px]"></div>
+                <div class="bg-white/25 rounded-[1px]"></div>
+                <div class="bg-amber-400 rounded-[1px]"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-[#121215] p-4 md:p-5 rounded border border-white/[0.06] border-t-white/[0.12]">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-white/[0.06]">
+              <div class="flex flex-wrap gap-4 md:gap-6 font-mono tabular-nums">
+                <div>
+                  <div class="text-[10px] text-[#71717A]">COMBAT POWER</div>
+                  <div class="text-lg font-semibold text-white">1.25 億</div>
+                </div>
+                <div>
+                  <div class="text-[10px] text-[#71717A]">LEGION / UNION</div>
+                  <div class="text-lg font-semibold text-white">9000</div>
+                </div>
+                <div>
+                  <div class="text-[10px] text-[#71717A]">STAR FORCE</div>
+                  <div class="text-lg font-semibold text-white">302★</div>
+                </div>
+                <div>
+                  <div class="text-[10px] text-[#71717A]">STATUS</div>
+                  <div class="text-lg font-semibold text-emerald-400">創世解放</div>
+                </div>
+              </div>
+              <button onclick="toggleMapleSpotlight()" class="px-3 py-1.5 rounded bg-[#18181D] border border-white/[0.08] hover:bg-white/[0.06] active:scale-[0.98] transition-all flex items-center gap-1.5 text-xs font-mono tabular-nums">
+                <i data-lucide="scan-eye" class="w-3.5 h-3.5 stroke-[1.5] text-rose-500"></i>
+                <span id="maple-spotlight-text">啟動抓漏聚光燈</span>
+              </button>
+            </div>
+
+            <div class="mt-3 divide-y divide-white/[0.06] text-xs font-mono tabular-nums">
+              <div class="py-2 flex justify-between items-center">
+                <span class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-rose-500"></span>[SLOT-04] 苦痛泉源 18★➔22★</span>
+                <span class="text-rose-400">18★ ➔ 22★</span>
+              </div>
+              <div class="py-2 flex justify-between items-center">
+                <span class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-rose-500"></span>[SLOT-12] 魔法之箭 雙傳</span>
+                <span class="text-rose-400">雙傳 潛能待洗</span>
+              </div>
+              <div class="py-2 flex justify-between items-center">
+                <span class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-amber-400"></span>[SLOT-19] 露曼眼罩 均2屬2攻</span>
+                <span class="text-amber-400">均2屬2攻 (樂觀混卷)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         04. 自動腳本 (#ops) — 100dvh Snap Slide 【腳本與工具類：票務獵手 ⇄ 封裝加密管線】
+         Sub-Mode 4A: 票務獵手 (Mode E: Neo-Brutalist Tactical Pop)
+         Sub-Mode 4B: 封裝加密雲端腳本 (Mode F: Aerospace FUI × DAG Blueprint)
+    ==================================================================== -->
+    <section id="ops" class="snap-section h-[100dvh] w-full snap-start snap-always relative flex flex-col justify-center px-4 md:px-16 pt-14 bg-[#0C0D10] text-[#F4F4F5] overflow-hidden border-b border-white/[0.06]">
+      <div class="max-w-5xl mx-auto w-full relative z-10">
+        
+        <!-- Pavilion 04 Header + Script Tool Switcher -->
+        <div class="flex flex-wrap items-end justify-between gap-4 pb-5 border-b border-white/10">
+          <div>
+            <div class="text-[11px] font-mono tabular-nums tracking-[0.15em] uppercase text-zinc-400">
+              04 // AUTOMATION &amp; SCRIPTS · 造物常行 I (腳本與高頻工具類)
+            </div>
+            <h2 class="text-2xl md:text-3xl font-bold tracking-tight mt-1">
+              自動化腳本軍火庫
+            </h2>
+          </div>
+
+          <div class="flex p-1 rounded-xl bg-[#16181E] border border-white/10">
+            <button onclick="switchOps('ticket')" id="btn-ops-ticket" class="px-3 py-1.5 rounded-lg text-xs font-mono tabular-nums bg-[#FACC15] text-[#09090B] font-bold transition-all flex items-center gap-1.5">
+              <i data-lucide="zap" class="w-3.5 h-3.5 stroke-[1.75]"></i>
+              <span>票務獵手 (Ticket HUD)</span>
+            </button>
+            <button onclick="switchOps('dag')" id="btn-ops-dag" class="px-3 py-1.5 rounded-lg text-xs font-mono tabular-nums text-zinc-400 hover:text-white transition-all flex items-center gap-1.5">
+              <i data-lucide="terminal" class="w-3.5 h-3.5 stroke-[1.5]"></i>
+              <span>封裝加密雲端管線 (Archiver)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- SUB-PANEL 4A: 票務獵手 (Mode E: Neo-Brutalist Tactical Pop) -->
+        <div id="ops-ticket" class="mt-6 bg-[#16181E] border-2 border-zinc-100 shadow-[6px_6px_0px_0px_#F4F4F5] p-5 md:p-8">
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-white/10">
+            <span class="text-xs font-mono tabular-nums text-[#FACC15]">HIGH-VELOCITY TICKET ACQUISITION STATE MACHINE</span>
+            <div class="bg-[#0C0D10] border-2 border-zinc-100 px-3 py-1 font-mono tabular-nums text-xs flex items-center gap-2">
+              <i data-lucide="timer" class="w-3.5 h-3.5 stroke-[1.5] text-[#FACC15]"></i>
+              <span class="text-[#FACC15] font-semibold">00:00:08.42</span>
+            </div>
+          </div>
+
+          <div class="mt-4 h-2.5 rounded-full overflow-hidden bg-white/[0.08]">
+            <div id="tic-bar" class="h-full w-1/3 bg-[#FACC15] transition-all duration-200 ease-expo-out rounded-full"></div>
+          </div>
+
+          <div class="mt-5 grid grid-cols-1 md:grid-cols-3 gap-3">
+            <button onclick="selectTicStage(this, '33%', 'STAGE 01 // 30s 巡航監控讓票席位，即時連號優先鎖定與區域過濾 (Cloudflare Worker 邊緣中繼)')" class="tic-btn rounded-xl bg-[#FACC15] text-[#09090B] font-bold border-2 border-white shadow-[4px_4px_0px_0px_#fff] hover:-translate-y-0.5 active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all duration-100 p-3.5 text-left flex items-center justify-between">
+              <span class="text-xs font-mono tabular-nums">01. 場次與連號鎖定</span>
+              <i data-lucide="crosshair" class="w-4 h-4 stroke-[1.75]"></i>
+            </button>
+            <button onclick="selectTicStage(this, '66%', 'STAGE 02 // 驗證預熱、票夾識別與記憶體預填，表單高速注入')" class="tic-btn rounded-full bg-[#0C0D10] text-zinc-200 border-2 border-zinc-600 shadow-[4px_4px_0px_0px_#27272A] hover:-translate-y-0.5 hover:border-zinc-100 active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all duration-100 p-3.5 text-left flex items-center justify-between">
+              <span class="text-xs font-mono tabular-nums">02. 驗證與表單預填</span>
+              <i data-lucide="shield-check" class="w-4 h-4 stroke-[1.5]"></i>
+            </button>
+            <button onclick="selectTicStage(this, '100%', 'STAGE 03 // 毫秒級佇列送出、訂單確認與秒級警報推播 (Discord / LINE / Telegram 毫秒推送)')" class="tic-btn rounded-full bg-[#0C0D10] text-zinc-200 border-2 border-zinc-600 shadow-[4px_4px_0px_0px_#27272A] hover:-translate-y-0.5 hover:border-zinc-100 active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all duration-100 p-3.5 text-left flex items-center justify-between">
+              <span class="text-xs font-mono tabular-nums">03. 毫秒級佇列送出</span>
+              <i data-lucide="send" class="w-4 h-4 stroke-[1.5]"></i>
+            </button>
+          </div>
+
+          <div id="tic-desc" class="mt-4 p-3 bg-[#0C0D10] border border-white/10 font-mono tabular-nums text-xs text-zinc-300">
+            STAGE 01 // Tixplus 官方讓票監控與多管道推播獵手：30s 巡航、Cloudflare Worker 邊緣中繼穿透、Discord / LINE / Telegram 毫秒推送與連號自動鎖定。
+          </div>
+        </div>
+
+        <!-- SUB-PANEL 4B: 封裝加密雲端管線 (Mode F: Aerospace FUI × DAG Blueprint) -->
+        <div id="ops-dag" class="hidden mt-6 p-5 bg-[#06080B] bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:24px_24px] border border-cyan-500/20 relative">
+          <span class="absolute -top-px -left-px w-2.5 h-2.5 border-t-2 border-l-2 border-cyan-400"></span>
+          <span class="absolute -top-px -right-px w-2.5 h-2.5 border-t-2 border-r-2 border-cyan-400"></span>
+          <span class="absolute -bottom-px -left-px w-2.5 h-2.5 border-b-2 border-l-2 border-cyan-400"></span>
+          <span class="absolute -bottom-px -right-px w-2.5 h-2.5 border-b-2 border-r-2 border-cyan-400"></span>
+
+          <div class="text-[10px] font-mono tracking-widest text-cyan-400/70 uppercase mb-3">
+            SYS.DAG // SHA-256 SPLIT ARCHIVER · MKV/CBZ MUXER · RCLONE MULTI-THREAD STREAM
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
+            <div class="md:col-span-4 space-y-2">
+              <button id="dag-btn-mkv" onclick="routeDag('mkv')" class="dag-mode-btn w-full p-2.5 bg-[#0B0F17] border border-cyan-400/50 text-left text-xs font-mono text-cyan-300 hover:bg-cyan-500/10 active:scale-[0.98] transition-all [clip-path:polygon(8px_0,100%_0,100%_calc(100%-8px),calc(100%-8px)_100%,0_100%,0_8px)]">
+                [A] 影片字幕封裝 (HEVC+ASS ➔ .mkv, Direct Stream Copy)
+              </button>
+              <button id="dag-btn-cbz" onclick="routeDag('cbz')" class="dag-mode-btn w-full p-2.5 bg-[#0B0F17] border border-white/15 text-left text-xs font-mono text-zinc-300 hover:border-cyan-400/50 active:scale-[0.98] transition-all [clip-path:polygon(8px_0,100%_0,100%_calc(100%-8px),calc(100%-8px)_100%,0_100%,0_8px)]">
+                [B] 漫畫圖集封裝 (Images ➔ .cbz)
+              </button>
+              <button id="dag-btn-sha" onclick="routeDag('sha')" class="dag-mode-btn w-full p-2.5 bg-[#0B0F17] border border-white/15 text-left text-xs font-mono text-zinc-300 hover:border-cyan-400/50 active:scale-[0.98] transition-all [clip-path:polygon(8px_0,100%_0,100%_calc(100%-8px),calc(100%-8px)_100%,0_100%,0_8px)]">
+                [C] 7-Zip AES-256 加密分割 (-mhe=on, 4GB) + Rclone 上傳 (Z: 720G)
+              </button>
+            </div>
+
+            <div class="md:col-span-4 space-y-1.5">
+              <div id="node-mux" class="p-2 bg-[#0B0F17] border border-cyan-400 text-xs font-mono tabular-nums flex justify-between">
+                <span>NODE_01 // MKV Muxer</span><span class="node-status text-cyan-400 font-semibold">ACTIVE</span>
+              </div>
+              <div id="node-cbz" class="p-2 bg-[#0B0F17] border border-white/10 opacity-20 text-xs font-mono tabular-nums flex justify-between">
+                <span>NODE_02 // CBZ Builder</span><span class="node-status text-zinc-600">IDLE</span>
+              </div>
+              <div id="node-sha" class="p-2 bg-[#0B0F17] border border-cyan-400 text-xs font-mono tabular-nums flex justify-between">
+                <span>NODE_03 // SHA-256 &amp; Split</span><span class="node-status text-cyan-400 font-semibold">ACTIVE</span>
+              </div>
+              <div id="node-rclone" class="p-2 bg-[#0B0F17] border border-cyan-400 text-xs font-mono tabular-nums flex justify-between">
+                <span>NODE_04 // Rclone Stream (Z: 720G)</span><span class="node-status text-cyan-400 font-semibold">ACTIVE</span>
+              </div>
+            </div>
+
+            <div class="md:col-span-4">
+              <div id="dag-terminal" class="h-36 bg-black/80 border border-white/10 p-3 font-mono tabular-nums text-[11px] text-zinc-300 overflow-y-auto space-y-1">
+                <div class="text-cyan-400">$ archiver --mode=mkv-stream</div>
+                <div>[MUX] HEVC + ASS 封裝完成</div>
+                <div>[HASH] SHA-256 校驗與分卷完成</div>
+                <div>[RCLONE] 多線程上傳與串流就緒</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         05. 本地智算 (#ai) — 100dvh Snap Slide 【AI 推理類：本地 ASR & LLM 翻譯】
+         Style: Mode D (Apple Spatial Glass × Refractive Ambient Backlight)
+    ==================================================================== -->
+    <section id="ai" class="snap-section h-[100dvh] w-full snap-start snap-always relative flex flex-col justify-center px-4 md:px-16 pt-14 bg-[#07080C] text-[#F4F4F5] overflow-hidden">
+      <!-- Mandatory Refractive Ambient Backlight (Z=0) -->
+      <div class="absolute top-1/4 left-1/4 w-72 md:w-96 h-72 md:h-96 rounded-full bg-sky-500/15 blur-[110px] pointer-events-none z-0"></div>
+      <div class="absolute bottom-1/4 right-1/4 w-72 md:w-96 h-72 md:h-96 rounded-full bg-indigo-500/15 blur-[110px] pointer-events-none z-0"></div>
+
+      <div class="max-w-5xl mx-auto w-full relative z-10">
+        <div class="mb-6">
+          <div class="text-[11px] font-mono tabular-nums tracking-[0.15em] uppercase text-sky-400">
+            05 // LOCAL AI &amp; ACOUSTIC COMPUTING · 造物常行 II (AI 推理與語音類)
+          </div>
+          <h2 class="text-2xl md:text-4xl font-semibold tracking-tight mt-1">
+            本地語音辨識與神經轉譯工作站
+          </h2>
+        </div>
+
+        <!-- Optical Glass Container: R_outer(24px) + p-2(8px) -> R_inner(16px) -->
+        <div class="relative rounded-3xl p-2 bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 ring-1 ring-inset ring-white/[0.15] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.7)] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/35 before:to-transparent">
+          
+          <div class="rounded-2xl bg-black/30 p-4 md:p-5 ring-1 ring-inset ring-white/[0.07]">
+            <div class="flex flex-wrap justify-between gap-2 text-xs font-mono tabular-nums text-zinc-400">
+              <span class="text-white font-medium">LOCAL ASR + CONTEXT-AWARE LLM TRANSLATION</span>
+              <span>AMD Ryzen 5 7500F · 32GB DDR5 · Intel Arc A750 8GB (Vulkan) · Windows WASAPI Loopback · SenseVoice-Small (~50ms) / Faster-Whisper · Gemma 4-E4B+E2B (MTP, 80~110 t/s, OpenCC s2twp)</span>
+            </div>
+            <!-- Interactive Frequency Spectrum -->
+            <div id="ai-waveform" class="mt-4 h-9 flex items-center gap-1"></div>
+          </div>
+
+          <div class="mt-2 rounded-2xl bg-white/[0.03] p-3 md:p-4 ring-1 ring-inset ring-white/[0.06] divide-y divide-white/[0.06] text-xs">
+            <div onmouseenter="highlightAiWave(0, 10)" onmouseleave="highlightAiWave(-1, -1)" class="py-2.5 px-3 rounded-xl hover:bg-white/[0.05] transition-colors grid grid-cols-1 md:grid-cols-[100px_1fr_1fr] gap-2 items-baseline cursor-pointer">
+              <span class="font-mono tabular-nums text-sky-400">[00:02.15]</span>
+              <span class="text-zinc-300">Gemma 4 with multi-token prediction enables ultra-low latency translations.</span>
+              <span class="text-zinc-100 font-medium">搭載多標元預測（MTP）的 Gemma 4 實現了極低延遲的即時意譯。</span>
+            </div>
+            <div onmouseenter="highlightAiWave(11, 23)" onmouseleave="highlightAiWave(-1, -1)" class="py-2.5 px-3 rounded-xl hover:bg-white/[0.05] transition-colors grid grid-cols-1 md:grid-cols-[100px_1fr_1fr] gap-2 items-baseline cursor-pointer">
+              <span class="font-mono tabular-nums text-sky-400">[00:06.40]</span>
+              <span class="text-zinc-300">SenseVoice-Small achieves 50 millisecond transcription with rich acoustic tags.</span>
+              <span class="text-zinc-100 font-medium">SenseVoice-Small 能以 50 毫秒的極速完成語音辨識，並保留豐富的聲學標籤。</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =====================================================================
+       DIRECTORY MODAL / MOBILE BOTTOM SHEET (Mode D)
+  ====================================================================== -->
+  <div id="directory-drawer" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-end md:items-center justify-center" onclick="toggleDrawer(false)">
+    <div class="w-full md:max-w-lg rounded-t-3xl md:rounded-3xl p-4 pb-8 md:p-6 bg-zinc-900/85 backdrop-blur-2xl backdrop-saturate-150 ring-1 ring-inset ring-white/[0.15] shadow-2xl" onclick="event.stopPropagation()">
+      <div class="w-10 h-1 rounded-full bg-white/25 mx-auto mb-4 md:hidden"></div>
+      <div class="flex justify-between items-center pb-3 border-b border-white/10">
+        <span class="text-xs font-mono tracking-widest uppercase text-zinc-300">PAVILION DIRECTORY // 展館導覽目錄</span>
+        <button onclick="toggleDrawer(false)" class="p-2 text-zinc-400 hover:text-white">
+          <i data-lucide="x" class="w-4 h-4 stroke-[1.5]"></i>
+        </button>
+      </div>
+      <div class="mt-4 grid grid-cols-1 gap-2 text-xs font-mono">
+        <a href="#hero" onclick="toggleDrawer(false)" class="p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] flex justify-between">
+          <span>00. 門戶核心 (首頁大廳)</span><span class="text-zinc-500">#hero</span>
+        </a>
+        <a href="#exp" onclick="toggleDrawer(false)" class="p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] flex justify-between">
+          <span>01. 碩論科研 (演算法與互動 Demo)</span><span class="text-zinc-500">#exp</span>
+        </a>
+        <a href="#osk" onclick="toggleDrawer(false)" class="p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] flex justify-between">
+          <span>02. 關西旅誌 (日本紀行獨立策展)</span><span class="text-zinc-500">#osk</span>
+        </a>
+        <a href="#show" onclick="toggleDrawer(false)" class="p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] flex justify-between">
+          <span>03. 虛實典藏 (香氛器物 × 楓谷裝備圖鑑)</span><span class="text-zinc-500">#show</span>
+        </a>
+        <a href="#ops" onclick="toggleDrawer(false)" class="p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] flex justify-between">
+          <span>04. 自動腳本 (票務獵手 × 封裝加密管線)</span><span class="text-zinc-500">#ops</span>
+        </a>
+        <a href="#ai" onclick="toggleDrawer(false)" class="p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] flex justify-between">
+          <span>05. 本地智算 (Local ASR × LLM 語境轉譯)</span><span class="text-zinc-500">#ai</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+      lucide.createIcons();
+    }
+
+    function toggleDrawer(show) {
+      document.getElementById('directory-drawer').classList.toggle('hidden', !show);
+    }
+
+    // 1. Scroll-Snap Active Section Observer (Updates Right-Side Snap Dots & Top HUD Navbar)
+    const snapContainer = document.getElementById('snap-container');
+
+    const snapObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+
+          // Update right-side snap dots
+          document.querySelectorAll('.snap-dot').forEach(dot => {
+            const active = dot.dataset.dot === id;
+            dot.className = active
+              ? 'snap-dot w-1.5 h-6 rounded-full bg-white transition-all duration-300'
+              : 'snap-dot w-1.5 h-1.5 rounded-full bg-white/25 hover:bg-white/60 transition-all duration-300';
+          });
+
+          // Update top HUD navbar pills
+          document.querySelectorAll('.nav-pill').forEach(pill => {
+            const isCurrent = pill.getAttribute('href') === `#${id}`;
+            if (isCurrent) {
+              pill.classList.add('bg-white/15', 'text-white', 'ring-1', 'ring-white/20', 'font-medium');
+              pill.classList.remove('text-zinc-300', 'font-normal');
+            } else {
+              pill.classList.remove('bg-white/15', 'text-white', 'ring-1', 'ring-white/20', 'font-medium');
+              pill.classList.add('text-zinc-300', 'font-normal');
+            }
+          });
+
+          // Brand logo subtle highlight at #hero
+          const brand = document.querySelector("header nav a[href='#hero']");
+          if (brand) {
+            if (id === 'hero') {
+              brand.classList.add('bg-white/15', 'ring-1', 'ring-white/20');
+            } else {
+              brand.classList.remove('bg-white/15', 'ring-1', 'ring-white/20');
+            }
+          }
+        }
+      });
+    }, {
+      root: snapContainer,
+      threshold: 0.55
+    });
+
+    document.querySelectorAll('.snap-section').forEach(sec => snapObserver.observe(sec));
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId && targetId !== '#') {
+          const targetSec = document.querySelector(targetId);
+          if (targetSec && snapContainer) {
+            e.preventDefault();
+            targetSec.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
+
+    // 2. Pavilion 01: XAI Path Switcher
+    function switchXaiPath(pathId) {
+      const p1 = pathId === 1;
+      document.getElementById('edge-p1-a').setAttribute('stroke', p1 ? '#C5A880' : 'rgba(255,255,255,0.12)');
+      document.getElementById('edge-p1-b').setAttribute('stroke', p1 ? '#C5A880' : 'rgba(255,255,255,0.12)');
+      document.getElementById('node-e1').setAttribute('stroke', p1 ? '#C5A880' : 'rgba(255,255,255,0.2)');
+      document.getElementById('edge-p2-a').setAttribute('stroke', !p1 ? '#C5A880' : 'rgba(255,255,255,0.12)');
+      document.getElementById('edge-p2-b').setAttribute('stroke', !p1 ? '#C5A880' : 'rgba(255,255,255,0.12)');
+      document.getElementById('node-e2').setAttribute('stroke', !p1 ? '#C5A880' : 'rgba(255,255,255,0.2)');
+      document.getElementById('xai-btn-1').className = `px-2.5 py-1 text-[11px] font-mono tabular-nums rounded-[2px] ${p1 ? 'bg-white/10 text-white' : 'text-[#8C867E]'}`;
+      document.getElementById('xai-btn-2').className = `px-2.5 py-1 text-[11px] font-mono tabular-nums rounded-[2px] ${!p1 ? 'bg-white/10 text-white' : 'text-[#8C867E]'}`;
+    }
+
+    // 3. Pavilion 03: Showcase Switcher (Physical Mode C <-> MapleStory Mode A)
+    function switchShowcase(mode) {
+      const isPhys = mode === 'physical';
+      const physEl = document.getElementById('showcase-physical');
+      const mapleEl = document.getElementById('showcase-maple');
+
+      if (physEl) physEl.style.display = isPhys ? '' : 'none';
+      if (mapleEl) mapleEl.style.display = isPhys ? 'none' : '';
+
+      const showSec = document.getElementById('show');
+      if (showSec) showSec.style.backgroundColor = isPhys ? '#11100F' : '#09090B';
+
+      const btnPhys = document.getElementById('btn-show-phys');
+      const btnMaple = document.getElementById('btn-show-maple');
+      if (btnPhys) {
+        btnPhys.className = isPhys
+          ? 'px-3 py-1.5 rounded-lg text-xs font-mono tabular-nums bg-[#C5A880] text-[#11100F] font-medium transition-all flex items-center gap-1.5'
+          : 'px-3 py-1.5 rounded-lg text-xs font-mono tabular-nums text-zinc-400 hover:text-white transition-all flex items-center gap-1.5';
+      }
+      if (btnMaple) {
+        btnMaple.className = !isPhys
+          ? 'px-3 py-1.5 rounded-lg text-xs font-mono tabular-nums bg-[#18181D] text-white border border-white/15 font-medium transition-all flex items-center gap-1.5'
+          : 'px-3 py-1.5 rounded-lg text-xs font-mono tabular-nums text-zinc-400 hover:text-white transition-all flex items-center gap-1.5';
+      }
+    }
+
+    // Populate Maple 5x6 Grid
+    const mapleGrid = document.getElementById('maple-grid');
+    const defectSlots = [3, 11, 18];
+    for (let i = 0; i < 30; i++) {
+      const isDefect = defectSlots.includes(i);
+      const cell = document.createElement('div');
+      cell.className = `relative aspect-square bg-[#18181D] rounded-[2px] border border-white/[0.06] flex items-center justify-center text-[9px] font-mono tabular-nums transition-all duration-150 select-none ${isDefect ? 'maple-defect text-zinc-100' : 'maple-nominal text-zinc-400'}`;
+      cell.innerHTML = `<span>${isDefect ? '18★' : '22★'}</span><span class="absolute bottom-0 inset-x-0 h-[2px] ${isDefect ? 'bg-rose-500' : 'bg-zinc-600'}"></span>`;
+      mapleGrid.appendChild(cell);
+    }
+
+    let mapleSpotlight = false;
+    function toggleMapleSpotlight() {
+      mapleSpotlight = !mapleSpotlight;
+      document.querySelectorAll('.maple-nominal').forEach(el => {
+        el.classList.toggle('opacity-20', mapleSpotlight);
+        el.classList.toggle('grayscale', mapleSpotlight);
+      });
+      document.querySelectorAll('.maple-defect').forEach(el => {
+        el.classList.toggle('border-rose-500', mapleSpotlight);
+        el.classList.toggle('ring-2', mapleSpotlight);
+        el.classList.toggle('ring-rose-500/30', mapleSpotlight);
+      });
+      document.getElementById('maple-spotlight-text').textContent = mapleSpotlight ? '關閉抓漏聚光燈' : '啟動抓漏聚光燈';
+    }
+
+    // 4. Pavilion 04: Automation Switcher (Ticket Mode E <-> Archiver DAG Mode F)
+    function switchOps(mode) {
+      const isTicket = mode === 'ticket';
+      document.getElementById('ops-ticket').classList.toggle('hidden', !isTicket);
+      document.getElementById('ops-dag').classList.toggle('hidden', isTicket);
+
+      document.getElementById('btn-ops-ticket').className = isTicket
+        ? 'px-3 py-1.5 rounded-lg text-xs font-mono tabular-nums bg-[#FACC15] text-[#09090B] font-bold transition-all flex items-center gap-1.5'
+        : 'px-3 py-1.5 rounded-lg text-xs font-mono tabular-nums text-zinc-400 hover:text-white transition-all flex items-center gap-1.5';
+      document.getElementById('btn-ops-dag').className = !isTicket
+        ? 'px-3 py-1.5 rounded-lg text-xs font-mono tabular-nums bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 font-medium transition-all flex items-center gap-1.5'
+        : 'px-3 py-1.5 rounded-lg text-xs font-mono tabular-nums text-zinc-400 hover:text-white transition-all flex items-center gap-1.5';
+    }
+
+    function selectTicStage(btn, width, descText) {
+      document.querySelectorAll('.tic-btn').forEach(el => {
+        el.className = 'tic-btn rounded-full bg-[#0C0D10] text-zinc-200 border-2 border-zinc-600 shadow-[4px_4px_0px_0px_#27272A] hover:-translate-y-0.5 hover:border-zinc-100 active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all duration-100 p-3.5 text-left flex items-center justify-between';
+      });
+      btn.className = 'tic-btn rounded-xl bg-[#FACC15] text-[#09090B] font-bold border-2 border-white shadow-[4px_4px_0px_0px_#fff] hover:-translate-y-0.5 active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all duration-100 p-3.5 text-left flex items-center justify-between';
+      document.getElementById('tic-bar').style.width = width;
+      document.getElementById('tic-desc').textContent = descText;
+    }
+
+    const DAG_STATE_MAP = {
+      mkv: {
+        btnId: 'dag-btn-mkv',
+        nodes: { 'node-mux': true, 'node-cbz': false, 'node-sha': true, 'node-rclone': true },
+        cmd: '$ archiver --mode=mkv-stream',
+        logs: [
+          '[MUX] HEVC + ASS 封裝完成',
+          '[HASH] SHA-256 校驗與分卷完成',
+          '[RCLONE] 多線程上傳與串流就緒'
+        ]
+      },
+      cbz: {
+        btnId: 'dag-btn-cbz',
+        nodes: { 'node-mux': false, 'node-cbz': true, 'node-sha': true, 'node-rclone': true },
+        cmd: '$ archiver --mode=cbz-pack',
+        logs: [
+          '[CBZ] 漫畫圖集封裝與索引完成',
+          '[HASH] SHA-256 校驗寫入完成',
+          '[RCLONE] 16-Thread 雲端同步完成'
+        ]
+      },
+      sha: {
+        btnId: 'dag-btn-sha',
+        nodes: { 'node-mux': false, 'node-cbz': false, 'node-sha': true, 'node-rclone': true },
+        cmd: '$ archiver --mode=sha256-split',
+        logs: [
+          '[SPLIT] 大型資料集分卷加密完成',
+          '[HASH] SHA-256 完整性驗證通過',
+          '[RCLONE] 頻寬滿載上傳完畢'
+        ]
+      }
+    };
+
+    function routeDag(mode) {
+      const config = DAG_STATE_MAP[mode];
+      if (!config) return;
+
+      const buttons = {
+        mkv: document.getElementById('dag-btn-mkv'),
+        cbz: document.getElementById('dag-btn-cbz'),
+        sha: document.getElementById('dag-btn-sha')
+      };
+      const activeBtnCls = 'dag-mode-btn w-full p-2.5 bg-[#0B0F17] border border-cyan-400/50 text-left text-xs font-mono text-cyan-300 hover:bg-cyan-500/10 active:scale-[0.98] transition-all [clip-path:polygon(8px_0,100%_0,100%_calc(100%-8px),calc(100%-8px)_100%,0_100%,0_8px)]';
+      const inactiveBtnCls = 'dag-mode-btn w-full p-2.5 bg-[#0B0F17] border border-white/15 text-left text-xs font-mono text-zinc-300 hover:border-cyan-400/50 active:scale-[0.98] transition-all [clip-path:polygon(8px_0,100%_0,100%_calc(100%-8px),calc(100%-8px)_100%,0_100%,0_8px)]';
+
+      for (const [key, btn] of Object.entries(buttons)) {
+        if (btn) btn.className = (key === mode) ? activeBtnCls : inactiveBtnCls;
+      }
+
+      Object.entries(config.nodes).forEach(([nodeId, isActive]) => {
+        const nodeEl = document.getElementById(nodeId);
+        if (!nodeEl) return;
+        nodeEl.className = isActive
+          ? 'p-2 bg-[#0B0F17] border border-cyan-400 text-xs font-mono tabular-nums flex justify-between'
+          : 'p-2 bg-[#0B0F17] border border-white/10 opacity-20 text-xs font-mono tabular-nums flex justify-between';
+        const statusSpan = nodeEl.querySelector('.node-status');
+        if (statusSpan) {
+          statusSpan.className = `node-status font-semibold ${isActive ? 'text-cyan-400' : 'text-zinc-600'}`;
+          statusSpan.textContent = isActive ? 'ACTIVE' : 'IDLE';
+        }
+      });
+
+      const term = document.getElementById('dag-terminal');
+      if (term) {
+        const logLines = config.logs.map(log => `<div>${log}</div>`).join('');
+        term.innerHTML = `<div class="text-cyan-400 font-semibold">${config.cmd}</div>${logLines}`;
+      }
+    }
+
+    // 5. Pavilion 05: AI Waveform
+    const aiWave = document.getElementById('ai-waveform');
+    [30, 55, 80, 45, 90, 65, 35, 75, 40, 25, 60, 95, 85, 50, 70, 45, 60, 30, 55, 25, 45, 75, 50, 35].forEach(h => {
+      const bar = document.createElement('div');
+      bar.className = 'ai-wave-bar flex-1 bg-white/20 rounded-full transition-all duration-200';
+      bar.style.height = `${h}%`;
+      aiWave.appendChild(bar);
+    });
+
+    function highlightAiWave(start, end) {
+      document.querySelectorAll('.ai-wave-bar').forEach((bar, i) => {
+        bar.className = `ai-wave-bar flex-1 rounded-full transition-all duration-200 ${i >= start && i <= end ? 'bg-sky-400' : 'bg-white/20'}`;
       });
     }
   </script>
-</head>
-<body data-active-theme="hero">
-
-  <!-- Dynamic Ambient Glow Canvas Overlay -->
-  <div id="ambient-glow" aria-hidden="true">
-    <div class="ambient-orb ambient-orb-1"></div>
-    <div class="ambient-orb ambient-orb-2"></div>
-    <div class="ambient-orb ambient-orb-3"></div>
-  </div>
-
-  <!-- Floating Header Navigation (Morphs dynamically with active pavilion) -->
-  <header class="hub-header" id="hub-header">
-    <div class="header-inner">
-      <!-- Brand Logo -->
-      <a href="#hero" class="brand-group" data-slide-id="hero" aria-label="回到首頁">
-        <div class="brand-symbol">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-            <polyline points="2 17 12 22 22 17"></polyline>
-            <polyline points="2 12 12 17 22 12"></polyline>
-          </svg>
-        </div>
-        <div class="brand-text">
-          <span class="brand-title">AESCHY</span>
-          <span class="brand-subtitle">Works &amp; Archive</span>
-        </div>
-      </a>
-
-      <!-- Pavilion Anchors Navigation (Strict Order: HERO -> EXP -> OSK -> SHOW -> TIC -> CYB) -->
-      <nav class="header-nav" aria-label="展館導航">
-        <a href="#hero" class="nav-link is-active" data-slide-id="hero" title="門戶核心">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
-          </svg>
-          <span class="nav-text">門戶核心</span>
-        </a>
-        <a href="#exp" class="nav-link" data-slide-id="exp" title="01. 碩論科研">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 2v7.31L4.89 17.5A2 2 0 0 0 6.64 20.5h10.72a2 2 0 0 0 1.75-3L14 9.31V2"></path>
-            <line x1="8.5" y1="2" x2="15.5" y2="2"></line>
-            <line x1="7" y1="14.5" x2="17" y2="14.5"></line>
-          </svg>
-          <span class="nav-text">01. 碩論科研</span>
-        </a>
-        <a href="#osk" class="nav-link" data-slide-id="osk" title="02. 關西旅誌">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="5" x2="21" y2="5"></line>
-            <line x1="5" y1="9" x2="19" y2="9"></line>
-            <line x1="7" y1="5" x2="7" y2="20"></line>
-            <line x1="17" y1="5" x2="17" y2="20"></line>
-          </svg>
-          <span class="nav-text">02. 關西旅誌</span>
-        </a>
-        <a href="#show" class="nav-link" data-slide-id="show" title="03. 藏品藝廊">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
-            <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
-            <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
-            <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
-            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
-          </svg>
-          <span class="nav-text">03. 藏品藝廊</span>
-        </a>
-        <a href="#tic" class="nav-link" data-slide-id="tic" title="04. 票務獵手">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path>
-            <path d="M13 5v2"></path>
-            <path d="M13 17v2"></path>
-            <path d="M13 11v2"></path>
-          </svg>
-          <span class="nav-text">04. 票務獵手</span>
-        </a>
-        <a href="#cyb" class="nav-link" data-slide-id="cyb" title="05. 賽博矩陣">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-            <rect x="9" y="9" width="6" height="6"></rect>
-            <line x1="9" y1="1" x2="9" y2="4"></line>
-            <line x1="15" y1="1" x2="15" y2="4"></line>
-            <line x1="9" y1="20" x2="9" y2="23"></line>
-            <line x1="15" y1="20" x2="15" y2="23"></line>
-            <line x1="20" y1="9" x2="23" y2="9"></line>
-            <line x1="20" y1="14" x2="23" y2="14"></line>
-            <line x1="1" y1="9" x2="4" y2="9"></line>
-            <line x1="1" y1="14" x2="4" y2="14"></line>
-          </svg>
-          <span class="nav-text">05. 賽博矩陣</span>
-        </a>
-      </nav>
-
-      <!-- Global Controls & Shortcuts -->
-      <div class="header-controls">
-        <!-- Recent Visited Shortcut -->
-        <button id="btn-recent-jump" class="recent-jump-btn" title="快速回到最近訪問的展館">
-          <span class="recent-dot"></span>
-          <span class="btn-label">最近：<span id="recent-pavilion-name">--</span></span>
-        </button>
-
-        <!-- Pinned Pavilions Popover Trigger -->
-        <button id="btn-pinned-toggle" class="ctrl-btn" title="查看釘選展館" aria-haspopup="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="17" x2="12" y2="22"></line>
-            <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a1 1 0 0 0 0-2H8a1 1 0 0 0 0 2h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"></path>
-          </svg>
-          <span class="btn-label">釘選</span>
-          <span id="pinned-counter-badge" class="pinned-counter" style="display: none;">0</span>
-        </button>
-
-        <!-- Visual FX Toggle (Performance / Glow) -->
-        <button id="btn-fx-toggle" class="ctrl-btn active" title="切換動態流光光暈特效">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"/>
-          </svg>
-          <span class="btn-label">特效</span>
-        </button>
-
-        <!-- Audio Synthesizer Toggle -->
-        <button id="btn-audio-toggle" class="ctrl-btn" title="切換氛圍環境音效">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-          </svg>
-          <span class="btn-label">音效</span>
-        </button>
-
-        <!-- Mobile Quick Pavilion Drawer Trigger -->
-        <button id="btn-mobile-nav" class="ctrl-btn mobile-nav-toggle-btn" title="展館導航" aria-label="切換展館導航清單" aria-haspopup="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7"></rect>
-            <rect x="14" y="3" width="7" height="7"></rect>
-            <rect x="14" y="14" width="7" height="7"></rect>
-            <rect x="3" y="14" width="7" height="7"></rect>
-          </svg>
-          <span class="btn-label">展館</span>
-        </button>
-      </div>
-
-      <!-- Pinned Pavilions Popover Drawer -->
-      <div id="pinned-popover" class="pinned-popover" role="dialog" aria-modal="false">
-        <div class="pinned-header">
-          <span>📌 已釘選的展館</span>
-          <span style="font-size: 0.75rem; color: var(--text-muted);">快速切換通道</span>
-        </div>
-        <div id="pinned-items-list" class="pinned-list">
-          <div class="pinned-empty">尚無釘選展館</div>
-        </div>
-      </div>
-
-      <!-- Mobile Quick Pavilion Popover Menu -->
-      <div id="mobile-nav-popover" class="mobile-nav-popover" role="dialog" aria-modal="false">
-        <div class="mobile-nav-header">
-          <span>🏛️ 展館導覽目錄</span>
-          <button id="btn-mobile-nav-close" class="mobile-nav-close" aria-label="關閉選單">✕</button>
-        </div>
-        <div class="mobile-nav-list">
-          <a href="#hero" class="mobile-nav-item is-active" data-slide-id="hero">
-            <span class="nav-badge">CORE</span>
-            <span class="nav-title">門戶核心大廳</span>
-          </a>
-          <a href="#exp" class="mobile-nav-item" data-slide-id="exp">
-            <span class="nav-badge">01</span>
-            <span class="nav-title">碩論科研 (EXP)</span>
-          </a>
-          <a href="#osk" class="mobile-nav-item" data-slide-id="osk">
-            <span class="nav-badge">02</span>
-            <span class="nav-title">關西旅誌 (OSK)</span>
-          </a>
-          <a href="#show" class="mobile-nav-item" data-slide-id="show">
-            <span class="nav-badge">03</span>
-            <span class="nav-title">藏品藝廊 (SHOW)</span>
-          </a>
-          <a href="#tic" class="mobile-nav-item" data-slide-id="tic">
-            <span class="nav-badge">04</span>
-            <span class="nav-title">票務獵手 (TIC)</span>
-          </a>
-          <a href="#cyb" class="mobile-nav-item" data-slide-id="cyb">
-            <span class="nav-badge">05</span>
-            <span class="nav-title">賽博矩陣 (CYB)</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main Full-Bleed 100dvh Viewport Deck (One Project per Viewport) -->
-  <main id="viewport-deck" class="viewport-deck">
-    <!-- Slide 0: Hero Section -->
-    <section id="hero" class="deck-slide hero-slide" data-slide-theme="hero" data-theme-id="hero" data-theme-color="#38bdf8" data-secondary-color="#818cf8">
-      <div class="hero-inner page-container">
-        <div class="hero-badge-pill">
-          <span class="pulse-dot"></span>
-          <span>CURATED PORTFOLIO</span>
-        </div>
-        <h1 class="hero-title">From Research to Wanderlust</h1>
-        <p class="hero-subtitle">
-          研析成文，行旅作卷；當代造物，日用常行。
-        </p>
-
-        <div class="hero-cta-group">
-          <a href="#exp" class="hero-btn hero-btn-primary" data-slide-id="exp">
-            <span>探索展館</span>
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-          <a href="https://github.com/AeschyJ" target="_blank" rel="noopener noreferrer" class="hero-btn hero-btn-secondary">
-            <span>GitHub Profile</span>
-            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-          </a>
-        </div>
-
-        <a href="#exp" class="scroll-cue" data-slide-id="exp" aria-label="向下滾動查看展館">
-          <span>EXPLORE WORKS</span>
-          <svg class="scroll-cue-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
-        </a>
-      </div>
-    </section>
-
-    <!-- Slide 1: EXP (NTU Thesis KGAT Recipe Lab) -->
-    <section id="exp" class="deck-slide pavilion-slide theme-exp" data-slide-theme="exp" data-pavilion-id="exp" data-theme-color="#a855f7" data-secondary-color="#c084fc">
-      <div class="pavilion-slot slide-slot" id="slot-exp"></div>
-    </section>
-
-    <!-- Slide 2: OSK (TabiSync & Kansai Emaki Washi Paper Journal) -->
-    <section id="osk" class="deck-slide pavilion-slide theme-osaka" data-slide-theme="osk" data-pavilion-id="osk" data-theme-color="#F4A7B9" data-secondary-color="#FAF8F2">
-      <div class="pavilion-slot slide-slot" id="slot-osk"></div>
-    </section>
-
-    <!-- Slide 3: SHOW (MUSEUM Flowing Gold Curated Gallery) -->
-    <section id="show" class="deck-slide pavilion-slide theme-showcase" data-slide-theme="show" data-pavilion-id="show" data-theme-color="#C5A059" data-secondary-color="#DFC48B">
-      <div class="pavilion-slot slide-slot" id="slot-show"></div>
-    </section>
-
-    <!-- Slide 4: TIC (Air-Traffic Radar Intelligence) -->
-    <section id="tic" class="deck-slide pavilion-slide theme-ticket" data-slide-theme="tic" data-pavilion-id="tic" data-theme-color="#f59e0b" data-secondary-color="#fbbf24">
-      <div class="pavilion-slot slide-slot" id="slot-tic"></div>
-    </section>
-
-    <!-- Slide 5: CYB (Cyberpunk Routine Matrix & Docked Footer) -->
-    <section id="cyb" class="deck-slide pavilion-slide theme-cyber" data-slide-theme="cyb" data-pavilion-id="cyb" data-theme-color="#00ff9d" data-secondary-color="#05f0a0">
-      <div class="pavilion-slot slide-slot" id="slot-cyb"></div>
-      
-      <!-- Docked Hub Footer inside last slide -->
-      <footer class="hub-footer-docked">
-        <div class="footer-inner">
-          <div class="footer-brand-claim">
-            <strong>AESCHY</strong> &bull; From Research to Wanderlust &bull; Since 2026 &bull; <span class="visitor-counter-wrap"><span class="visitor-dot"></span><span id="visitor-count">2,418</span> Visitors</span>
-          </div>
-          <div class="footer-nav-links">
-            <a href="#hero" data-slide-id="hero">回到頂部</a>
-            <a href="https://github.com/AeschyJ" target="_blank" rel="noopener noreferrer">GitHub Profile</a>
-            <a href="./manifest.json" target="_blank">PWA Manifest</a>
-          </div>
-        </div>
-      </footer>
-    </section>
-  </main>
-
-  <!-- Right Floating Viewport Indicator Dock (極簡全景錨點切換器) -->
-  <aside id="viewport-indicator-dock" class="viewport-indicator-dock" aria-label="展館全景快速導航">
-    <button class="indicator-dot is-active" data-target-slide="hero" data-label="門戶核心" aria-label="前往門戶核心"></button>
-    <button class="indicator-dot" data-target-slide="exp" data-label="碩論科研 (EXP)" aria-label="前往知識圖推薦研究室"></button>
-    <button class="indicator-dot" data-target-slide="osk" data-label="關西旅誌 (OSK)" aria-label="前往夏之栞行旅手帖"></button>
-    <button class="indicator-dot" data-target-slide="show" data-label="藏品藝廊 (SHOW)" aria-label="前往當代典藏藝廊"></button>
-    <button class="indicator-dot" data-target-slide="tic" data-label="票務獵手 (TIC)" aria-label="前往航管雷達票務獵手"></button>
-    <button class="indicator-dot" data-target-slide="cyb" data-label="賽博矩陣 (CYB)" aria-label="前往賽博習慣矩陣"></button>
-  </aside>
-
-  <!-- Hub Application Engine Entry Point -->
-  <script type="module" src="js/app.js"></script>
+  <!-- Service Worker PWA Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
+  </script>
 </body>
 </html>

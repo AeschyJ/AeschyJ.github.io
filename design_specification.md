@@ -123,7 +123,7 @@ export const myPavilion = {
 1. **CORS 原理防禦**：
    現代瀏覽器在 `file:///` 協議下將 Origin 視為 `null` 並阻擋 ES 模組（`js/app.js`）。
 2. **標準啟動工具 (`啟動預覽.bat`)**：
-   專案根目錄必須維持具備容錯之 `啟動預覽.bat`，自動探測 `python` / `node` / `uv` 於背景啟動本地伺服器（`http://localhost:8000`）並調用預設瀏覽器。
+   專案根目錄必須維持具備容錯之 `啟動預覽.bat`，自動探測 `python` / `node` / `uv` 於背景啟動本地伺服器（`http://localhost:5173`）並調用預設瀏覽器。
 3. **友善指引橫幅**：
    `index.html` 內建協議偵測，若以 `file:` 協定啟動時，自動浮現琥珀金橫幅引導執行批次檔。
 
@@ -169,7 +169,7 @@ export default defineConfig({
 ```
 
 ### 4. 微縮回航膠囊協議（Floating Portal Pill）
-為確保訪客跳轉至子應用後具備一致的回航體驗，所有子應用均引入 [`portal-pill.js`](file:///d:/Liao/Documents/Antigravity/Github%20Page/cyber-routine/portal-pill.js)：
+為確保訪客跳轉至子應用後具備一致的回航體驗，所有子應用均引入 [`portal-pill.js`](./cyber-routine/portal-pill.js)：
 * **Shadow DOM 封裝**：與宿主專案 CSS 100% 隔離，零樣式污染。
 * **自動微縮（Idle Mode）**：無操作 3.5 秒自動收斂為 40px 半透明極致小圓點；游標懸停或滾動時瞬時展開。
 * **PWA 與 Safe Area 適配**：支援 `display-mode: standalone` 並自適應手機底部安全區域。
@@ -256,7 +256,7 @@ python scripts/deploy.py --menu
 ### SOP 1：日常子專案修改與發布
 當您在私有倉庫（如修改了 `AntigravityHub/showcase` 或 `cyber-routine`）完成功能開發後：
 1. **本地測試**：在私有專案內部確認測試正常。
-2. **啟動發布**：切換至 `d:\Liao\Documents\Antigravity\Github Page` 目錄，雙擊 `deploy.bat`。
+2. **啟動發布**：切換至 `Github Page` 根目錄，雙擊 `deploy.bat`。
 3. **選擇目標**：
    - 輸入 `3`（僅發布 showcase）或 `1`（全量發布）。
 4. **確認推送**：腳本自動完成建置與增量同步後，於終端提示 `是否立即 Commit 並推送 至 GitHub？` 時按下 **Enter**。
