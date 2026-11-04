@@ -32,7 +32,9 @@ echo Step 3: Checking if commit is needed...
 git diff --cached --quiet
 if %ERRORLEVEL% neq 0 (
     echo Committing changes...
-    git commit -m "feat(portal): migrate to 100dvh scroll-snap architecture and v3.0.0"
+    set "COMMIT_MSG=%~1"
+    if "%COMMIT_MSG%"=="" set "COMMIT_MSG=fix(layout): anchor pavilions 03 and 04 headers and refine english titles to v3.1.0"
+    git commit -m "%COMMIT_MSG%"
     if errorlevel 1 (
         echo.
         echo [ERROR] Git commit failed.

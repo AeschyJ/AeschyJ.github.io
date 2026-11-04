@@ -1,6 +1,6 @@
 // Central Portal Hub - Dedicated Service Worker
 // Cache Name Scope: hub-portal-cache-* (Guaranteed not to clash with subproject caches)
-const CACHE_NAME = 'hub-portal-cache-v3';
+const CACHE_NAME = 'hub-portal-cache-v3.1';
 
 const PORTAL_ASSETS = [
   './',

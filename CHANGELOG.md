@@ -5,6 +5,19 @@
 
 ---
 
+## [3.1.0] - 2026-11-04
+
+### Changed
+- **章節標題小字純英文化**：移除 01 至 05 展館標題小字之中文後綴（保留 `01 // ACADEMIC RESEARCH`、`02 // KANSAI CHRONICLE`、`03 // CURATED SHOWCASE`、`04 // AUTOMATION & SCRIPTS`、`05 // LOCAL AI & ACOUSTIC COMPUTING`）。
+- **碩論科研標題純英文化**：主標題更新為英文 `Performance Evaluation and Explainibility Study of Knowledge Graph Attention Network for Recipe Recommendation`，並精簡機構資訊為 `NTU ESOE`。
+- **XAI 面板文案精煉**：移除推理路徑聚光燈中文說明，僅保留純粹英文標示 `XAI ATTENTION PATH`。
+- **Service Worker 快取版本推進**：升級為 `hub-portal-cache-v3.1`，確保客戶端即時載入最新佈局。
+
+### Fixed
+- **展館 03 與 04 頁中切換垂直跳動修復**：將 `#show`（虛實典藏）與 `#ops`（自動腳本）展館外層容器由垂直置中 (`justify-center`) 改為頂部錨定佈局 (`justify-start pt-16 md:pt-20 lg:pt-24`)，徹底解決切換不同高低內容面板時標題列與切換列上下位移跳動問題。
+
+---
+
 ## [3.0.0] - 2026-11-04
 
 ### Added
