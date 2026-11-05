@@ -1,15 +1,12 @@
-// Service Worker for Japan Travel PWA & Emaki Magazine (TabiSync v4.9.2)
-const CACHE_NAME = 'tabisync-v4.9.2-dome-videos';
-
-
-
-
-
+// Service Worker for Japan Travel PWA & Emaki Magazine (TabiSync v5.0.0)
+const CACHE_NAME = 'tabisync-v5.0.0';
 
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './magazine.html',
+  './emaki.html',
+  './itinerary.html',
   './manifest.json',
   './magazine-manifest.json',
   './css/design-system.css',

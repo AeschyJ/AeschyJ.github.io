@@ -120,6 +120,12 @@
            RIGHT ZONE: ACTION BUTTONS & DROPDOWNS
            ===================================================================== -->
       <div class="header-actions">
+        <!-- Magazine Jump Button (Desktop) -->
+        <a id="header-magazine-link" href="./magazine.html" class="btn-header-tool desktop-action" title="前往夏之栞・名阪京奈行旅繪卷 (寫真與水墨畫報)">
+          <span class="btn-tag-icon">📜</span>
+          <span>行旅繪卷</span>
+        </a>
+
         <!-- Mode Switch Button (Desktop: 📖 行旅手記 in Map mode, 🗺️ 返回地圖 in Journal mode) -->
         <button id="btn-desktop-switch-journal" class="btn-header-tool desktop-action" title="切換至行旅手記（行程編排・評星・手帳結算）">
           <span class="btn-tag-icon" id="desktop-mode-btn-icon">📖</span>
@@ -167,6 +173,15 @@
           </button>
           
           <div class="tools-dropdown-menu" id="tools-dropdown-menu" role="menu">
+            <!-- 0. 行旅繪卷 -->
+            <a class="tools-dropdown-item" id="menu-item-magazine" href="./magazine.html" role="menuitem">
+              <span class="dropdown-item-icon">📜</span>
+              <div class="dropdown-item-text">
+                <span class="dropdown-item-title">📜 行旅繪卷特刊</span>
+                <span class="dropdown-item-desc">盛夏水墨寫真畫報</span>
+              </div>
+            </a>
+
             <!-- 1. 行旅手記 / 返回地圖 (動態隨模式更新) -->
             <button class="tools-dropdown-item" id="menu-item-view-switch" role="menuitem">
               <span class="dropdown-item-icon" id="menu-item-view-icon">📖</span>
@@ -452,19 +467,60 @@
 
       <!-- Scrollable Modal Body -->
       <div class="drawer-body">
-        <!-- Hotel Accommodation Base -->
+        <!-- Hotel Accommodation Bases (名阪京全程四段宿點) -->
         <div class="glass-card" style="padding:1rem; margin-bottom:1rem; border-left:4px solid var(--color-indigo);">
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem;">
-            <div style="flex:1;">
-              <span class="badge badge-indigo" style="font-size:0.72rem;">🏨 8/21~8/25 宿點本陣</span>
-              <h4 style="font-size:0.95rem; font-weight:700; margin-top:0.25rem; color:var(--text-primary);">大阪阪神飯店 (Hotel Hanshin Osaka)</h4>
-              <p style="font-size:0.78rem; color:var(--text-secondary); margin-top:0.2rem;">📍 大阪市福島區福島5丁目6-16 (JR福島站步行1分)</p>
-              <p style="font-size:0.74rem; color:var(--color-indigo); margin-top:0.15rem;">♨️ 客房衛浴直通千米地下天然溫泉</p>
+          <div style="margin-bottom:0.6rem;">
+            <span class="badge badge-indigo" style="font-size:0.72rem;">🏨 全程四段下榻基地</span>
+          </div>
+          
+          <div style="display:flex; flex-direction:column; gap:0.75rem;">
+            <!-- 1. 名古屋 -->
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem; padding-bottom:0.5rem; border-bottom:1px dashed var(--color-border);">
+              <div>
+                <span style="font-size:0.7rem; font-weight:700; color:var(--torii-vermilion);">8/19 ~ 8/20 名古屋</span>
+                <h4 style="font-size:0.9rem; font-weight:700; color:var(--text-primary); margin:0.1rem 0;">名古屋 東橫INN 榮</h4>
+                <p style="font-size:0.75rem; color:var(--text-secondary);">📍 愛知縣名古屋市中區東櫻2-22-21</p>
+              </div>
+              <a href="https://www.google.com/maps/search/?api=1&query=東横INN+名古屋栄" target="_blank" rel="noopener" class="btn-nav-link btn-nav-primary btn-nav-inline" style="flex-shrink:0;">
+                <span>導航</span>
+              </a>
             </div>
-            <a href="https://maps.app.goo.gl/6jYd7QmqnLscha826" target="_blank" rel="noopener" class="btn-nav-link btn-nav-primary btn-nav-inline">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
-              <span>導航</span>
-            </a>
+
+            <!-- 2. 大阪阪神 -->
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem; padding-bottom:0.5rem; border-bottom:1px dashed var(--color-border);">
+              <div>
+                <span style="font-size:0.7rem; font-weight:700; color:var(--torii-vermilion);">8/21 ~ 8/24 大阪</span>
+                <h4 style="font-size:0.9rem; font-weight:700; color:var(--text-primary); margin:0.1rem 0;">大阪阪神飯店 (天然溫泉)</h4>
+                <p style="font-size:0.75rem; color:var(--text-secondary);">📍 大阪市福島區福島5丁目6-16</p>
+              </div>
+              <a href="https://maps.app.goo.gl/6jYd7QmqnLscha826" target="_blank" rel="noopener" class="btn-nav-link btn-nav-primary btn-nav-inline" style="flex-shrink:0;">
+                <span>導航</span>
+              </a>
+            </div>
+
+            <!-- 3. 京都三井花園 -->
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem; padding-bottom:0.5rem; border-bottom:1px dashed var(--color-border);">
+              <div>
+                <span style="font-size:0.7rem; font-weight:700; color:var(--torii-vermilion);">8/25 ~ 8/26 京都</span>
+                <h4 style="font-size:0.9rem; font-weight:700; color:var(--text-primary); margin:0.1rem 0;">京都三井花園酒店 四條 (大浴場)</h4>
+                <p style="font-size:0.75rem; color:var(--text-secondary);">📍 京都市下京區妙傳寺町707-1</p>
+              </div>
+              <a href="https://www.google.com/maps/search/?api=1&query=三井ガーデンホテル京都四条" target="_blank" rel="noopener" class="btn-nav-link btn-nav-primary btn-nav-inline" style="flex-shrink:0;">
+                <span>導航</span>
+              </a>
+            </div>
+
+            <!-- 4. 大阪本町展望 -->
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem;">
+              <div>
+                <span style="font-size:0.7rem; font-weight:700; color:var(--torii-vermilion);">8/27 起 大阪本町</span>
+                <h4 style="font-size:0.9rem; font-weight:700; color:var(--text-primary); margin:0.1rem 0;">Osaka View Hotel Honmachi</h4>
+                <p style="font-size:0.75rem; color:var(--text-secondary);">📍 大阪市中央區本町4-8-8</p>
+              </div>
+              <a href="https://www.google.com/maps/search/?api=1&query=Osaka+View+Hotel+Honmachi" target="_blank" rel="noopener" class="btn-nav-link btn-nav-primary btn-nav-inline" style="flex-shrink:0;">
+                <span>導航</span>
+              </a>
+            </div>
           </div>
         </div>
 

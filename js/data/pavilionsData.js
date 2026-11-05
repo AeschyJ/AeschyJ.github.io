@@ -41,12 +41,12 @@ export const PAVILIONS_DATA = [
     badge: '和紙 100% 離線 PWA',
     status: 'SUMI-E JOURNAL',
     tags: ['Washi Paper', 'Sakura Pink', 'TabiSync', 'Emaki Magazine', 'Offline PWA'],
-    description: '越前和紙生成色與薄櫻粉和風電子畫報。收錄名阪京奈盛夏漫遊手帖、305 幀高畫質實訪寫真、即時離線地圖與音效御朱印鈐印儀式。',
+    description: '越前和紙生成色與薄櫻粉和風電子畫報。收錄名阪京奈盛夏漫遊手帖、實訪寫真、即時離線地圖與音效御朱印鈐印儀式。',
     actionType: 'internal',
-    launchUrl: './osaka/',
-    launchLabel: '啟程手帖',
+    launchUrl: './osaka/emaki.html',
+    launchLabel: '新・百景繪卷',
     secondaryLaunchUrl: './osaka/magazine.html',
-    secondaryLaunchLabel: '翻閱繪卷',
+    secondaryLaunchLabel: '原・和風繪卷',
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M9 4v16"/><path d="M15 4v16"/><path d="M4 9h16"/><path d="M4 15h16"/><circle cx="12" cy="12" r="3"/></svg>`
   },
   {

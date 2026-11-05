@@ -1,7 +1,7 @@
 # 🏛️ AESCHY — Works & Archive (中央多專案主題展覽館)
 
 [![GitHub Pages Deployment](https://img.shields.io/badge/Deploy-GitHub%20Pages-10b981?logo=github&logoColor=white)](https://aeschyj.github.io/)
-[![Version](https://img.shields.io/badge/Version-v3.1.0-f59e0b)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v3.2.0-f59e0b)](CHANGELOG.md)
 [![PWA Ready](https://img.shields.io/badge/PWA-Offline%20Cache-00ff9d?logo=pwa&logoColor=black)](https://aeschyj.github.io/manifest.json)
 [![License](https://img.shields.io/badge/License-MIT-38bdf8)](LICENSE)
 [![Built with Modern Web](https://img.shields.io/badge/Stack-ES%20Modules%20%7C%20Web%20Audio%20%7C%20HTML5%20Canvas-a855f7)](https://aeschyj.github.io/)
@@ -23,8 +23,8 @@
 | :---: | :--- | :--- | :--- | :--- |
 | **00 // HERO** | **門戶核心** | 中央導航星雲、流體毛玻璃 HUD 導航列 (`.nav-pill`)、懸浮全景指示條 (`.snap-dot`) | PWA 快取、最近造訪通道、釘選抽屜、音效開關 | 滑動吸附切換 |
 | **01 // EXP** | **碩論科研** | NTU ESOE 碩論（Performance Evaluation and Explainibility Study of Knowledge Graph Attention Network for Recipe Recommendation），GNN 關係感知注意力 | CSR 稀疏矩陣 56.74 MB 核心記憶體、92.8% 精省、190.82 ms 建圖、Fidelity+ 94.2% 可解釋性指標 | [GitHub 開源庫](https://github.com/AeschyJ/Recipe-Recommendation-KGAT) |
-| **02 // OSK** | **關西旅誌** | 名阪京奈夏日巡行手帖，手作和紙拍立得相片拼貼框、關西三景切換與御朱印互動 | 11 日全紀行、305 幀高解析度紀行寫真（含金閣寺寫真） | 雙入口：<br/>⛩️ [行程助手](./osaka/)<br/>📜 [旅行繪卷](./osaka/magazine.html) |
-| **03 // SHOW** | **虛實典藏** | 實體當代器物藝廊 ⇄ 數位匿名頂級裝備模擬雙軌切換 | 實體：Le Labo Santal 33、Guerlain 沙龍香氛、Beyerdynamic DT 770 Pro 監聽耳機；數位：戰力 1.25 億、戰地 9000、302★、創世解放匿名指標 | 進入應用 ➔ [`./showcase/`](./showcase/) |
+| **02 // OSK** | **關西旅誌**<br/>`水墨百景 · 諸相全錄` | 名阪京奈夏日巡行手帖（副標題：`水墨百景 · 諸相全錄`），雙軌寫真繪卷（百景繪卷與和風繪卷）與風土巡行手帖 | 11 日全紀行、水墨百景實訪寫真（含清水寺大舞台全景寫真） | 雙入口：<br/>📜 [百景繪卷](./osaka/emaki.html)<br/>📖 [和風繪卷](./osaka/magazine.html) |
+| **03 // SHOW** | **虛實典藏** | 實體當代器物藝廊 ⇄ 數位匿名模擬裝備雙軌切換 | 實體：Le Labo Santal 33、Guerlain 沙龍香氛、Beyerdynamic DT 770 Pro 監聽耳機；數位：戰力 1.25 億、戰地 9000、302★、創世解放匿名指標 | 進入應用 ➔ [`./showcase/`](./showcase/) |
 | **04 // OPS** | **自動腳本** | Mode 4A Tixplus 票務獵手 ⇄ Mode 4B DriveStore 雲端管線（動態 DAG 狀態機） | 30 秒輪詢探針、Cloudflare Worker 中繼、Discord/LINE/Telegram 毫秒推送；HEVC+ASS remux .mkv、CBZ 封裝、7-Zip AES-256 加密分卷與 Rclone 虛擬磁碟 Z: 槽串流 | 展館內切換 DAG 節點展示 |
 | **05 // AI** | **本地智算** | 本地雙軌同傳工作站，硬體配置 AMD Ryzen 5 7500F、32GB DDR5、Intel Arc A750 8GB | Windows WASAPI Loopback 採集、SenseVoice / Faster-Whisper 50ms ASR 辨識、Gemma 4 MTP 80~110 tokens/s 推測解碼展示 | 展館內即時雙軌同傳展示 |
 
@@ -43,7 +43,7 @@
 4. **管線動態 DAG 狀態機 (Dynamic Pipeline DAG)**：
    - `routeDag(mode)` 支援 MKV、CBZ 與 SHA-256 狀態轉移，精準切換活躍節點與按鈕樣式。
 5. **同源快取隔離 (Service Worker Isolation)**：
-   - `sw.js` 註冊快取命名空間 `hub-portal-cache-v3.1`，實施同源前綴隔離與舊版快取清理。
+   - `sw.js` 註冊快取命名空間 `hub-portal-cache-v3.2`，實施同源前綴隔離與舊版快取清理。
 
 ---
 

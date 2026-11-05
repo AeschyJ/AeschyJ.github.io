@@ -3,6 +3,23 @@
 本專案的所有重要變更均將記錄於此檔案中。  
 本更新日誌嚴格遵循 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.0.0/) 格式，並採用 [語意化版本 (Semantic Versioning)](https://semver.org/lang/zh-TW/) 規範。
 
+## [3.2.0] - 2026-11-05
+
+### Added
+- **OSK 館資產同步**：納入 `emaki.html`（百景繪卷）與 `itinerary.html`（巡行手帖），掛載 `portal-pill.js` 懸浮回航膠囊。
+
+### Changed
+- **02 展館跳轉重構**：跳轉連結重構為 `進入 百景繪卷 | 和風繪卷`，字體深度呈現主次；副標題統一為 `水墨百景 · 諸相全錄`；首頁封面切換為清水寺全景寫真。
+
+### Fixed
+- **繪卷非相片媒體過濾修復**：`emaki.html` 過濾非靜態圖片 MP4 資源避免破圖，修正公開署名為 `AESCHY`。
+
+### Security
+- **全庫靜態安全掃描**：全庫靜態安全掃描通過（零絕對路徑、零私有 IGN 洩漏）。
+
+### Cache
+- **Service Worker 快取識別碼升級**：升級至 `hub-portal-cache-v3.2` 與 `tabisync-v5.0.0`。
+
 ---
 
 ## [3.1.0] - 2026-11-04
@@ -84,7 +101,7 @@
 - 將原先以絕對定位（`position: absolute; top: 14px; right: 14px;`）浮動的旋轉雷達盤，收納進 `.terminal-header` 的 `.terminal-hud-cluster` 彈性排版容器中。
 - 與綠色 Ping 值標籤並列（帶有 12px 留白與呼吸綠點），在排版物理結構上徹底杜絕任何文字與圖形重疊的可能。
 - 終端機底線 (`border-bottom`) 統一延展於雷達與 Ping 標籤下方，日誌區域獲得 100% 完整寬度，文字不再被遮擋。
-- 心跳探針每 4 秒動態更新 Ping 延遲，模擬搶票觸發瞬間降至 18ms，極致強化科技感。
+- 心跳探針每 4 秒動態更新 Ping 延遲，模擬搶票觸發瞬間降至 18ms，強化狀態即時反饋。
 - 針對窄螢幕（<=480px）自適應縮減為 36px 並簡化為 `● 38ms`；矮螢幕縮減為 32px。
 
 ### 🧹 賽博日常展館邊緣殘留 HUD 框線清除 (Cyber Pavilion Cleanup)
@@ -96,7 +113,7 @@
 
 ### 🚀 重大重構 (Major Architectural Overhaul)
 - **整面無外框畫布 (Full-Bleed Canvas Deck)**：
-  - 徹底告別舊式容器卡片瀑布流（`gap: 120px` 垂直長滾動），全站改由 `#viewport-deck` 掌控 `100vw × 100dvh` 整面無縫鋪展。
+  - 徹底告別舊式容器卡片瀑布流（`gap: 120px` 垂直長滾動），全站改由 `#viewport-deck` 掌控 `100vw × 100dvh` 整面鋪展。
   - 導入 CSS 原生 `scroll-snap-type: y mandatory` 與 `scroll-snap-stop: always`，實現「滑動一次即精準吸附並切換一整座展館」的沉浸式動線。
 - **全域氛圍即時連動機制 (Dynamic Atmosphere Linkage)**：
   - 透過 `IntersectionObserver` 即時監聽當前展示展館，動態更新 `body[data-active-theme]`。

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>夏之栞・行旅繪卷 | 水墨百景寫真畫報</title>
+
+  <!-- PWA & Mobile Web App Meta -->
+  <link rel="manifest" href="./magazine-manifest.json">
+  <meta name="theme-color" content="#ECE8DF">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="行旅繪卷">
+
+  <!-- Tailwind CSS & Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Google Fonts: 日本軟筆書法 Yuji Syuku、手寫體 Klee One、毛筆行書 Ma Shan Zheng、思源宋體 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Klee+One:wght@400;600&family=Ma+Shan+Zheng&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700;900&family=Yuji+Syuku&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
+            serif: ['Noto Serif TC', 'serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            brush: ['Yuji Syuku', 'Ma Shan Zheng', 'Noto Serif TC', 'serif'],
+            hand: ['Klee One', 'Noto Serif TC', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .tabular-nums { font-variant-numeric: tabular-nums; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Wabi-Sabi Xuan Paper Background Grain */
+    .washi-ink-canvas {
+      background-color: #ECE8DF;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(24, 23, 21, 0.05) 0%, transparent 45%),
+        radial-gradient(circle at 85% 75%, rgba(24, 23, 21, 0.07) 0%, transparent 50%),
+        radial-gradient(rgba(24, 23, 21, 0.04) 1px, transparent 0);
+      background-size: 100% 100%, 100% 100%, 14px 14px;
+    }
+
+    /* SVG Brush Stroke Distortion to Borders & Frames */
+    .ink-stroke { filter: url(#brush-stroke); }
+    .ink-wash-edge { filter: url(#ink-wash-heavy); }
+  </style>
+</head>
+<body class="washi-ink-canvas text-[#181715] font-sans antialiased selection:bg-[#B3392A]/20 min-h-screen relative overflow-x-hidden">
+
+  <!-- =====================================================================
+       GLOBAL SVG FILTERS: 毛筆飛白線條 (#brush-stroke) & 潑墨暈染 (#ink-wash-heavy)
+  ====================================================================== -->
+  <svg class="hidden" width="0" height="0">
+    <defs>
+      <filter id="brush-stroke" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="4" seed="5" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <filter id="ink-wash-heavy" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="turbulence" baseFrequency="0.03" numOctaves="3" seed="8" result="rough" />
+        <feDisplacementMap in="SourceGraphic" in2="rough" scale="6" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- Background SVG Sumi-e Ink Wash Mountains & Splash Watermark (水墨遠山底紋) -->
+  <svg class="fixed bottom-0 inset-x-0 w-full h-72 pointer-events-none opacity-[0.08] z-0 ink-wash-edge" viewBox="0 0 1440 320" preserveAspectRatio="none">
+    <path fill="#181715" d="M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,202.7C840,192,960,128,1080,117.3C1200,107,1320,149,1380,170.7L1440,192L1440,320L0,320Z"></path>
+    <path fill="#3A3834" opacity="0.6" d="M0,288L80,266.7C160,245,320,203,480,197.3C640,192,800,224,960,234.7C1120,245,1280,235,1360,229.3L1440,224L1440,320L0,320Z"></path>
+  </svg>
+
+  <!-- =====================================================================
+       TOP GLOBAL HEADER (繪卷主展示導覽列 + 助手跳轉)
+  ====================================================================== -->
+  <header class="sticky top-0 z-40 bg-[#ECE8DF]/95 backdrop-blur-md border-b-[1.5px] border-[#181715] px-4 md:px-8 h-14 flex items-center justify-between gap-3">
+    <!-- Brand / Title -->
+    <div class="flex items-center gap-3">
+      <span class="ink-stroke border border-[#B3392A] text-[#B3392A] px-2 py-0.5 font-brush text-xs tracking-widest bg-[#B3392A]/5 select-none font-bold">
+        栞
+      </span>
+      <div class="flex items-baseline gap-2">
+        <span class="font-brush text-base md:text-lg font-bold tracking-wider text-[#181715]">夏之栞・行旅繪卷</span>
+        <span class="font-hand text-xs text-[#5A564E] hidden sm:inline">名阪京奈盛夏巡行</span>
+      </div>
+    </div>
+
+    <!-- Right Controls: Jump to Itinerary (旅遊助手) + Stats -->
+    <div class="flex items-center gap-2.5">
+      <div class="hidden md:flex items-center gap-2 font-mono text-[11px] text-[#5A564E] mr-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#B3392A]"></span>
+        <span id="nav-total-count">收錄 305 幀寫真</span>
+      </div>
+
+      <!-- Jump to Itinerary Helper Page -->
+      <a href="./itinerary.html" class="px-3.5 py-1.5 bg-[#181715] hover:bg-[#B3392A] text-[#ECE8DF] text-xs font-mono transition-all flex items-center gap-1.5 shadow-sm">
+        <i data-lucide="compass" class="w-3.5 h-3.5 stroke-[1.5]"></i>
+        <span>巡行手帖 (旅遊助手) ➔</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       MAIN WRAPPER
+  ====================================================================== -->
+  <main class="max-w-6xl mx-auto px-4 md:px-10 py-10 relative z-10">
+
+    <!-- ===================================================================
+         1. 水墨軟筆卷首題跋 (Soft-Brush Prologue & Ink-Wash Seal Painting)
+    ==================================================================== -->
+    <section class="relative py-8 px-6 md:px-12 mb-10 bg-white/40 border-t-2 border-b-2 border-[#181715] ink-stroke">
+      <!-- Subtle Ink Circle Enso (禪圓水墨印畫) in Background -->
+      <svg class="absolute right-8 top-1/2 -translate-y-1/2 w-60 h-60 opacity-[0.06] pointer-events-none ink-wash-edge" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="78" fill="none" stroke="#181715" stroke-width="16" stroke-dasharray="430 60" stroke-linecap="round" />
+      </svg>
+
+      <div class="flex flex-col md:flex-row-reverse items-center justify-between gap-8">
+        
+        <!-- Right: Soft-Brush Vertical Calligraphy Title -->
+        <div class="flex items-start gap-6">
+          <div class="[writing-mode:vertical-rl] font-brush">
+            <span class="text-xs tracking-[0.35em] text-[#B3392A]">丙午盛夏・全九卷水墨百景帖</span>
+            <h1 class="text-3xl md:text-5xl tracking-[0.18em] leading-relaxed ml-3 text-[#181715]">
+              夏之栞・行旅繪卷
+            </h1>
+            <h2 class="text-sm md:text-base text-[#5A564E] tracking-[0.25em] ml-2 font-hand">
+              名阪京奈三百一十三幀寫真全錄
+            </h2>
+          </div>
+
+          <p class="[writing-mode:vertical-rl] font-hand text-xs md:text-sm leading-[2.2] tracking-[0.15em] text-[#3A3834] h-60">
+            步履隨風，穿行於尾張古城、浪花水都、奈良青苔與千本鳥居之間；將盛夏九日之汗水、球場之喧囂、舌尖之炙香與古寺之鐘鳴，研墨化作永恆繪卷。
+          </p>
+        </div>
+
+        <!-- Left: Brush Seal Stamp & Stats -->
+        <div class="flex flex-col justify-between items-start gap-5 w-full md:w-auto">
+          <!-- Distorted Ink Vermilion Seal (水墨朱砂古印) -->
+          <div class="flex items-center gap-4">
+            <div class="ink-stroke border-2 border-[#B3392A] bg-[#B3392A]/5 text-[#B3392A] p-2.5 font-brush text-sm [writing-mode:vertical-rl] tracking-[0.3em] shadow-[inset_0_0_0_1px_#B3392A] select-none">
+              名阪京奈・百景珍藏
+            </div>
+            <div class="font-hand text-xs space-y-1.5 text-[#3A3834]">
+              <div>・巡行紀日：2026.08.19 — 08.27 (九卷全帙)</div>
+              <div>・收錄畫幀：313 幀實拍寫真與影音記錄</div>
+              <div>・踏查名城：國寶犬山城・彥根城・大阪城</div>
+              <div>・探訪神域：熱田神宮・東大寺・清水寺・白鬚神社</div>
+            </div>
+          </div>
+
+          <!-- Quick Navigation Tip -->
+          <div class="text-[11px] font-mono text-[#7A756C] flex items-center gap-1.5 pt-1">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-[#B3392A]"></i>
+            <span>點擊任一小圖即可進入水墨暗房，支援鍵盤左右箭頭切換</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         2. 卷次導覽篩選按鈕列 (Chapter Filter Buttons)
+    ==================================================================== -->
+    <section class="sticky top-14 z-30 bg-[#ECE8DF]/95 backdrop-blur-sm py-3 mb-8 border-b border-[#181715]/20">
+      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1" id="filter-bar">
+        <!-- Injected dynamically by JS -->
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         3. 高密度「小圖百景拼貼繪卷」 (High-Density Micro-Frame Grid)
+    ==================================================================== -->
+    <div id="mag-chapters-container" class="space-y-16">
+      <!-- Injected dynamically by JS -->
+    </div>
+
+  </main>
+
+  <!-- =====================================================================
+       MODAL: 水墨暗房大圖檢視器 (Sumi Lightbox)
+  ====================================================================== -->
+  <div id="ink-lightbox" class="fixed inset-0 z-50 hidden bg-[#141311]/92 backdrop-blur-md flex items-center justify-center p-3 md:p-6" onclick="closeLightbox()">
+    
+    <!-- Lightbox Main Frame -->
+    <div class="max-w-4xl w-full bg-[#ECE8DF] text-[#181715] p-4 md:p-6 border-2 border-[#181715] ink-stroke relative shadow-2xl" onclick="event.stopPropagation()">
+      
+      <!-- Top Close Button -->
+      <button onclick="closeLightbox()" class="absolute top-3 right-3 px-2.5 py-1 border border-[#181715]/40 font-brush text-xs hover:bg-[#181715] hover:text-[#ECE8DF] transition-colors z-20">
+        閉卷 [ESC]
+      </button>
+
+      <!-- Prev / Next Navigation Buttons (Fixed Sides) -->
+      <button onclick="navigateLightbox(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-[#ECE8DF]/80 hover:bg-[#181715] hover:text-[#ECE8DF] text-[#181715] border border-[#181715] flex items-center justify-center font-bold text-lg transition-colors shadow">
+        ‹
+      </button>
+      <button onclick="navigateLightbox(1)" class="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-[#ECE8DF]/80 hover:bg-[#181715] hover:text-[#ECE8DF] text-[#181715] border border-[#181715] flex items-center justify-center font-bold text-lg transition-colors shadow">
+        ›
+      </button>
+
+      <!-- Photo Display Area -->
+      <div class="aspect-[16/10] bg-[#181715] p-1.5 ink-stroke overflow-hidden relative flex items-center justify-center">
+        <img id="lb-img" src="" alt="寫真真跡" class="max-w-full max-h-full object-contain transition-opacity duration-300" />
+      </div>
+
+      <!-- Caption & Metadata Box -->
+      <div class="mt-4 flex flex-wrap items-start justify-between gap-3 pt-2 border-t border-[#181715]/20">
+        <div class="max-w-xl">
+          <div class="flex items-center gap-2">
+            <span id="lb-code" class="font-mono text-[11px] text-[#B3392A] font-semibold tracking-widest"></span>
+            <span id="lb-tag" class="bg-[#181715] text-[#ECE8DF] font-mono text-[10px] px-2 py-0.5"></span>
+            <span id="lb-loc" class="font-hand text-xs text-[#5A564E]"></span>
+          </div>
+          <h4 id="lb-title" class="font-brush text-xl md:text-2xl mt-1.5 text-[#181715]"></h4>
+          <p id="lb-quote" class="font-hand text-xs text-[#5A564E] mt-1 italic"></p>
+        </div>
+
+        <div class="flex flex-col items-end gap-1 shrink-0">
+          <span class="ink-stroke border border-[#B3392A] text-[#B3392A] px-2 py-1 font-brush text-xs [writing-mode:vertical-rl] tracking-widest">
+            夏之栞・真跡
+          </span>
+          <span id="lb-counter" class="font-mono text-[10px] text-[#7A756C] mt-1 tabular-nums"></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer Info -->
+  <footer class="mt-16 border-t border-[#181715]/20 py-8 text-center text-xs font-hand text-[#7A756C] relative z-10">
+    <p>夏之栞・名阪京奈盛夏巡行繪卷 (TabiSync Emaki) | 丙午歲次 2026</p>
+    <p class="font-mono text-[10px] text-[#9A958C] mt-1">NAGOYA · INUYAMA · HIKONE · OSAKA · NARA · KYOTO · SHIGA</p>
+  </footer>
+
+  <!-- Core Data & Application Script -->
+  <script src="./js/magazine-data.js"></script>
+
+  <script>
+    // =========================================================================
+    // MAGAZINE VIEWER LOGIC (高密度百景小圖拼貼 + 水墨暗房燈箱)
+    // =========================================================================
+
+    // 平面化相片清單供燈箱巡迴
+    let flatPhotosList = [];
+    let currentLightboxIdx = 0;
+    let activeChapterFilter = 'all';
+
+    // 輔助：提取單卷所有不重複的相片 (含封面、畫廊精選與各景點實拍)
+    function getPhotosForChapter(ch) {
+      const seen = new Set();
+      const list = [];
+
+      function add(item, fallbackTag) {
+        if (!item || !item.path) return;
+        if (item.isVideo || item.path.endsWith('.mp4')) return;
+        if (seen.has(item.path)) return;
+        seen.add(item.path);
+        list.push({
+          path: item.path,
+          caption: item.caption || ch.themeTitle,
+          tag: item.tag || fallbackTag || '實訪寫真'
+        });
+      }
+
+      if (ch.heroPhoto) add(ch.heroPhoto, '卷首封面');
+      if (ch.gallery) ch.gallery.forEach(p => add(p, '精選畫幀'));
+      if (ch.spots) {
+        ch.spots.forEach(s => {
+          if (s.photos) s.photos.forEach(p => add(p, s.name));
+        });
+      }
+      return list;
+    }
+
+    function initMagazineViewer() {
+      if (!window.MAGAZINE_CHAPTERS || !window.MAGAZINE_CHAPTERS.length) {
+        console.error('MAGAZINE_CHAPTERS data not found.');
+        return;
+      }
+
+      // 構建全域平坦化照片清單 (全 305 幀寫真完整收錄)
+      flatPhotosList = [];
+      let totalCount = 0;
+
+      window.MAGAZINE_CHAPTERS.forEach((ch, chIdx) => {
+        const photos = getPhotosForChapter(ch);
+        photos.forEach((item, pIdx) => {
+          totalCount++;
+          const rawPath = item.path;
+          const thumbPath = rawPath.replace(/^Photos\//, 'Photos_web/').replace(/\.jpg$/, '_thumb.jpg');
+          const webFull = rawPath.replace(/^Photos\//, 'Photos_web/');
+
+          flatPhotosList.push({
+            globalIdx: totalCount - 1,
+            chapterId: ch.chapterId,
+            chapterKanji: ch.volumeKanji,
+            chapterTitle: ch.themeTitle,
+            chapterQuote: ch.quote || ch.summaryText || '',
+            location: ch.location,
+            caption: item.caption,
+            tag: item.tag || '寫真記錄',
+            thumbPath: thumbPath,
+            webFullPath: webFull,
+            rawPath: rawPath
+          });
+        });
+      });
+
+      const totalCountEl = document.getElementById('nav-total-count');
+      if (totalCountEl) totalCountEl.textContent = `收錄 ${totalCount} 幀寫真`;
+
+      renderFilterBar();
+      renderChapters('all');
+      lucide.createIcons();
+
+      // 鍵盤導航監聽
+      window.addEventListener('keydown', (e) => {
+        const lb = document.getElementById('ink-lightbox');
+        if (!lb || lb.classList.contains('hidden')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowLeft') navigateLightbox(-1);
+        else if (e.key === 'ArrowRight') navigateLightbox(1);
+      });
+    }
+
+    // 渲染章節過濾標籤
+    function renderFilterBar() {
+      const bar = document.getElementById('filter-bar');
+      bar.innerHTML = '';
+
+      const allBtn = document.createElement('button');
+      allBtn.className = 'mag-filter-btn px-3 py-1 bg-[#181715] text-[#ECE8DF] font-brush text-xs tracking-widest shrink-0 transition-colors';
+      allBtn.textContent = `全卷百景 (${flatPhotosList.length})`;
+      allBtn.onclick = () => filterChapter('all', allBtn);
+      bar.appendChild(allBtn);
+
+      window.MAGAZINE_CHAPTERS.forEach((ch) => {
+        const btn = document.createElement('button');
+        const count = getPhotosForChapter(ch).length;
+        btn.className = 'mag-filter-btn px-3 py-1 border border-[#181715]/40 text-[#181715] hover:bg-[#181715]/10 font-brush text-xs tracking-widest shrink-0 transition-colors';
+        btn.textContent = `${ch.volumeKanji} (${count})`;
+        btn.onclick = () => filterChapter(ch.chapterId, btn);
+        bar.appendChild(btn);
+      });
+    }
+
+    function filterChapter(chId, targetBtn) {
+      activeChapterFilter = chId;
+      document.querySelectorAll('.mag-filter-btn').forEach(b => {
+        b.className = 'mag-filter-btn px-3 py-1 border border-[#181715]/40 text-[#181715] hover:bg-[#181715]/10 font-brush text-xs tracking-widest shrink-0 transition-colors';
+      });
+      targetBtn.className = 'mag-filter-btn px-3 py-1 bg-[#181715] text-[#ECE8DF] font-brush text-xs tracking-widest shrink-0 transition-colors';
+      renderChapters(chId);
+    }
+
+    // 渲染各卷高密度小圖拼貼
+    function renderChapters(filterId) {
+      const container = document.getElementById('mag-chapters-container');
+      container.innerHTML = '';
+
+      window.MAGAZINE_CHAPTERS.forEach((ch, chIdx) => {
+        if (filterId !== 'all' && ch.chapterId !== filterId) return;
+
+        const photos = getPhotosForChapter(ch);
+        if (!photos.length) return;
+
+        const sec = document.createElement('section');
+        sec.className = 'relative';
+
+        // 卷標頭
+        let headerHtml = `
+          <div class="flex flex-wrap items-end justify-between gap-3 pb-3 mb-5 border-b-2 border-[#181715] ink-stroke">
+            <div class="flex items-center gap-3">
+              <span class="ink-stroke border-2 border-[#B3392A] text-[#B3392A] px-2 py-0.5 font-brush text-xs tracking-widest select-none">
+                ${ch.volumeKanji}
+              </span>
+              <div>
+                <h3 class="font-brush text-xl md:text-2xl text-[#181715] tracking-wider">${ch.themeTitle}</h3>
+                <p class="font-hand text-xs text-[#5A564E] mt-0.5">${ch.quote || ch.summaryText || ''}</p>
+              </div>
+            </div>
+            <span class="font-mono text-[11px] text-[#7A756C] tabular-nums">共 ${photos.length} 幀</span>
+          </div>
+        `;
+
+        // 小圖百景網格 (桌機 6 欄 / 平板 4 欄 / 手機 3 欄)
+        let gridHtml = `<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2.5 md:gap-3.5">`;
+
+        photos.forEach((item, pIdx) => {
+          // 找到全域索引
+          const photoObj = flatPhotosList.find(p => p.rawPath === item.path);
+          const gIdx = photoObj ? photoObj.globalIdx : 0;
+          const code = String(pIdx + 1).padStart(3, '0');
+
+          gridHtml += `
+            <div onclick="openLightbox(${gIdx})" class="group cursor-pointer bg-[#181715] p-1 ink-stroke transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <div class="aspect-square overflow-hidden bg-[#27272A] relative">
+                <img src="${photoObj ? photoObj.thumbPath : item.path}" onerror="this.onerror=null; this.src='${item.path}';" alt="${item.caption}" class="w-full h-full object-cover sepia-[0.18] contrast-105 group-hover:sepia-0 group-hover:scale-110 transition-all duration-500" loading="lazy" />
+                <span class="absolute top-1 left-1 bg-[#181715]/80 text-[#ECE8DF] font-mono text-[9px] px-1 tabular-nums">#${code}</span>
+              </div>
+              <div class="bg-[#ECE8DF] px-1.5 py-1 mt-1 flex justify-between items-center gap-1">
+                <span class="font-brush text-xs text-[#181715] truncate">${item.caption}</span>
+                <span class="font-hand text-[9px] text-[#B3392A] shrink-0">${item.tag || ''}</span>
+              </div>
+            </div>
+          `;
+        });
+
+        gridHtml += `</div>`;
+        sec.innerHTML = headerHtml + gridHtml;
+        container.appendChild(sec);
+      });
+    }
+
+    // 水墨暗房燈箱邏輯
+    function openLightbox(globalIdx) {
+      currentLightboxIdx = globalIdx;
+      updateLightboxContent();
+      document.getElementById('ink-lightbox').classList.remove('hidden');
+    }
+
+    function closeLightbox() {
+      document.getElementById('ink-lightbox').classList.add('hidden');
+    }
+
+    function navigateLightbox(dir) {
+      currentLightboxIdx += dir;
+      if (currentLightboxIdx < 0) currentLightboxIdx = flatPhotosList.length - 1;
+      else if (currentLightboxIdx >= flatPhotosList.length) currentLightboxIdx = 0;
+      updateLightboxContent();
+    }
+
+    function updateLightboxContent() {
+      const p = flatPhotosList[currentLightboxIdx];
+      if (!p) return;
+
+      const img = document.getElementById('lb-img');
+      img.style.opacity = '0.3';
+      
+      // 優先載入 webFullPath，若載入失敗自動 fallback 到 rawPath
+      const fullSrc = p.webFullPath;
+      img.src = fullSrc;
+      img.onerror = () => { img.onerror = null; img.src = p.rawPath; };
+      img.onload = () => { img.style.opacity = '1'; };
+
+      document.getElementById('lb-code').textContent = `FRAME #${String(p.globalIdx + 1).padStart(3, '0')} // ${p.chapterKanji}`;
+      document.getElementById('lb-tag').textContent = p.tag;
+      document.getElementById('lb-loc').textContent = `地點：${p.location}`;
+      document.getElementById('lb-title').textContent = p.caption;
+      document.getElementById('lb-quote').textContent = p.chapterQuote ? `「${p.chapterQuote}」` : '';
+      document.getElementById('lb-counter').textContent = `${p.globalIdx + 1} / ${flatPhotosList.length}`;
+    }
+
+    // 初始化啟動
+    window.addEventListener('DOMContentLoaded', initMagazineViewer);
+  </script>
+
+  <!-- 微縮回航膠囊 (Floating Portal Pill) -->
+  <script src="./js/portal-pill.js" data-target="../" data-label="Antigravity Hub" data-position="bottom-right"></script>
+</body>
+</html>

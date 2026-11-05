@@ -1,7 +1,5 @@
 /**
  * TabiSync Trip Data (旅の栞・名阪京奈 夏日巡行手帖 官方行程資料集)
- * 包含 11 天完整每日排定行程、隨行地圖座標、風土名所指南與旬味名店
- * 每個景點皆配置 100% 真實地標、國寶建築、球場與名物料理直連 CDN 寫真
  */
 window.DEFAULT_TRIP_DATA = {
   "id": "japan-trip-2026-aug",
@@ -11,15 +9,96 @@ window.DEFAULT_TRIP_DATA = {
   "notebookUrl": "https://notebooklm.google.com/notebook/08eca98d-dac6-43a7-815e-4a0245b56e35",
   "coverImage": "./assets/images/hero.jpg",
   "hotelInfo": {
-    "name": "大阪阪神飯店 (Hotel Hanshin Osaka)",
-    "address": "大阪市福島區福島5丁目6-16",
-    "dates": "8/21 (五) ~ 8/25 (二) 連續 5 晚住宿基地",
+    "name": "名阪京多段巡行宿點本陣",
+    "address": "依各巡行日動態對應下榻基地",
+    "dates": "8/19~8/20 名古屋 | 8/21~8/24 大阪 | 8/25~8/26 京都 | 8/27 大阪本町",
     "coords": [
-      34.6975,
-      135.4878
+      35.1706,
+      136.9189
     ],
-    "googleMaps": "https://maps.app.goo.gl/6jYd7QmqnLscha826",
-    "features": "客房引入地下千米天然溫泉水、JR福島站直結"
+    "googleMaps": "https://www.google.com/maps/search/?api=1&query=東横INN+名古屋栄",
+    "features": "精選四大交通便利與名所商圈飯店",
+    "hotels": [
+      {
+        "id": "hotel_toyoko_sakae",
+        "dates": "8/19 (三) ~ 8/20 (四) 共 2 晚",
+        "dateKeys": [
+          "2026-08-19",
+          "2026-08-20"
+        ],
+        "name": "名古屋 東橫INN 榮",
+        "nameJp": "東横INN 名古屋栄",
+        "nameEn": "Toyoko Inn Nagoya Sakae",
+        "city": "名古屋",
+        "address": "愛知縣名古屋市中區東櫻2-22-21",
+        "coords": [
+          35.1706,
+          136.9189
+        ],
+        "googleMaps": "https://www.google.com/maps/search/?api=1&query=東横INN+名古屋栄",
+        "features": "地鐵新榮町站步行約6分、近榮商圈、免費朝食"
+      },
+      {
+        "id": "hotel_hanshin",
+        "dates": "8/21 (五) ~ 8/24 (一) 共 4 晚",
+        "dateKeys": [
+          "2026-08-21",
+          "2026-08-22",
+          "2026-08-23",
+          "2026-08-24"
+        ],
+        "name": "大阪阪神飯店",
+        "nameJp": "ホテル阪神大阪 (天然温泉・徳次郎の湯)",
+        "nameEn": "Hotel Hanshin Osaka",
+        "city": "大阪",
+        "address": "大阪市福島區福島5丁目6-16",
+        "coords": [
+          34.6975,
+          135.4878
+        ],
+        "googleMaps": "https://maps.app.goo.gl/6jYd7QmqnLscha826",
+        "features": "客房引入地下千米天然溫泉水、JR福島站直結步行1分"
+      },
+      {
+        "id": "hotel_mitsui_shijo",
+        "dates": "8/25 (二) ~ 8/26 (三) 共 2 晚",
+        "dateKeys": [
+          "2026-08-25",
+          "2026-08-26"
+        ],
+        "name": "京都三井花園酒店 四條",
+        "nameJp": "三井ガーデンホテル京都四条",
+        "nameEn": "Mitsui Garden Hotel Kyoto Shijo",
+        "city": "京都",
+        "address": "京都府京都市下京區西洞院通四條下ル妙傳寺町707-1",
+        "coords": [
+          35.0033,
+          135.7548
+        ],
+        "googleMaps": "https://www.google.com/maps/search/?api=1&query=三井ガーデンホテル京都四条",
+        "features": "四條烏丸商圈、地鐵四條站步行6分、設有京都雅致大浴場"
+      },
+      {
+        "id": "hotel_view_honmachi",
+        "dates": "8/27 (四) 起",
+        "dateKeys": [
+          "2026-08-27",
+          "2026-08-28",
+          "2026-08-29"
+        ],
+        "name": "Osaka View Hotel Honmachi",
+        "nameJp": "大阪ビューホテル 本町",
+        "nameEn": "Osaka View Hotel Honmachi",
+        "city": "大阪",
+        "address": "大阪府大阪市中央區本町4-8-8",
+        "coords": [
+          34.6845,
+          135.4985
+        ],
+        "googleMaps": "https://www.google.com/maps/search/?api=1&query=Osaka+View+Hotel+Honmachi",
+        "features": "本町站4/5號出口步行2分、御堂筋精華區、步行通達心齋橋"
+      }
+    ]
   },
   "dateRange": {
     "startDate": "2026-08-19",
@@ -299,10 +378,47 @@ window.DEFAULT_TRIP_DATA = {
           "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Endoji_Shopping_Street_2021-10_ac.jpg/1280px-Endoji_Shopping_Street_2021-10_ac.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "region": "nagoya",
           "photoLabel": "昭和復古拱廊風情之圓頓寺商店街老街"
+        },
+        {
+          "id": "hotel_toyoko_sakae",
+          "name": "名古屋 東橫INN 榮",
+          "nameJp": "東横INN 名古屋栄",
+          "isScheduled": false,
+          "isHotelBase": true,
+          "category": "hotel",
+          "coords": [
+            35.1706,
+            136.9189
+          ],
+          "tag": "🏨 下榻飯店",
+          "address": "愛知縣名古屋市中區東櫻2-22-21 (地鐵新榮町站步行6分)",
+          "googleMaps": "https://www.google.com/maps/search/?api=1&query=東横INN+名古屋栄",
+          "description": "8/19~8/20 名古屋下榻基地！位處熱鬧榮商圈東側，鄰近新榮町站與久屋大通公園，附贈元氣免費朝食飯糰與咖啡。",
+          "highlights": [
+            "地鐵東山線新榮町站 1 號出口步行約 6 分鐘直達",
+            "徒步可達榮町地下街、綠洲21與中部電力 MIRAI TOWER",
+            "全館免費高速 Wi-Fi，早晨提供日式朝食服務"
+          ],
+          "hours": "Check-in 15:00 / Check-out 10:00",
+          "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Toyoko_Inn_Nagoya_Sakae_20160814.jpg/1280px-Toyoko_Inn_Nagoya_Sakae_20160814.jpg",
+          "region": "nagoya",
+          "photoLabel": "名古屋東橫INN 榮 (Toyoko Inn Nagoya Sakae) 外觀"
         }
       ],
       "primaryRegion": "nagoya",
-      "secondaryRegion": null
+      "secondaryRegion": null,
+      "hotel": {
+        "id": "hotel_toyoko_sakae",
+        "name": "名古屋 東橫INN 榮",
+        "nameJp": "東横INN 名古屋栄",
+        "address": "愛知縣名古屋市中區東櫻2-22-21 (地鐵新榮町站步行6分)",
+        "features": "8/19~8/20 名古屋下榻基地！位處熱鬧榮商圈東側，鄰近新榮町站與久屋大通公園，附贈元氣免費朝食飯糰與咖啡。",
+        "googleMaps": "https://www.google.com/maps/search/?api=1&query=東横INN+名古屋栄",
+        "coords": [
+          35.1706,
+          136.9189
+        ]
+      }
     },
     {
       "dayIndex": 2,
@@ -580,10 +696,47 @@ window.DEFAULT_TRIP_DATA = {
           "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Toyota_Commemorative_Museum_of_Industry_and_Technology_-_Textile_Machinery_Pavilion.jpg/1280px-Toyota_Commemorative_Museum_of_Industry_and_Technology_-_Textile_Machinery_Pavilion.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "region": "nagoya",
           "photoLabel": "紡織機械館內展示之豐田環狀織機與工業歷史"
+        },
+        {
+          "id": "hotel_toyoko_sakae",
+          "name": "名古屋 東橫INN 榮",
+          "nameJp": "東横INN 名古屋栄",
+          "isScheduled": false,
+          "isHotelBase": true,
+          "category": "hotel",
+          "coords": [
+            35.1706,
+            136.9189
+          ],
+          "tag": "🏨 下榻飯店",
+          "address": "愛知縣名古屋市中區東櫻2-22-21 (地鐵新榮町站步行6分)",
+          "googleMaps": "https://www.google.com/maps/search/?api=1&query=東横INN+名古屋栄",
+          "description": "8/19~8/20 名古屋下榻基地！位處熱鬧榮商圈東側，鄰近新榮町站與久屋大通公園，附贈元氣免費朝食飯糰與咖啡。",
+          "highlights": [
+            "地鐵東山線新榮町站 1 號出口步行約 6 分鐘直達",
+            "徒步可達榮町地下街、綠洲21與中部電力 MIRAI TOWER",
+            "全館免費高速 Wi-Fi，早晨提供日式朝食服務"
+          ],
+          "hours": "Check-in 15:00 / Check-out 10:00",
+          "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Toyoko_Inn_Nagoya_Sakae_20160814.jpg/1280px-Toyoko_Inn_Nagoya_Sakae_20160814.jpg",
+          "region": "nagoya",
+          "photoLabel": "名古屋東橫INN 榮 (Toyoko Inn Nagoya Sakae) 外觀"
         }
       ],
       "primaryRegion": "nagoya",
-      "secondaryRegion": "inuyama"
+      "secondaryRegion": "inuyama",
+      "hotel": {
+        "id": "hotel_toyoko_sakae",
+        "name": "名古屋 東橫INN 榮",
+        "nameJp": "東横INN 名古屋栄",
+        "address": "愛知縣名古屋市中區東櫻2-22-21 (地鐵新榮町站步行6分)",
+        "features": "8/19~8/20 名古屋下榻基地！位處熱鬧榮商圈東側，鄰近新榮町站與久屋大通公園，附贈元氣免費朝食飯糰與咖啡。",
+        "googleMaps": "https://www.google.com/maps/search/?api=1&query=東横INN+名古屋栄",
+        "coords": [
+          35.1706,
+          136.9189
+        ]
+      }
     },
     {
       "dayIndex": 3,
@@ -846,13 +999,13 @@ window.DEFAULT_TRIP_DATA = {
           "isHotelBase": true,
           "category": "hotel",
           "coords": [
-            34.6967,
-            135.4868
+            34.6975,
+            135.4878
           ],
           "tag": "🏨 下榻飯店",
-          "address": "大阪府大阪市福島區福島5丁目6-16 (JR福島站步行1分)",
+          "address": "大阪市福島區福島5丁目6-16 (JR福島站步行1分)",
           "googleMaps": "https://maps.app.goo.gl/6jYd7QmqnLscha826",
-          "description": "8/21~8/25 連續五晚大阪常駐下榻飯店！客房內均引入地下千米天然溫泉「德次郎之湯」，交通極致便利，JR福島站出站即達，距離梅田僅1站。",
+          "description": "8/21~8/24 連續四晚大阪常駐下榻飯店！客房內均引入地下千米天然溫泉「德次郎之湯」，交通極致便利，JR福島站出站即達，距離梅田僅1站。",
           "highlights": [
             "所有客房浴室皆可享用天然溫泉直通泉水",
             "JR福島站出口步行僅 1 分鐘，直通梅田與關西機場快速",
@@ -865,7 +1018,19 @@ window.DEFAULT_TRIP_DATA = {
         }
       ],
       "primaryRegion": "nagoya",
-      "secondaryRegion": null
+      "secondaryRegion": null,
+      "hotel": {
+        "id": "hotel_hanshin",
+        "name": "大阪阪神飯店",
+        "nameJp": "ホテル阪神大阪 (天然温泉・徳次郎の湯)",
+        "address": "大阪市福島區福島5丁目6-16 (JR福島站步行1分)",
+        "features": "8/21~8/24 連續四晚大阪常駐下榻飯店！客房內均引入地下千米天然溫泉「德次郎之湯」，交通極致便利，JR福島站出站即達，距離梅田僅1站。",
+        "googleMaps": "https://maps.app.goo.gl/6jYd7QmqnLscha826",
+        "coords": [
+          34.6975,
+          135.4878
+        ]
+      }
     },
     {
       "dayIndex": 4,
@@ -1124,13 +1289,13 @@ window.DEFAULT_TRIP_DATA = {
           "isHotelBase": true,
           "category": "hotel",
           "coords": [
-            34.6967,
-            135.4868
+            34.6975,
+            135.4878
           ],
           "tag": "🏨 下榻飯店",
-          "address": "大阪府大阪市福島區福島5丁目6-16 (JR福島站步行1分)",
+          "address": "大阪市福島區福島5丁目6-16 (JR福島站步行1分)",
           "googleMaps": "https://maps.app.goo.gl/6jYd7QmqnLscha826",
-          "description": "8/21~8/25 連續五晚大阪常駐下榻飯店！客房內均引入地下千米天然溫泉「德次郎之湯」，交通極致便利，JR福島站出站即達，距離梅田僅1站。",
+          "description": "8/21~8/24 連續四晚大阪常駐下榻飯店！客房內均引入地下千米天然溫泉「德次郎之湯」，交通極致便利，JR福島站出站即達，距離梅田僅1站。",
           "highlights": [
             "所有客房浴室皆可享用天然溫泉直通泉水",
             "JR福島站出口步行僅 1 分鐘，直通梅田與關西機場快速",
@@ -1143,7 +1308,19 @@ window.DEFAULT_TRIP_DATA = {
         }
       ],
       "primaryRegion": "osaka",
-      "secondaryRegion": "hyogo"
+      "secondaryRegion": "hyogo",
+      "hotel": {
+        "id": "hotel_hanshin",
+        "name": "大阪阪神飯店",
+        "nameJp": "ホテル阪神大阪 (天然温泉・徳次郎の湯)",
+        "address": "大阪市福島區福島5丁目6-16 (JR福島站步行1分)",
+        "features": "8/21~8/24 連續四晚大阪常駐下榻飯店！客房內均引入地下千米天然溫泉「德次郎之湯」，交通極致便利，JR福島站出站即達，距離梅田僅1站。",
+        "googleMaps": "https://maps.app.goo.gl/6jYd7QmqnLscha826",
+        "coords": [
+          34.6975,
+          135.4878
+        ]
+      }
     },
     {
       "dayIndex": 5,
@@ -1454,13 +1631,13 @@ window.DEFAULT_TRIP_DATA = {
           "isHotelBase": true,
           "category": "hotel",
           "coords": [
-            34.6967,
-            135.4868
+            34.6975,
+            135.4878
           ],
           "tag": "🏨 下榻飯店",
-          "address": "大阪府大阪市福島區福島5丁目6-16 (JR福島站步行1分)",
+          "address": "大阪市福島區福島5丁目6-16 (JR福島站步行1分)",
           "googleMaps": "https://maps.app.goo.gl/6jYd7QmqnLscha826",
-          "description": "8/21~8/25 連續五晚大阪常駐下榻飯店！客房內均引入地下千米天然溫泉「德次郎之湯」，交通極致便利，JR福島站出站即達，距離梅田僅1站。",
+          "description": "8/21~8/24 連續四晚大阪常駐下榻飯店！客房內均引入地下千米天然溫泉「德次郎之湯」，交通極致便利，JR福島站出站即達，距離梅田僅1站。",
           "highlights": [
             "所有客房浴室皆可享用天然溫泉直通泉水",
             "JR福島站出口步行僅 1 分鐘，直通梅田與關西機場快速",
@@ -1473,7 +1650,19 @@ window.DEFAULT_TRIP_DATA = {
         }
       ],
       "primaryRegion": "osaka",
-      "secondaryRegion": null
+      "secondaryRegion": null,
+      "hotel": {
+        "id": "hotel_hanshin",
+        "name": "大阪阪神飯店",
+        "nameJp": "ホテル阪神大阪 (天然温泉・徳次郎の湯)",
+        "address": "大阪市福島區福島5丁目6-16 (JR福島站步行1分)",
+        "features": "8/21~8/24 連續四晚大阪常駐下榻飯店！客房內均引入地下千米天然溫泉「德次郎之湯」，交通極致便利，JR福島站出站即達，距離梅田僅1站。",
+        "googleMaps": "https://maps.app.goo.gl/6jYd7QmqnLscha826",
+        "coords": [
+          34.6975,
+          135.4878
+        ]
+      }
     },
     {
       "dayIndex": 6,
@@ -1780,13 +1969,13 @@ window.DEFAULT_TRIP_DATA = {
           "isHotelBase": true,
           "category": "hotel",
           "coords": [
-            34.6967,
-            135.4868
+            34.6975,
+            135.4878
           ],
           "tag": "🏨 下榻飯店",
-          "address": "大阪府大阪市福島區福島5丁目6-16 (JR福島站步行1分)",
+          "address": "大阪市福島區福島5丁目6-16 (JR福島站步行1分)",
           "googleMaps": "https://maps.app.goo.gl/6jYd7QmqnLscha826",
-          "description": "8/21~8/25 連續五晚大阪常駐下榻飯店！客房內均引入地下千米天然溫泉「德次郎之湯」，交通極致便利，JR福島站出站即達，距離梅田僅1站。",
+          "description": "8/21~8/24 連續四晚大阪常駐下榻飯店！客房內均引入地下千米天然溫泉「德次郎之湯」，交通極致便利，JR福島站出站即達，距離梅田僅1站。",
           "highlights": [
             "所有客房浴室皆可享用天然溫泉直通泉水",
             "JR福島站出口步行僅 1 分鐘，直通梅田與關西機場快速",
@@ -1799,7 +1988,19 @@ window.DEFAULT_TRIP_DATA = {
         }
       ],
       "primaryRegion": "osaka",
-      "secondaryRegion": "nara"
+      "secondaryRegion": "nara",
+      "hotel": {
+        "id": "hotel_hanshin",
+        "name": "大阪阪神飯店",
+        "nameJp": "ホテル阪神大阪 (天然温泉・徳次郎の湯)",
+        "address": "大阪市福島區福島5丁目6-16 (JR福島站步行1分)",
+        "features": "8/21~8/24 連續四晚大阪常駐下榻飯店！客房內均引入地下千米天然溫泉「德次郎之湯」，交通極致便利，JR福島站出站即達，距離梅田僅1站。",
+        "googleMaps": "https://maps.app.goo.gl/6jYd7QmqnLscha826",
+        "coords": [
+          34.6975,
+          135.4878
+        ]
+      }
     },
     {
       "dayIndex": 7,
@@ -1970,33 +2171,45 @@ window.DEFAULT_TRIP_DATA = {
           "photoLabel": "大阪福島聖天通商店街入口與周邊熱鬧居酒屋紅燈籠小巷"
         },
         {
-          "id": "hotel_hanshin",
-          "name": "大阪阪神飯店",
-          "nameJp": "ホテル阪神大阪 (天然温泉・徳次郎の湯)",
+          "id": "hotel_mitsui_shijo",
+          "name": "京都三井花園酒店 四條",
+          "nameJp": "三井ガーデンホテル京都四条",
           "isScheduled": false,
           "isHotelBase": true,
           "category": "hotel",
           "coords": [
-            34.6967,
-            135.4868
+            35.0033,
+            135.7548
           ],
           "tag": "🏨 下榻飯店",
-          "address": "大阪府大阪市福島區福島5丁目6-16 (JR福島站步行1分)",
-          "googleMaps": "https://maps.app.goo.gl/6jYd7QmqnLscha826",
-          "description": "8/21~8/25 連續五晚大阪常駐下榻飯店！客房內均引入地下千米天然溫泉「德次郎之湯」，交通極致便利，JR福島站出站即達，距離梅田僅1站。",
+          "address": "京都府京都市下京區西洞院通四條下ル妙傳寺町707-1 (地鐵四條站步行6分)",
+          "googleMaps": "https://www.google.com/maps/search/?api=1&query=三井ガーデンホテル京都四条",
+          "description": "8/25~8/26 京都核心四條商圈下榻飯店！位處四條烏丸精華地段，錦市場與祇園漫步可達，館內附設京都風情雅致大浴場。",
           "highlights": [
-            "所有客房浴室皆可享用天然溫泉直通泉水",
-            "JR福島站出口步行僅 1 分鐘，直通梅田與關西機場快速",
-            "周邊為著名福島聖天通居酒屋與米其林拉麵一級戰區"
+            "四條烏丸核心商圈，地鐵四條站與阪急烏丸站雙鐵共構",
+            "館內設有療癒大浴場「御所之湯」，洗去古寺巡禮行腳疲憊",
+            "徒步即達錦市場高湯玉子燒與四條河原町購物商圈"
           ],
           "hours": "Check-in 15:00 / Check-out 11:00",
-          "img": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Laxa-Osaka-%28Hotel-Hanshin%29-20090321.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
-          "region": "osaka",
-          "photoLabel": "位於 JR 福島站前之大阪阪神飯店 (Hotel Hanshin Osaka) 外觀，內設天然溫泉「德次郎之湯」"
+          "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Mitsui_Garden_Hotel_Kyoto_Shijo.jpg/1280px-Mitsui_Garden_Hotel_Kyoto_Shijo.jpg",
+          "region": "kyoto",
+          "photoLabel": "京都三井花園酒店四條 (Mitsui Garden Hotel Kyoto Shijo) 外觀"
         }
       ],
       "primaryRegion": "osaka",
-      "secondaryRegion": null
+      "secondaryRegion": null,
+      "hotel": {
+        "id": "hotel_mitsui_shijo",
+        "name": "京都三井花園酒店 四條",
+        "nameJp": "三井ガーデンホテル京都四条",
+        "address": "京都府京都市下京區西洞院通四條下ル妙傳寺町707-1 (地鐵四條站步行6分)",
+        "features": "8/25~8/26 京都核心四條商圈下榻飯店！位處四條烏丸精華地段，錦市場與祇園漫步可達，館內附設京都風情雅致大浴場。",
+        "googleMaps": "https://www.google.com/maps/search/?api=1&query=三井ガーデンホテル京都四条",
+        "coords": [
+          35.0033,
+          135.7548
+        ]
+      }
     },
     {
       "dayIndex": 8,
@@ -2367,10 +2580,47 @@ window.DEFAULT_TRIP_DATA = {
           "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/UMEKOJI_STEAM_LOCOMOTIVE_MUSEUM_ROUNDHOUSE_KYOTO_JAPAN_JUNE_2012_%287418910726%29.jpg/1280px-UMEKOJI_STEAM_LOCOMOTIVE_MUSEUM_ROUNDHOUSE_KYOTO_JAPAN_JUNE_2012_%287418910726%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "region": "kyoto",
           "photoLabel": "京都鐵道博物館梅小路扇形車庫、轉車盤與多列 SL 蒸汽機車壯觀全貌"
+        },
+        {
+          "id": "hotel_mitsui_shijo",
+          "name": "京都三井花園酒店 四條",
+          "nameJp": "三井ガーデンホテル京都四条",
+          "isScheduled": false,
+          "isHotelBase": true,
+          "category": "hotel",
+          "coords": [
+            35.0033,
+            135.7548
+          ],
+          "tag": "🏨 下榻飯店",
+          "address": "京都府京都市下京區西洞院通四條下ル妙傳寺町707-1 (地鐵四條站步行6分)",
+          "googleMaps": "https://www.google.com/maps/search/?api=1&query=三井ガーデンホテル京都四条",
+          "description": "8/25~8/26 京都核心四條商圈下榻飯店！位處四條烏丸精華地段，錦市場與祇園漫步可達，館內附設京都風情雅致大浴場。",
+          "highlights": [
+            "四條烏丸核心商圈，地鐵四條站與阪急烏丸站雙鐵共構",
+            "館內設有療癒大浴場「御所之湯」，洗去古寺巡禮行腳疲憊",
+            "徒步即達錦市場高湯玉子燒與四條河原町購物商圈"
+          ],
+          "hours": "Check-in 15:00 / Check-out 11:00",
+          "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Mitsui_Garden_Hotel_Kyoto_Shijo.jpg/1280px-Mitsui_Garden_Hotel_Kyoto_Shijo.jpg",
+          "region": "kyoto",
+          "photoLabel": "京都三井花園酒店四條 (Mitsui Garden Hotel Kyoto Shijo) 外觀"
         }
       ],
       "primaryRegion": "kyoto",
-      "secondaryRegion": null
+      "secondaryRegion": null,
+      "hotel": {
+        "id": "hotel_mitsui_shijo",
+        "name": "京都三井花園酒店 四條",
+        "nameJp": "三井ガーデンホテル京都四条",
+        "address": "京都府京都市下京區西洞院通四條下ル妙傳寺町707-1 (地鐵四條站步行6分)",
+        "features": "8/25~8/26 京都核心四條商圈下榻飯店！位處四條烏丸精華地段，錦市場與祇園漫步可達，館內附設京都風情雅致大浴場。",
+        "googleMaps": "https://www.google.com/maps/search/?api=1&query=三井ガーデンホテル京都四条",
+        "coords": [
+          35.0033,
+          135.7548
+        ]
+      }
     },
     {
       "dayIndex": 9,
@@ -2587,10 +2837,47 @@ window.DEFAULT_TRIP_DATA = {
           "img": "https://upload.wikimedia.org/wikipedia/commons/8/85/Jiyuken_curry_rice_by_nozawana_in_Osaka.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
           "region": "osaka",
           "photoLabel": "自由軒難波本店名物百年咖哩飯中央打入一顆生雞蛋"
+        },
+        {
+          "id": "hotel_view_honmachi",
+          "name": "Osaka View Hotel Honmachi",
+          "nameJp": "大阪ビューホテル 本町",
+          "isScheduled": false,
+          "isHotelBase": true,
+          "category": "hotel",
+          "coords": [
+            34.6845,
+            135.4985
+          ],
+          "tag": "🏨 下榻飯店",
+          "address": "大阪府大阪市中央區本町4-8-8 (地鐵本町站4/5號出口步行2分)",
+          "googleMaps": "https://www.google.com/maps/search/?api=1&query=Osaka+View+Hotel+Honmachi",
+          "description": "8/27 大阪市中心下榻飯店！位於御堂筋核心本町站旁，心齋橋、道頓堀與黑門市場漫步輕鬆抵達，交通極致便捷。",
+          "highlights": [
+            "Osaka Metro 御堂筋線、中央線、四橋線本町站出站步行僅 2 分鐘",
+            "直通難波、梅田與心齋橋核心購物商圈",
+            "客房雅致舒適，配備席夢思名床與現代都會衛浴設施"
+          ],
+          "hours": "Check-in 15:00 / Check-out 11:00",
+          "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Osaka_View_Hotel_Honmachi_exterior.jpg/1280px-Osaka_View_Hotel_Honmachi_exterior.jpg",
+          "region": "osaka",
+          "photoLabel": "大阪本町展望酒店 (Osaka View Hotel Honmachi) 外觀"
         }
       ],
       "primaryRegion": "osaka",
-      "secondaryRegion": null
+      "secondaryRegion": null,
+      "hotel": {
+        "id": "hotel_view_honmachi",
+        "name": "Osaka View Hotel Honmachi",
+        "nameJp": "大阪ビューホテル 本町",
+        "address": "大阪府大阪市中央區本町4-8-8 (地鐵本町站4/5號出口步行2分)",
+        "features": "8/27 大阪市中心下榻飯店！位於御堂筋核心本町站旁，心齋橋、道頓堀與黑門市場漫步輕鬆抵達，交通極致便捷。",
+        "googleMaps": "https://www.google.com/maps/search/?api=1&query=Osaka+View+Hotel+Honmachi",
+        "coords": [
+          34.6845,
+          135.4985
+        ]
+      }
     },
     {
       "dayIndex": 10,
@@ -2765,10 +3052,47 @@ window.DEFAULT_TRIP_DATA = {
           "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Minoh_Falls_Minoh_Osaka_pref_Japan04s5.jpg/1280px-Minoh_Falls_Minoh_Osaka_pref_Japan04s5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
           "region": "osaka",
           "photoLabel": "日本瀑布百選之箕面大滝 33 米落差飛瀑與青翠山谷美景"
+        },
+        {
+          "id": "hotel_view_honmachi",
+          "name": "Osaka View Hotel Honmachi",
+          "nameJp": "大阪ビューホテル 本町",
+          "isScheduled": false,
+          "isHotelBase": true,
+          "category": "hotel",
+          "coords": [
+            34.6845,
+            135.4985
+          ],
+          "tag": "🏨 下榻飯店",
+          "address": "大阪府大阪市中央區本町4-8-8 (地鐵本町站4/5號出口步行2分)",
+          "googleMaps": "https://www.google.com/maps/search/?api=1&query=Osaka+View+Hotel+Honmachi",
+          "description": "8/27 大阪市中心下榻飯店！位於御堂筋核心本町站旁，心齋橋、道頓堀與黑門市場漫步輕鬆抵達，交通極致便捷。",
+          "highlights": [
+            "Osaka Metro 御堂筋線、中央線、四橋線本町站出站步行僅 2 分鐘",
+            "直通難波、梅田與心齋橋核心購物商圈",
+            "客房雅致舒適，配備席夢思名床與現代都會衛浴設施"
+          ],
+          "hours": "Check-in 15:00 / Check-out 11:00",
+          "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Osaka_View_Hotel_Honmachi_exterior.jpg/1280px-Osaka_View_Hotel_Honmachi_exterior.jpg",
+          "region": "osaka",
+          "photoLabel": "大阪本町展望酒店 (Osaka View Hotel Honmachi) 外觀"
         }
       ],
       "primaryRegion": "osaka",
-      "secondaryRegion": null
+      "secondaryRegion": null,
+      "hotel": {
+        "id": "hotel_view_honmachi",
+        "name": "Osaka View Hotel Honmachi",
+        "nameJp": "大阪ビューホテル 本町",
+        "address": "大阪府大阪市中央區本町4-8-8 (地鐵本町站4/5號出口步行2分)",
+        "features": "8/27 大阪市中心下榻飯店！位於御堂筋核心本町站旁，心齋橋、道頓堀與黑門市場漫步輕鬆抵達，交通極致便捷。",
+        "googleMaps": "https://www.google.com/maps/search/?api=1&query=Osaka+View+Hotel+Honmachi",
+        "coords": [
+          34.6845,
+          135.4985
+        ]
+      }
     },
     {
       "dayIndex": 11,
@@ -2882,10 +3206,47 @@ window.DEFAULT_TRIP_DATA = {
           "img": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Kamukura-ramen.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
           "region": "osaka",
           "photoLabel": "道頓堀神座拉麵名物白菜秘傳醬油湯頭美味拉麵"
+        },
+        {
+          "id": "hotel_view_honmachi",
+          "name": "Osaka View Hotel Honmachi",
+          "nameJp": "大阪ビューホテル 本町",
+          "isScheduled": false,
+          "isHotelBase": true,
+          "category": "hotel",
+          "coords": [
+            34.6845,
+            135.4985
+          ],
+          "tag": "🏨 下榻飯店",
+          "address": "大阪府大阪市中央區本町4-8-8 (地鐵本町站4/5號出口步行2分)",
+          "googleMaps": "https://www.google.com/maps/search/?api=1&query=Osaka+View+Hotel+Honmachi",
+          "description": "8/27 大阪市中心下榻飯店！位於御堂筋核心本町站旁，心齋橋、道頓堀與黑門市場漫步輕鬆抵達，交通極致便捷。",
+          "highlights": [
+            "Osaka Metro 御堂筋線、中央線、四橋線本町站出站步行僅 2 分鐘",
+            "直通難波、梅田與心齋橋核心購物商圈",
+            "客房雅致舒適，配備席夢思名床與現代都會衛浴設施"
+          ],
+          "hours": "Check-in 15:00 / Check-out 11:00",
+          "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Osaka_View_Hotel_Honmachi_exterior.jpg/1280px-Osaka_View_Hotel_Honmachi_exterior.jpg",
+          "region": "osaka",
+          "photoLabel": "大阪本町展望酒店 (Osaka View Hotel Honmachi) 外觀"
         }
       ],
       "primaryRegion": "osaka",
-      "secondaryRegion": null
+      "secondaryRegion": null,
+      "hotel": {
+        "id": "hotel_view_honmachi",
+        "name": "Osaka View Hotel Honmachi",
+        "nameJp": "大阪ビューホテル 本町",
+        "address": "大阪府大阪市中央區本町4-8-8 (地鐵本町站4/5號出口步行2分)",
+        "features": "8/27 大阪市中心下榻飯店！位於御堂筋核心本町站旁，心齋橋、道頓堀與黑門市場漫步輕鬆抵達，交通極致便捷。",
+        "googleMaps": "https://www.google.com/maps/search/?api=1&query=Osaka+View+Hotel+Honmachi",
+        "coords": [
+          34.6845,
+          135.4985
+        ]
+      }
     }
   ],
   "regionalGems": {

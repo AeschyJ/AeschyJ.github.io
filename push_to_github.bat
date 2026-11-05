@@ -33,7 +33,7 @@ git diff --cached --quiet
 if %ERRORLEVEL% neq 0 (
     echo Committing changes...
     set "COMMIT_MSG=%~1"
-    if "%COMMIT_MSG%"=="" set "COMMIT_MSG=fix(layout): anchor pavilions 03 and 04 headers and refine english titles to v3.1.0"
+    if "%COMMIT_MSG%"=="" set "COMMIT_MSG=feat(osk): launch dual-track emaki gallery and clean entry navigation v3.2.0"
     git commit -m "%COMMIT_MSG%"
     if errorlevel 1 (
         echo.

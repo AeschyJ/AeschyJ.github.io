@@ -225,7 +225,7 @@ class OsakaPavilionComponent {
                   </span>
                   <h2 class="osk-title">
                     Osaka Odyssey
-                    <span class="osk-title-zh">關西極致旅誌・夏之栞</span>
+                    <span class="osk-title-zh">關西旅誌・夏之栞</span>
                   </h2>
                 </div>
 
@@ -252,13 +252,14 @@ class OsakaPavilionComponent {
 
                 <!-- 底部啟動按鈕整合 (直接收攏於左欄底部，節省整整一行縱向空間) -->
                 <div class="osk-actions-group">
-                  <a href="./osaka/" class="osk-btn-primary" data-osk-action="launch-app">
-                    <span>⛩️ 啟動 TabiSync 行程助手</span>
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  <span class="osk-actions-prefix" style="font-size:0.75rem; color:#8C877D; font-family:monospace; margin-right:4px;">進入</span>
+                  <a href="./osaka/emaki.html" class="osk-btn-primary" data-osk-action="launch-app" style="font-weight:700;">
+                    <span>百景繪卷</span>
                   </a>
-                  <a href="./osaka/magazine.html" class="osk-btn-secondary" data-osk-action="launch-mag">
+                  <span class="osk-actions-sep" style="color:rgba(200, 160, 130, 0.45); font-weight:300; margin:0 4px;">|</span>
+                  <a href="./osaka/magazine.html" class="osk-btn-secondary" data-osk-action="launch-mag" style="font-weight:400; opacity:0.85;">
                     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                    <span>📜 翻閱夏之栞繪卷</span>
+                    <span>和風繪卷</span>
                   </a>
                 </div>
               </div>

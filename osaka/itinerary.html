@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>旅の栞 TabiSync | 名阪京奈・巡行手帖 (旅遊助手)</title>
+
+  <!-- PWA & Mobile Web App Meta -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#F7F6F2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="巡行手帖">
+
+  <!-- Tailwind CSS & Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Google Fonts: 日本軟筆 Yuji Syuku、手寫體 Klee One、思源黑體與宋體、JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Klee+One:wght@400;600&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700;900&family=Yuji+Syuku&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
+            serif: ['Noto Serif TC', 'serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            brush: ['Yuji Syuku', 'Noto Serif TC', 'serif'],
+            hand: ['Klee One', 'Noto Serif TC', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .tabular-nums { font-variant-numeric: tabular-nums; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Modern Matte Paper Grain */
+    .paper-matte {
+      background-color: #F7F6F2;
+      background-image: radial-gradient(rgba(24, 24, 27, 0.04) 1px, transparent 0);
+      background-size: 14px 14px;
+    }
+  </style>
+</head>
+<body class="paper-matte text-[#18181B] font-sans antialiased selection:bg-[#B3392A]/20 min-h-screen">
+
+  <!-- =====================================================================
+       TOP GLOBAL HEADER (手帖助手導覽列 + 主展示跳轉)
+  ====================================================================== -->
+  <header class="sticky top-0 z-40 bg-[#F7F6F2]/95 backdrop-blur-md border-b-[1.5px] border-[#18181B] px-4 md:px-8 h-14 flex items-center justify-between gap-3">
+    
+    <!-- Left: Brand / Title -->
+    <div class="flex items-center gap-3">
+      <span class="bg-[#18181B] text-[#F7F6F2] font-mono text-[11px] font-semibold px-2 py-1 tracking-widest uppercase select-none">
+        TABISYNC
+      </span>
+      <div class="flex items-baseline gap-2">
+        <span class="font-serif font-bold text-sm md:text-base text-[#18181B]">名阪京奈・巡行手帖</span>
+        <span class="font-mono text-[11px] text-[#64646A] hidden md:inline">2026 盛夏行腳助手</span>
+      </div>
+    </div>
+
+    <!-- Right: Jump to Emaki (主展示) & Quick Actions -->
+    <div class="flex items-center gap-2">
+      <!-- Jump to Emaki Main Gallery -->
+      <a href="./emaki.html" class="px-3 py-1.5 border border-[#18181B] bg-[#EAE7DF] hover:bg-[#18181B] hover:text-[#F7F6F2] text-xs font-brush tracking-wider transition-colors flex items-center gap-1.5 shadow-sm">
+        <i data-lucide="scroll" class="w-3.5 h-3.5 stroke-[1.5] text-[#B3392A]"></i>
+        <span>水墨繪卷 (主展示) ➔</span>
+      </a>
+
+      <!-- Sub-view Journal trigger -->
+      <button onclick="switchSubView('journal')" class="px-2.5 py-1.5 border border-[#18181B] bg-[#F7F6F2] hover:bg-[#18181B] hover:text-[#F7F6F2] text-xs font-mono transition-colors flex items-center gap-1.5">
+        <i data-lucide="pen-tool" class="w-3.5 h-3.5 stroke-[1.5]"></i>
+        <span class="hidden sm:inline">寫手帖</span>
+        <span>(<span id="journal-count">0</span>)</span>
+      </button>
+
+      <!-- Toolkit Button -->
+      <button onclick="toggleToolkit(true)" class="px-2.5 py-1.5 bg-[#1D3557] hover:bg-[#152843] text-white text-xs font-mono flex items-center gap-1.5 transition-colors">
+        <i data-lucide="briefcase" class="w-3.5 h-3.5 stroke-[1.5]"></i>
+        <span class="hidden sm:inline">道具箱</span>
+      </button>
+    </div>
+
+  </header>
+
+  <!-- =========================================================================
+       MAIN WRAPPER: 巡行手帖 (Modern Japanese Editorial)
+  ========================================================================== -->
+  <main class="max-w-6xl mx-auto px-4 md:px-8 py-6">
+
+    <!-- ===================================================================
+         1. 超醒目「全天巡行切換橫軸 (Day Selector Strip)」
+    ==================================================================== -->
+    <section class="mb-6">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[10px] font-mono uppercase tracking-widest text-[#64646A] flex items-center gap-1.5">
+          <i data-lucide="calendar" class="w-3 h-3 text-[#D63222]"></i>
+          <span>SELECT ITINERARY DAY // 巡行曆 (點選切換天數)</span>
+        </span>
+        <span id="date-range-badge" class="text-[11px] font-mono tabular-nums text-[#1D3557] font-semibold">2026.08.19 — 08.29 (11 DAYS)</span>
+      </div>
+
+      <!-- Responsive Day Grid: 11 Days Full Dynamic Support -->
+      <div id="day-ribbon" class="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-11 gap-1.5">
+        <!-- Injected dynamically by JS -->
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         2. 次級功能導覽列：每日行腳 (時刻表) vs. 執筆手帖 (寫手記/記帳)
+    ==================================================================== -->
+    <div class="border-t-[1.5px] border-b border-[#18181B] py-3 flex flex-wrap items-center justify-between gap-4 bg-[#EFECE6]/70 px-3 md:px-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span id="active-day-badge" class="bg-[#D63222] text-white font-mono text-[11px] font-semibold px-2 py-0.5 tabular-nums">
+            DAY 01 · 08/19 (WED)
+          </span>
+          <span id="active-day-city" class="font-mono text-xs uppercase tracking-wider text-[#1D3557] font-semibold">
+            [名古屋]
+          </span>
+        </div>
+        <h1 id="active-day-title" class="font-serif text-lg md:text-2xl font-bold tracking-tight mt-1 text-[#18181B]">
+          抵達名古屋・綠洲21水之宇宙船與電視塔百萬夜景
+        </h1>
+      </div>
+
+      <!-- Sub-View Switcher: Schedule vs. Field Journal -->
+      <div class="flex items-center gap-2">
+        <button onclick="switchSubView('schedule')" id="subbtn-schedule" class="px-3 py-1.5 text-xs font-mono bg-[#18181B] text-[#F7F6F2] flex items-center gap-1.5 transition-all">
+          <i data-lucide="list-ordered" class="w-3.5 h-3.5 stroke-[1.5]"></i>
+          <span>行腳時刻與交通</span>
+        </button>
+        <button onclick="switchSubView('journal')" id="subbtn-journal" class="px-3 py-1.5 text-xs font-mono border border-[#18181B] text-[#18181B] hover:bg-[#18181B]/5 flex items-center gap-1.5 transition-all">
+          <i data-lucide="book-pen" class="w-3.5 h-3.5 stroke-[1.5] text-[#D63222]"></i>
+          <span>執筆手帖・隨身手記</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===================================================================
+         SUB-VIEW 1A: 每日行腳時刻表 (含：交通方式搭配 + 具體地址 + 導航 + 手指日語)
+    ==================================================================== -->
+    <div id="view-schedule" class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Left 8-Col: High-Detail Editorial Itinerary Stream -->
+      <div id="itinerary-stream" class="lg:col-span-8 space-y-6">
+        <!-- Injected dynamically by JS -->
+      </div>
+
+      <!-- Right 4-Col: Day Summary, Transit Pass & Survival Phrases -->
+      <aside class="lg:col-span-4 lg:sticky lg:top-20 space-y-5">
+        
+        <!-- Daily Transit & Basecamp Box -->
+        <div class="border border-[#18181B] bg-[#F7F6F2] p-5 relative shadow-sm">
+          <div class="absolute top-3 right-2.5 [writing-mode:vertical-rl] tracking-[0.2em] text-[9px] font-mono uppercase opacity-40 select-none">
+            TRANSIT &amp; BASECAMP
+          </div>
+          <div class="inline-block bg-[#1D3557] text-white font-mono text-[10px] tracking-widest uppercase px-2 py-0.5">
+            DAILY PASS &amp; HOTEL // 交通與宿點
+          </div>
+          
+          <div class="mt-4 space-y-3.5 text-xs divide-y divide-[#18181B]/15">
+            <div class="pt-2 first:pt-0">
+              <div class="text-[10px] font-mono text-[#64646A]">當日交通概述 / 推薦票券</div>
+              <div id="side-pass" class="font-medium mt-0.5 text-[#18181B] leading-relaxed">JR 東海道本線 / 私鐵特急 / Suica 交通卡</div>
+            </div>
+
+            <div class="pt-2.5">
+              <div class="text-[10px] font-mono text-[#64646A]">當日宿點本陣 (點擊複製地址)</div>
+              <div id="side-hotel-name" class="font-serif font-semibold text-sm mt-0.5 text-[#18181B]">大阪阪神飯店 (Hotel Hanshin Osaka)</div>
+              <button id="side-hotel-copy" onclick="copyText('大阪市福島區福島5丁目6-16')" class="mt-1 text-left font-mono text-[11px] text-[#1D3557] hover:underline flex items-center gap-1">
+                <i data-lucide="map-pin" class="w-3 h-3 stroke-[1.5] shrink-0 text-[#D63222]"></i>
+                <span id="side-hotel-addr">大阪市福島區福島5丁目6-16 (JR福島站直結)</span>
+              </button>
+            </div>
+
+            <div class="pt-2.5">
+              <div class="text-[10px] font-mono text-[#64646A]">當日天氣預報</div>
+              <div id="side-weather" class="font-mono text-xs text-[#18181B] mt-0.5 flex items-center gap-1.5">
+                <span>🌆 晴時多雲 · 33°C / 26°C · 降雨率 10%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Japanese Survival Phraseboard -->
+        <div class="border border-[#18181B] bg-[#EFECE6] p-5 shadow-sm">
+          <div class="flex justify-between items-center mb-3">
+            <span class="bg-[#18181B] text-[#F7F6F2] font-mono text-[10px] tracking-widest uppercase px-2 py-0.5">
+              SURVIVAL PHRASES // 隨身手指日語
+            </span>
+            <span class="text-[10px] font-mono text-[#64646A]">點擊放大出示</span>
+          </div>
+          
+          <div id="side-phrase-list" class="divide-y divide-[#18181B]/15 text-xs">
+            <!-- Injected dynamically by JS -->
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- ===================================================================
+         SUB-VIEW 1B: 執筆手帖・隨身手記 (Persistent Travel Journal & Expense)
+    ==================================================================== -->
+    <div id="view-journal" class="hidden mt-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Left 5-Col: Write New Entry Form -->
+      <div class="lg:col-span-5 border-[1.5px] border-[#18181B] bg-[#F7F6F2] p-6 shadow-sm">
+        <div class="inline-block bg-[#D63222] text-white font-mono text-[10px] tracking-widest uppercase px-2 py-0.5">
+          WRITE SHIORI // 執筆撰寫手帖
+        </div>
+        <h3 class="font-serif text-xl font-bold mt-2 text-[#18181B]">紀錄當下行腳感悟與支出</h3>
+        
+        <div class="mt-4 space-y-3.5 text-xs">
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-mono text-[10px] text-[#64646A] mb-1">日次 / 名所地點</label>
+              <input id="j-spot" type="text" placeholder="例：Day 1 · 世界的山將" class="w-full border border-[#18181B]/40 bg-white px-2.5 py-2 font-sans focus:outline-none focus:border-[#18181B]" />
+            </div>
+            <div>
+              <label class="block font-mono text-[10px] text-[#64646A] mb-1">花費金額 (JPY 円)</label>
+              <input id="j-cost" type="number" placeholder="0" class="w-full border border-[#18181B]/40 bg-white px-2.5 py-2 font-mono tabular-nums focus:outline-none focus:border-[#18181B]" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-mono text-[10px] text-[#64646A] mb-1">手帖隨筆 (支援手寫體渲染)</label>
+            <textarea id="j-text" rows="4" placeholder="寫下旅途中的風景、食物香氣或手記..." class="w-full border border-[#18181B]/40 bg-white p-2.5 font-hand text-sm leading-relaxed focus:outline-none focus:border-[#18181B]"></textarea>
+          </div>
+
+          <button onclick="addJournalEntry()" class="w-full py-2.5 bg-[#18181B] hover:bg-[#D63222] text-[#F7F6F2] font-mono text-xs uppercase tracking-widest transition-colors flex items-center justify-center gap-2">
+            <i data-lucide="feather" class="w-3.5 h-3.5 stroke-[1.5]"></i>
+            <span>蓋印封存至行旅手帖</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right 7-Col: Saved Hand-Notebook Cards -->
+      <div class="lg:col-span-7 space-y-4">
+        <div class="flex justify-between items-center border-b border-[#18181B]/20 pb-2">
+          <span class="font-mono text-xs text-[#64646A]">SAVED JOURNAL CARDS // 已封存之手帖紀錄 (本地持久化)</span>
+          <span id="total-jpy" class="font-mono tabular-nums text-xs font-semibold text-[#1D3557]">累計紀錄支出：¥ 0</span>
+        </div>
+        
+        <div id="journal-list" class="space-y-4">
+          <!-- Injected dynamically by JS -->
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- =====================================================================
+       MODAL A: 全螢幕日語出示卡 (Show to Staff)
+  ====================================================================== -->
+  <div id="phrase-modal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-4" onclick="closePhraseModal()">
+    <div class="bg-[#F7F6F2] text-[#18181B] border-2 border-[#18181B] max-w-lg w-full p-6 md:p-8 relative shadow-2xl" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center border-b border-[#18181B]/20 pb-3">
+        <span class="bg-[#D63222] text-white font-mono text-[10px] px-2 py-0.5 uppercase tracking-widest">SHOW TO STAFF // 請向店員出示此畫面</span>
+        <button onclick="closePhraseModal()" class="p-1 hover:bg-black/10"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <p id="modal-jp" class="font-serif text-2xl md:text-4xl font-bold leading-snug mt-6 text-[#18181B]"></p>
+      <p id="modal-romaji" class="font-mono text-xs text-[#1D3557] mt-3"></p>
+      <p id="modal-zh" class="text-xs text-[#64646A] mt-4 pt-3 border-t border-[#18181B]/15 leading-relaxed"></p>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       MODAL B: 隨身道具箱抽屜 (Toolkit Drawer)
+  ====================================================================== -->
+  <div id="toolkit-drawer" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex justify-end" onclick="toggleToolkit(false)">
+    <div class="w-full max-w-md bg-[#F7F6F2] text-[#18181B] h-full border-l-2 border-[#18181B] p-6 overflow-y-auto space-y-6 shadow-2xl" onclick="event.stopPropagation()">
+      
+      <!-- Top Title Bar -->
+      <div class="flex justify-between items-center border-b-[1.5px] border-[#18181B] pb-4">
+        <span class="font-serif text-lg font-bold">隨身道具箱 (Toolkit)</span>
+        <button onclick="toggleToolkit(false)" class="p-1 border border-[#18181B]/30 hover:bg-[#18181B] hover:text-[#F7F6F2] transition-colors"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+
+      <!-- Currency Converter -->
+      <div class="border border-[#18181B]/25 p-4 bg-white">
+        <div class="text-[10px] font-mono text-[#64646A] mb-2">JPY ⇄ TWD 匯率即時換算 (匯率 0.215)</div>
+        <div class="grid grid-cols-2 gap-2 font-mono text-xs">
+          <div>
+            <label class="text-[10px] text-[#64646A]">日圓 (JPY)</label>
+            <input type="number" id="jpy-in" value="5000" oninput="convertCurrency('jpy')" class="w-full border border-[#18181B]/30 p-1.5 mt-1 focus:outline-none focus:border-[#18181B]" />
+          </div>
+          <div>
+            <label class="text-[10px] text-[#64646A]">台幣 (TWD)</label>
+            <input type="number" id="twd-in" value="1075" oninput="convertCurrency('twd')" class="w-full border border-[#18181B]/30 p-1.5 mt-1 focus:outline-none focus:border-[#18181B]" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Emergency Hotlines -->
+      <div>
+        <div class="text-[10px] font-mono text-[#64646A] mb-2 uppercase tracking-wider">EMERGENCY HOTLINE // 日本境內緊急通訊</div>
+        <div class="divide-y divide-[#18181B]/15 border-t border-b border-[#18181B] text-xs font-mono">
+          <div class="py-2.5 flex justify-between items-center">
+            <span>日本警察報案 (事故/竊盜)</span>
+            <a href="tel:110" class="text-[#D63222] font-bold hover:underline">110</a>
+          </div>
+          <div class="py-2.5 flex justify-between items-center">
+            <span>救護車 / 火警急救</span>
+            <a href="tel:119" class="text-[#D63222] font-bold hover:underline">119</a>
+          </div>
+          <div class="py-2.5 flex justify-between items-center">
+            <span>JNTO 日本訪日熱線 (24H中英)</span>
+            <a href="tel:05038162788" class="text-[#1D3557] font-semibold hover:underline">050-3816-2788</a>
+          </div>
+          <div class="py-2.5 flex justify-between items-center">
+            <span>台北駐大阪經濟文化辦事處</span>
+            <a href="tel:+819035633566" class="text-[#1D3557] font-semibold hover:underline">+81-90-3563-3566</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Basecamp Hotels Full List (四段巡行宿點導航) -->
+      <div class="border border-[#18181B]/20 p-4 bg-[#EFECE6] space-y-4">
+        <div class="text-[10px] font-mono text-[#64646A] uppercase tracking-wider flex items-center justify-between">
+          <span>HOTEL BASECAMPS // 全程四段下榻基地</span>
+          <span class="text-[#D63222] font-semibold">4 HOTELS</span>
+        </div>
+
+        <div class="space-y-3 divide-y divide-[#18181B]/15 text-xs">
+          <!-- 1. 名古屋 -->
+          <div class="pt-2 first:pt-0">
+            <div class="flex justify-between items-baseline">
+              <span class="font-serif font-bold text-sm text-[#18181B]">名古屋 東橫INN 榮</span>
+              <span class="font-mono text-[10px] text-[#D63222]">8/19 ~ 8/20</span>
+            </div>
+            <div class="text-[11px] text-[#52525B] mt-0.5">愛知縣名古屋市中區東櫻2-22-21 (新榮町站步行6分)</div>
+            <div class="mt-2 flex gap-2">
+              <button onclick="copyText('愛知縣名古屋市中區東櫻2-22-21')" class="px-2 py-0.5 text-[11px] border border-[#18181B]/30 hover:border-[#18181B] bg-white">複製地址</button>
+              <a href="https://www.google.com/maps/search/?api=1&query=東横INN+名古屋栄" target="_blank" class="px-2 py-0.5 text-[11px] bg-[#1D3557] text-white flex items-center gap-1">
+                <span>Google 導航</span>
+                <i data-lucide="external-link" class="w-2.5 h-2.5"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- 2. 大阪阪神 -->
+          <div class="pt-3">
+            <div class="flex justify-between items-baseline">
+              <span class="font-serif font-bold text-sm text-[#18181B]">大阪阪神飯店 (天然溫泉)</span>
+              <span class="font-mono text-[10px] text-[#D63222]">8/21 ~ 8/24</span>
+            </div>
+            <div class="text-[11px] text-[#52525B] mt-0.5">大阪市福島區福島5丁目6-16 (JR福島站直結)</div>
+            <div class="mt-2 flex gap-2">
+              <button onclick="copyText('大阪市福島區福島5丁目6-16')" class="px-2 py-0.5 text-[11px] border border-[#18181B]/30 hover:border-[#18181B] bg-white">複製地址</button>
+              <a href="https://maps.app.goo.gl/6jYd7QmqnLscha826" target="_blank" class="px-2 py-0.5 text-[11px] bg-[#1D3557] text-white flex items-center gap-1">
+                <span>Google 導航</span>
+                <i data-lucide="external-link" class="w-2.5 h-2.5"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- 3. 京都三井花園 -->
+          <div class="pt-3">
+            <div class="flex justify-between items-baseline">
+              <span class="font-serif font-bold text-sm text-[#18181B]">京都三井花園酒店 四條</span>
+              <span class="font-mono text-[10px] text-[#D63222]">8/25 ~ 8/26</span>
+            </div>
+            <div class="text-[11px] text-[#52525B] mt-0.5">京都市下京區西洞院通四條下ル妙傳寺町707-1 (附大浴場)</div>
+            <div class="mt-2 flex gap-2">
+              <button onclick="copyText('京都府京都市下京區西洞院通四條下ル妙傳寺町707-1')" class="px-2 py-0.5 text-[11px] border border-[#18181B]/30 hover:border-[#18181B] bg-white">複製地址</button>
+              <a href="https://www.google.com/maps/search/?api=1&query=三井ガーデンホテル京都四条" target="_blank" class="px-2 py-0.5 text-[11px] bg-[#1D3557] text-white flex items-center gap-1">
+                <span>Google 導航</span>
+                <i data-lucide="external-link" class="w-2.5 h-2.5"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- 4. 大阪本町展望 -->
+          <div class="pt-3">
+            <div class="flex justify-between items-baseline">
+              <span class="font-serif font-bold text-sm text-[#18181B]">Osaka View Hotel Honmachi</span>
+              <span class="font-mono text-[10px] text-[#D63222]">8/27 起</span>
+            </div>
+            <div class="text-[11px] text-[#52525B] mt-0.5">大阪市中央區本町4-8-8 (地鐵本町站4/5號出口步行2分)</div>
+            <div class="mt-2 flex gap-2">
+              <button onclick="copyText('大阪府大阪市中央區本町4-8-8')" class="px-2 py-0.5 text-[11px] border border-[#18181B]/30 hover:border-[#18181B] bg-white">複製地址</button>
+              <a href="https://www.google.com/maps/search/?api=1&query=Osaka+View+Hotel+Honmachi" target="_blank" class="px-2 py-0.5 text-[11px] bg-[#1D3557] text-white flex items-center gap-1">
+                <span>Google 導航</span>
+                <i data-lucide="external-link" class="w-2.5 h-2.5"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-[#18181B] text-[#F7F6F2] px-4 py-2.5 text-xs font-mono border border-white/20 shadow-xl"></div>
+
+  <!-- Core Data Script -->
+  <script src="./js/trip-data.js"></script>
+
+  <script>
+    // =========================================================================
+    // ITINERARY ASSISTANT LOGIC (11天真實資料對接 + LocalStorage 手帖持久化)
+    // =========================================================================
+
+    let activeDayIdx = 0;
+    const STORAGE_KEY = 'tabisync_v2_journal_entries';
+
+    // 初始手帖範例 (若本機尚無紀錄時使用)
+    const initialJournalEntries = [
+      { day: 'Day 1 · 世界的山將 榮本店', cost: 3400, text: '幻之手羽先的黑胡椒香氣太驚人了，外皮酥脆完全不油膩，配生啤酒一瞬間就掃光兩盤！', time: '2026.08.19 20:15' },
+      { day: 'Day 2 · 國寶犬山城下町', cost: 1800, text: '木造天守頂樓木曾川的清風拂面非常舒服，三光稻荷神社洗錢求得財運亨通！', time: '2026.08.20 14:30' }
+    ];
+
+    function getSavedJournalEntries() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {
+        console.warn('Failed to read localStorage:', e);
+      }
+      return initialJournalEntries;
+    }
+
+    function saveJournalEntries(entries) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+      } catch (e) {
+        console.warn('Failed to write localStorage:', e);
+      }
+    }
+
+    // 初始化渲染
+    function initItinerary() {
+      if (!window.DEFAULT_TRIP_DATA || !window.DEFAULT_TRIP_DATA.days) {
+        console.error('DEFAULT_TRIP_DATA not loaded.');
+        return;
+      }
+
+      renderDayRibbon();
+      selectDay(0);
+      renderJournalList();
+      lucide.createIcons();
+    }
+
+    // 渲染全天切換軸 (完整對接 11 天)
+    function renderDayRibbon() {
+      const ribbon = document.getElementById('day-ribbon');
+      ribbon.innerHTML = '';
+      const days = window.DEFAULT_TRIP_DATA.days;
+
+      days.forEach((d, idx) => {
+        const isActive = idx === activeDayIdx;
+        const btn = document.createElement('button');
+        btn.onclick = () => selectDay(idx);
+        btn.className = isActive
+          ? 'p-2 text-left border-2 border-[#18181B] bg-[#18181B] text-[#F7F6F2] transition-all relative shadow'
+          : 'p-2 text-left border border-[#18181B]/25 bg-white/80 hover:bg-white hover:border-[#18181B] text-[#18181B] transition-all';
+
+        const shortDate = d.date ? d.date.slice(5).replace('-', '/') : '';
+
+        btn.innerHTML = `
+          <div class="flex justify-between items-center font-mono tabular-nums text-[10px] ${isActive ? 'text-[#FACC15]' : 'text-[#D63222]'}">
+            <span class="font-bold">D${d.dayIndex}</span>
+            <span>${shortDate}</span>
+          </div>
+          <div class="font-serif font-semibold text-xs mt-1 truncate">${d.location || '名所'}</div>
+        `;
+        ribbon.appendChild(btn);
+      });
+    }
+
+    // 選擇某一天
+    function selectDay(idx) {
+      activeDayIdx = idx;
+      renderDayRibbon();
+
+      const d = window.DEFAULT_TRIP_DATA.days[idx];
+      if (!d) return;
+
+      const shortDate = d.date ? d.date.slice(5).replace('-', '/') : '';
+      document.getElementById('active-day-badge').textContent = `DAY ${String(d.dayIndex).padStart(2, '0')} · ${shortDate} (${d.dayOfWeek})`;
+      document.getElementById('active-day-city').textContent = `[${d.location}]`;
+      document.getElementById('active-day-title').textContent = d.theme || d.summary || '';
+      document.getElementById('side-pass').textContent = d.summary || '交通 IC 卡 / 地鐵一日券';
+
+      // 當日宿點更新 (依據巡行日動態呈現具體下榻基地)
+      const currentHotel = d.hotel || (window.DEFAULT_TRIP_DATA.hotelInfo && window.DEFAULT_TRIP_DATA.hotelInfo.hotels ? window.DEFAULT_TRIP_DATA.hotelInfo.hotels[0] : window.DEFAULT_TRIP_DATA.hotelInfo);
+      if (currentHotel) {
+        document.getElementById('side-hotel-name').textContent = currentHotel.name;
+        document.getElementById('side-hotel-addr').textContent = `${currentHotel.address} (${currentHotel.nameJp || ''})`;
+        document.getElementById('side-hotel-copy').onclick = () => copyText(currentHotel.address);
+      }
+
+      // 天氣更新
+      if (d.weather) {
+        document.getElementById('side-weather').innerHTML = `<span>${d.weather.icon || '☀️'} ${d.weather.desc} · ${d.weather.high}°C / ${d.weather.low}°C · 降雨率 ${d.weather.rain}%</span>`;
+      }
+
+      // 渲染景點卡片流
+      const stream = document.getElementById('itinerary-stream');
+      stream.innerHTML = '';
+
+      const spots = d.spots || [];
+      const sidePhrases = [];
+
+      spots.forEach((s, sIdx) => {
+        const pObj = (s.phrases && s.phrases[0]) ? s.phrases[0] : null;
+        if (pObj) sidePhrases.push({ ...pObj, spotName: s.name });
+
+        const card = document.createElement('article');
+        card.className = 'border border-[#18181B] bg-white p-5 relative shadow-sm';
+
+        // 交通轉乘路線條
+        const transitInfo = s.address ? `📍 導航目標：${s.address}` : '🚇 依排定交通路線乘行';
+
+        card.innerHTML = `
+          <!-- Transit Connector Bar -->
+          <div class="py-2 px-3 -mx-5 -mt-5 mb-4 bg-[#E5E3DC]/70 border-b border-[#18181B]/15 text-[11px] font-mono text-[#1D3557] flex items-center justify-between gap-2">
+            <span class="truncate">${transitInfo}</span>
+            <span class="text-[10px] uppercase tracking-wider shrink-0 hidden sm:inline">TRANSIT ROUTE</span>
+          </div>
+
+          <!-- Spot Header -->
+          <div class="flex flex-wrap items-baseline justify-between gap-2 pb-3 border-b border-[#18181B]/15">
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <span class="font-mono tabular-nums text-sm font-bold text-[#D63222]">${s.time || '行程中'}</span>
+              <span class="bg-[#18181B] text-[#F7F6F2] font-mono text-[10px] px-2 py-0.5 uppercase">${s.tag || '名所'}</span>
+              <h3 class="font-serif text-lg md:text-xl font-bold text-[#18181B]">${s.name}</h3>
+              ${s.nameJp ? `<span class="text-xs text-[#52525B] font-serif">(${s.nameJp})</span>` : ''}
+            </div>
+            <span class="font-mono text-[10px] text-[#64646A]">STOP 0${sIdx + 1}</span>
+          </div>
+
+          <!-- Detailed Guide Description -->
+          <p class="text-xs text-[#3F3F46] leading-relaxed mt-3">${s.description || (s.fullStory ? s.fullStory[0] : '')}</p>
+
+          <!-- Address & Google Maps Navigation -->
+          <div class="mt-3 pt-3 border-t border-[#18181B]/10 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+            <div class="flex items-center gap-1.5 text-[#18181B] truncate max-w-md">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5 stroke-[1.5] text-[#D63222] shrink-0"></i>
+              <span class="truncate">地址：${s.address || '日本當地名所'}</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              ${s.address ? `<button onclick="copyText('${s.address.replace(/'/g, "\\'")}')" class="px-2 py-1 border border-[#18181B]/25 hover:border-[#18181B] text-[11px] bg-[#F7F6F2]">複製地址</button>` : ''}
+              <a href="${s.googleMaps || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.name)}`}" target="_blank" rel="noopener" class="px-2 py-1 bg-[#1D3557] hover:bg-[#152843] text-white text-[11px] flex items-center gap-1">
+                <span>Google 導航</span>
+                <i data-lucide="external-link" class="w-3 h-3"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Inline Japanese Phrase Box -->
+          ${pObj ? `
+            <div class="mt-3 p-3 bg-[#F7F6F2] border-l-2 border-[#D63222] flex items-center justify-between gap-3">
+              <div>
+                <div class="text-[10px] font-mono uppercase tracking-wider text-[#D63222]">實用日語短句 (點擊出示全螢幕出示給店員)</div>
+                <div class="font-serif font-bold text-sm mt-0.5 text-[#18181B]">「${pObj.japanese}」</div>
+                <div class="text-[11px] text-[#64646A] mt-0.5">${pObj.chinese} (${pObj.romaji || ''})</div>
+              </div>
+              <button onclick="showPhraseModal('${pObj.japanese.replace(/'/g, "\\'")}', '${(pObj.romaji || '').replace(/'/g, "\\'")}', '${pObj.chinese.replace(/'/g, "\\'")}')" class="px-2.5 py-1.5 border border-[#18181B] bg-white hover:bg-[#18181B] hover:text-white text-xs font-mono shrink-0 flex items-center gap-1 transition-colors">
+                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                <span>出示</span>
+              </button>
+            </div>
+          ` : ''}
+
+          <!-- Hand-Notebook Quick Note -->
+          <div class="mt-3 pt-2.5 border-t border-dashed border-[#18181B]/20 flex items-center justify-between gap-2 text-xs">
+            <div class="font-hand text-[#1D3557] flex items-center gap-1.5 truncate">
+              <i data-lucide="feather" class="w-3.5 h-3.5 shrink-0"></i>
+              <span id="spot-note-${sIdx}" class="truncate">手帖隨筆：${s.notes || '尚未填寫隨筆心得'}</span>
+            </div>
+            <button onclick="quickWriteSpot('${s.name.replace(/'/g, "\\'")}', ${sIdx})" class="text-[11px] font-mono underline text-[#64646A] hover:text-[#18181B] shrink-0">
+              + 編輯隨筆
+            </button>
+          </div>
+        `;
+        stream.appendChild(card);
+      });
+
+      // 側邊欄日語短句列表更新
+      const sidePhraseContainer = document.getElementById('side-phrase-list');
+      sidePhraseContainer.innerHTML = '';
+      if (sidePhrases.length > 0) {
+        sidePhrases.slice(0, 4).forEach(p => {
+          const pBtn = document.createElement('button');
+          pBtn.onclick = () => showPhraseModal(p.japanese, p.romaji || '', p.chinese);
+          pBtn.className = 'w-full py-2 text-left hover:bg-[#18181B]/5 px-1 transition-colors flex justify-between items-center gap-2';
+          pBtn.innerHTML = `
+            <div>
+              <div class="font-serif font-semibold text-xs">${p.japanese}</div>
+              <div class="text-[10px] text-[#64646A] mt-0.5">${p.chinese}</div>
+            </div>
+            <i data-lucide="maximize-2" class="w-3 h-3 stroke-[1.5] shrink-0 text-[#D63222]"></i>
+          `;
+          sidePhraseContainer.appendChild(pBtn);
+        });
+      } else {
+        sidePhraseContainer.innerHTML = `<div class="py-2 text-[11px] text-[#64646A]">本日名所皆備有標準指引。</div>`;
+      }
+
+      lucide.createIcons();
+    }
+
+    // 視圖切換 (行腳時刻表 vs 執筆手帖)
+    function switchSubView(sub) {
+      const isSched = sub === 'schedule';
+      document.getElementById('view-schedule').classList.toggle('hidden', !isSched);
+      document.getElementById('view-journal').classList.toggle('hidden', isSched);
+      
+      document.getElementById('subbtn-schedule').className = isSched
+        ? 'px-3 py-1.5 text-xs font-mono bg-[#18181B] text-[#F7F6F2] flex items-center gap-1.5'
+        : 'px-3 py-1.5 text-xs font-mono border border-[#18181B] text-[#18181B] hover:bg-[#18181B]/5 flex items-center gap-1.5';
+      
+      document.getElementById('subbtn-journal').className = !isSched
+        ? 'px-3 py-1.5 text-xs font-mono bg-[#D63222] text-white flex items-center gap-1.5'
+        : 'px-3 py-1.5 text-xs font-mono border border-[#18181B] text-[#18181B] hover:bg-[#18181B]/5 flex items-center gap-1.5';
+    }
+
+    // 執筆手帖清單渲染
+    function renderJournalList() {
+      const entries = getSavedJournalEntries();
+      const list = document.getElementById('journal-list');
+      list.innerHTML = '';
+      let sum = 0;
+
+      entries.forEach((j) => {
+        sum += Number(j.cost || 0);
+        const card = document.createElement('div');
+        card.className = 'border border-[#18181B] bg-white p-5 relative shadow-sm';
+        card.innerHTML = `
+          <div class="flex justify-between items-baseline border-b border-[#18181B]/15 pb-2">
+            <span class="font-serif font-bold text-base text-[#18181B]">${j.day}</span>
+            <span class="font-mono tabular-nums text-xs font-semibold text-[#D63222]">¥ ${Number(j.cost).toLocaleString()}</span>
+          </div>
+          <p class="font-hand text-sm leading-relaxed text-[#27272A] mt-3">${j.text}</p>
+          <div class="mt-3 pt-2 border-t border-[#18181B]/10 flex justify-between items-center text-[10px] font-mono text-[#64646A]">
+            <span>RECORDED: ${j.time}</span>
+            <span class="text-[#B3392A] border border-[#B3392A] px-1.5 py-0.5 font-serif select-none">手帖封存印</span>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+
+      document.getElementById('journal-count').textContent = entries.length;
+      document.getElementById('total-jpy').textContent = `累計紀錄支出：¥ ${sum.toLocaleString()}`;
+    }
+
+    function addJournalEntry() {
+      const spotInput = document.getElementById('j-spot');
+      const costInput = document.getElementById('j-cost');
+      const textInput = document.getElementById('j-text');
+
+      const spot = spotInput.value.trim() || '未指定名所';
+      const cost = costInput.value || 0;
+      const text = textInput.value.trim();
+
+      if (!text) {
+        showToast('請先填寫手帖隨筆文字！');
+        return;
+      }
+
+      const entries = getSavedJournalEntries();
+      const now = new Date();
+      const timeStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+      entries.unshift({
+        day: spot,
+        cost: cost,
+        text: text,
+        time: timeStr
+      });
+
+      saveJournalEntries(entries);
+      renderJournalList();
+
+      // 清空輸入框
+      textInput.value = '';
+      showToast('已蓋印封存至行旅手帖 (本機已儲存)！');
+    }
+
+    function quickWriteSpot(spotName, sIdx) {
+      const currentNote = window.DEFAULT_TRIP_DATA.days[activeDayIdx].spots[sIdx].notes || '';
+      const input = prompt(`為「${spotName}」撰寫手帖隨筆：`, currentNote);
+      if (input !== null && input.trim() !== '') {
+        window.DEFAULT_TRIP_DATA.days[activeDayIdx].spots[sIdx].notes = input;
+        document.getElementById(`spot-note-${sIdx}`).textContent = `手帖隨筆：${input}`;
+
+        const entries = getSavedJournalEntries();
+        const now = new Date();
+        const timeStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} 剛剛更新`;
+
+        entries.unshift({
+          day: `D${window.DEFAULT_TRIP_DATA.days[activeDayIdx].dayIndex} · ${spotName}`,
+          cost: 0,
+          text: input,
+          time: timeStr
+        });
+
+        saveJournalEntries(entries);
+        renderJournalList();
+        showToast('手帖隨筆已同步更新！');
+      }
+    }
+
+    // Modal 與 Toast 控制
+    function showPhraseModal(jp, romaji, zh) {
+      document.getElementById('modal-jp').textContent = jp;
+      document.getElementById('modal-romaji').textContent = romaji;
+      document.getElementById('modal-zh').textContent = `中文意思：${zh}`;
+      document.getElementById('phrase-modal').classList.remove('hidden');
+    }
+    function closePhraseModal() {
+      document.getElementById('phrase-modal').classList.add('hidden');
+    }
+
+    function toggleToolkit(show) {
+      document.getElementById('toolkit-drawer').classList.toggle('hidden', !show);
+    }
+
+    function copyText(txt) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt);
+      }
+      showToast(`已複製地址：${txt}`);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.remove('hidden');
+      setTimeout(() => t.classList.add('hidden'), 2400);
+    }
+
+    function convertCurrency(src) {
+      const j = document.getElementById('jpy-in');
+      const t = document.getElementById('twd-in');
+      const rate = 0.215;
+      if (src === 'jpy') {
+        t.value = Math.round(Number(j.value || 0) * rate);
+      } else {
+        j.value = Math.round(Number(t.value || 0) / rate);
+      }
+    }
+
+    // 初始化啟動
+    window.addEventListener('DOMContentLoaded', initItinerary);
+  </script>
+
+  <!-- 微縮回航膠囊 (Floating Portal Pill) -->
+  <script src="./js/portal-pill.js" data-target="../" data-label="Antigravity Hub" data-position="bottom-right"></script>
+</body>
+</html>
