@@ -51,25 +51,36 @@
 
 現代瀏覽器因安全性規範，在直接透過 `file:///` 協議開啟時會限制 ES 模組載入。請使用本地 HTTP 伺服器進行預覽。
 
-### 方式一：雙擊啟動腳本 (Windows)
-直接雙擊根目錄下的 **[`啟動預覽.bat`](啟動預覽.bat)**：
-- 腳本自動錨定當前目錄。
-- 預設綁定 5173 連接埠（`http://localhost:5173`），亦支援讀取 `%PORT%` 環境變數。
-- 自動呼叫系統預設瀏覽器開啟預覽頁面。
+### 方式一：雙擊單一薄入口腳本 (Windows)
+直接雙擊根目錄下的 **[`run.bat`](run.bat)** 開啟互動選單，或於終端直接指定子命令：
+
+```powershell
+# 1. 啟動本地預覽伺服器 (預設 Port 5173，支援 %PORT% 覆蓋)
+.\run.bat preview
+
+# 2. 執行多專案智慧發布與防呆管線
+.\run.bat deploy --osaka --dry-run
+
+# 3. 執行 4-Tier 離線 E2E 測試套件
+.\run.bat test
+
+# 4. 安全檢查並推送至遠端分支
+.\run.bat push
+```
 
 ### 方式二：PowerShell 7 指令啟動
-在專案根目錄開啟 `pwsh`，執行以下指令：
+在專案根目錄開啟 `pwsh`，透過統一預覽伺服器啟動（支援 `$env:PORT` 動態覆蓋與 MIME 修正）：
 
 ```powershell
 # 預設使用 5173 連接埠
-python -m http.server 5173
+python scripts/preview_server.py
 
 # 或透過環境變數指定自訂連接埠
 $env:PORT = 5173
-python -m http.server $env:PORT
+python scripts/preview_server.py
 ```
 
-伺服器啟動後，使用瀏覽器造訪 `http://localhost:5173` 即可檢視完整功能。
+伺服器就緒並自動開啟瀏覽器後，造訪 `http://localhost:5173` 即可檢視完整功能。
 
 ---
 
