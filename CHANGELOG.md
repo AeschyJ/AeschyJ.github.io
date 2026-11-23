@@ -3,6 +3,17 @@
 本專案的所有重要變更均將記錄於此檔案中。  
 本更新日誌嚴格遵循 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.0.0/) 格式，並採用 [語意化版本 (Semantic Versioning)](https://semver.org/lang/zh-TW/) 規範。
 
+## [3.2.1] - 2026-11-24
+
+### Added
+- **統一薄入口與 E2E 測試整合**：建立純 ASCII CRLF `run.bat` ＋ UTF-8 BOM `scripts/ctl.ps1` ＋ MIME 安全預覽伺服器 `scripts/preview_server.py`（預設 `5173`，支援 `%PORT%` 覆蓋）；將 4-Tier 離線 E2E 測試套件遷入 `tests/e2e/` 並對接 `run.bat test`（36/36 Passed）。
+
+### Fixed
+- **發布白名單回歸修復 (`scripts/deploy.py`)**：於 `osaka` 白名單補入 `emaki.html` 與 `itinerary.html` 避免同步時誤刪線上頁，同時排除除錯截圖與 `debug-proofread.js`。
+- **PWA 與腳本衛生治理**：補齊 `osaka/emaki.html`、`osaka/itinerary.html` 與根站點 SW 協定守護；修正 `index_legacy.html` 殘留 `8000` 端口為 `5173`；汰除中文 `啟動預覽.bat` 等 4 支舊 `.bat`，補齊 `.gitattributes`（CRLF）與 `.gitignore`（並解除誤追蹤之 `.pyc`）。
+
+---
+
 ## [3.2.0] - 2026-11-05
 
 ### Added

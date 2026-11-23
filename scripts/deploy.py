@@ -1,14 +1,14 @@
-import os
-import sys
-import io
-import shutil
-import hashlib
-import subprocess
 import argparse
-import time
+import hashlib
+import io
+import os
 import re
+import shutil
+import subprocess
+import sys
+import time
 from pathlib import Path
-from typing import Dict, List, Set, Tuple, Optional
+from typing import Dict, List, Optional, Set, Tuple
 
 # 強制在 Windows 下使用 UTF-8 輸出，避免 cp950 編碼無法輸出 Emoji 導致崩潰
 if sys.platform == "win32":
@@ -96,7 +96,13 @@ CRITICAL_EXCLUDE_EXTENSIONS: Set[str] = {
 }
 
 CRITICAL_EXCLUDE_FILENAMES: Set[str] = {
-    ".gitignore", "Thumbs.db", "desktop.ini", "vercel.json"
+    ".gitignore",
+    "Thumbs.db",
+    "desktop.ini",
+    "vercel.json",
+    "debug-proofread.js",
+    "emaki_vol3_verified.png",
+    "emaki_vol7_p2_verified.png",
 }
 
 # 專案定義與路徑對照
@@ -132,13 +138,13 @@ PROJECT_CONFIGS: Dict[str, dict] = {
         "sw_file": WORKSPACE_ROOT / "Nagoya&Osaka Trip" / "sw.js",
         "white_list_files": [
             "index.html",
+            "emaki.html",
+            "itinerary.html",
             "magazine.html",
             "manifest.json",
             "magazine-manifest.json",
             "sw.js",
             "favicon.ico",
-            "emaki_vol3_verified.png",
-            "emaki_vol7_p2_verified.png"
         ],
         "white_list_dirs": [
             "css",

@@ -6,12 +6,10 @@
   <title>旅の栞・名阪京奈 夏日巡行手帖</title>
   
   <!-- PWA & Mobile Web App Meta -->
+  <link rel="manifest" href="./manifest.json" id="pwa-manifest">
   <script>
-    if (location.protocol === 'http:' || location.protocol === 'https:') {
-      const manifestLink = document.createElement('link');
-      manifestLink.rel = 'manifest';
-      manifestLink.href = './manifest.json';
-      document.head.appendChild(manifestLink);
+    if (location.protocol !== 'http:' && location.protocol !== 'https:') {
+      document.getElementById('pwa-manifest')?.remove();
     }
   </script>
   <meta name="theme-color" content="#FAF9F5">
