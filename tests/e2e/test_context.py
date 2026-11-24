@@ -16,7 +16,6 @@ WORKSPACE_ROOT = GITHUB_PAGE_DIR.parent
 
 INDEX_HTML_PATH = GITHUB_PAGE_DIR / "index.html"
 LEGACY_INDEX_PATH = GITHUB_PAGE_DIR / "index_legacy.html"
-AI_STUDIO_HTML_PATH = GITHUB_PAGE_DIR / "ai_studio_code.html"
 SW_JS_PATH = GITHUB_PAGE_DIR / "sw.js"
 README_PATH = GITHUB_PAGE_DIR / "README.md"
 CHANGELOG_PATH = GITHUB_PAGE_DIR / "CHANGELOG.md"
@@ -70,10 +69,7 @@ class TestEnvironment:
     def get_target_path(cls) -> pathlib.Path:
         if cls._target_path:
             return cls._target_path
-        # Default priority: index.html if exists and migrated, else ai_studio_code.html for validation
-        if INDEX_HTML_PATH.exists():
-            return INDEX_HTML_PATH
-        return AI_STUDIO_HTML_PATH
+        return INDEX_HTML_PATH
 
     @classmethod
     def get_target_dom(cls) -> DOMTree:

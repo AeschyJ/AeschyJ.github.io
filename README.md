@@ -1,7 +1,7 @@
 # 🏛️ AESCHY — Works & Archive (中央多專案主題展覽館)
 
 [![GitHub Pages Deployment](https://img.shields.io/badge/Deploy-GitHub%20Pages-10b981?logo=github&logoColor=white)](https://aeschyj.github.io/)
-[![Version](https://img.shields.io/badge/Version-v3.2.0-f59e0b)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v3.2.2-f59e0b)](CHANGELOG.md)
 [![PWA Ready](https://img.shields.io/badge/PWA-Offline%20Cache-00ff9d?logo=pwa&logoColor=black)](https://aeschyj.github.io/manifest.json)
 [![License](https://img.shields.io/badge/License-MIT-38bdf8)](LICENSE)
 [![Built with Modern Web](https://img.shields.io/badge/Stack-ES%20Modules%20%7C%20Web%20Audio%20%7C%20HTML5%20Canvas-a855f7)](https://aeschyj.github.io/)
@@ -89,6 +89,7 @@ python scripts/preview_server.py
 - 📝 **[《版本更新歷程 (CHANGELOG.md)》](./CHANGELOG.md)**：遵循 Keep a Changelog 規範編排之完整版本日誌。
 - 📘 **[《標準架構規範書與操作手冊 (design_specification.md)》](./design_specification.md)**：全站拓撲、展館生命週期合約與同源防禦規範。
 - 📋 **[《版本重大更新與架構演進指南 (UPDATE.md)》](./UPDATE.md)**：架構決策記錄 (ADR) 與技術脈絡。
+- 🧪 **[《E2E 測試基礎架構說明書 (tests/e2e/TEST_INFRA.md)》](./tests/e2e/TEST_INFRA.md)**：4-Tier 離線 E2E 測試框架設計與驗收架構說明。
 
 ---
 
