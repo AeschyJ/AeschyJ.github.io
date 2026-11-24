@@ -3,6 +3,20 @@
 本專案的所有重要變更均將記錄於此檔案中。  
 本更新日誌嚴格遵循 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.0.0/) 格式，並採用 [語意化版本 (Semantic Versioning)](https://semver.org/lang/zh-TW/) 規範。
 
+## [3.2.2] - 2026-11-24
+
+### Changed
+- **部署管線模組化 (`scripts/deploy.py` → `scripts/deploy/`)**：將原 866 行單檔拆分為 144 行 CLI 薄主入口 `scripts/deploy.py` 與 `scripts/deploy/{__init__,config,guards,sync,git_ops}.py` 套件，維持 `run.bat deploy` 與 5 重防呆行為不變。
+- **測試基礎文檔歸位**：將 `TEST_INFRA.md` 由根目錄遷入 `tests/e2e/TEST_INFRA.md`，同步更新 `test_f19_e2e_testing_suite_and_runner` 斷言路徑。
+
+### Fixed
+- **跨殼層子進程呼叫修復 (`scripts/deploy/sync.py`)**：新增 `resolve_command()` 以 `shutil.which` 解析執行檔並改採 `shell=False`，消除傳入 `list` 搭配 `shell=True` 之跨平台風險。
+
+### Removed
+- **公開倉過期與除錯資產清理**：刪除未引用之 `osaka/emaki_vol3_verified.png`、`osaka/emaki_vol7_p2_verified.png`、`osaka/js/debug-proofread.js`、`ai_studio_code.html` 與 `TEST_READY.md`，並同步移除 `osaka/magazine.html` 除錯註解與 `tests/e2e/` 殘留之 `AI_STUDIO_HTML_PATH` 符號。
+
+---
+
 ## [3.2.1] - 2026-11-24
 
 ### Added
