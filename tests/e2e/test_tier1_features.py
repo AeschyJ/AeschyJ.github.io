@@ -14,7 +14,6 @@ import pathlib
 from tests.e2e.dom_engine import parse_html, parse_html_file
 from tests.e2e.state_simulator import DOMStateSimulator
 from tests.e2e.test_context import (
-    AI_STUDIO_HTML_PATH,
     CHANGELOG_PATH,
     CTL_PS1_PATH,
     GITHUB_PAGE_DIR,
@@ -478,8 +477,8 @@ class TestTier1Features(unittest.TestCase):
     @milestone("E2E")
     def test_f19_e2e_testing_suite_and_runner(self):
         """F19: TEST_INFRA.md and test runner execution infrastructure."""
-        test_infra_path = GITHUB_PAGE_DIR / "TEST_INFRA.md"
-        self.assertTrue(test_infra_path.exists(), "F19-1: TEST_INFRA.md exists at project root")
+        test_infra_path = GITHUB_PAGE_DIR / "tests" / "e2e" / "TEST_INFRA.md"
+        self.assertTrue(test_infra_path.exists(), "F19-1: TEST_INFRA.md exists in tests/e2e/")
         self.assertTrue((GITHUB_PAGE_DIR / "tests" / "e2e" / "runner.py").exists(), "F19-2: runner.py exists")
         self.assertTrue((GITHUB_PAGE_DIR / "tests" / "e2e" / "dom_engine.py").exists(), "F19-3: dom_engine.py exists")
         self.assertTrue((GITHUB_PAGE_DIR / "tests" / "e2e" / "state_simulator.py").exists(), "F19-4: state_simulator.py exists")

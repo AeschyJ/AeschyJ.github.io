@@ -14,7 +14,7 @@ from tests.e2e.dom_engine import parse_html
 from tests.e2e.state_simulator import DOMStateSimulator
 from tests.e2e.test_context import (
     TestEnvironment, milestone, tier,
-    INDEX_HTML_PATH, AI_STUDIO_HTML_PATH, SW_JS_PATH, PUSH_BAT_PATH, PREVIEW_BAT_PATH
+    INDEX_HTML_PATH, SW_JS_PATH, PUSH_BAT_PATH, PREVIEW_BAT_PATH
 )
 from tests.e2e import oracle
 from tests.e2e.spec_fixture import (
